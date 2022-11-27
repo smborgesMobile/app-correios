@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -48,6 +49,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 @Preview
 fun MainScreenView() {
@@ -58,17 +60,15 @@ fun MainScreenView() {
         },
         bottomBar = {
             HomeBottomNavigation(navController = navController)
-        }) { paddingValues ->
+        }) {
         Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .background(primary700)
+            modifier = Modifier.background(primary700)
         ) {
             Card(
                 shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
                 modifier = Modifier.fillMaxSize(),
             ) {
-                Box(modifier = Modifier.padding(bottom = 96.dp)) {
+                Box(modifier = Modifier.padding(bottom = 60.dp)) {
                     NavigationGraph(navController = navController)
                 }
             }

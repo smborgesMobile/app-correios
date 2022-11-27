@@ -58,6 +58,16 @@ private fun getList() = listOf(
         code = " SL123456789BR",
         imageRes = R.drawable.delivery_icon,
         description = "Objeto em transito para Casa"
+    ),
+    DeliveryItem(
+        code = " SL123456780BR",
+        imageRes = R.drawable.delivery_icon,
+        description = "Objeto em transito para Casa"
+    ),
+    DeliveryItem(
+        code = " SL123456779BR",
+        imageRes = R.drawable.delivery_icon,
+        description = "Objeto em transito para Casa"
     )
 )
 
