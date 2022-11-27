@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import br.com.smdevelopment.rastreamentocorreios.presentation.home.screens.CarScreen
+import br.com.smdevelopment.rastreamentocorreios.presentation.home.screens.HomeScreen
+import br.com.smdevelopment.rastreamentocorreios.presentation.home.screens.StarScreen
 import br.com.smdevelopment.rastreamentocorreios.presentation.home.tabbar.BottomNavItem
 
 @Composable

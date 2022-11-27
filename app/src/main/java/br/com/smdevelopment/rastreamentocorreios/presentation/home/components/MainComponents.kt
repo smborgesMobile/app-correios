@@ -1,22 +1,16 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.home.components
 
-import android.media.Image
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,16 +19,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.entities.DeliveryItem
+import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import br.com.smdevelopment.rastreamentocorreios.utils.alphaNumericOnly
 
 private const val MAX_FIELD_SIZE = 13
@@ -95,48 +92,50 @@ fun SessionHeader(title: String) {
 }
 
 @Composable
-fun AllDeliveries(deliveryList: List<DeliveryItem>) {
-    LazyColumn(
+fun CustomTopAppBar() {
+    TopAppBar(
+        elevation = 0.dp,
         modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp)
-    ) {
-        items(deliveryList) { delivery ->
-            DeliveryCard(deliveryItem = delivery)
-        }
-    }
+        title = {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = "Rastreamento",
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Color.White,
+                    style = TextStyle(
+                        fontStyle = FontStyle.Italic,
+                        fontSize = 22.sp,
+                        fontFamily = FontFamily(Font((R.font.josefin_sans_semibold_italic)))
+                    ),
+                )
+            }
+        },
+        backgroundColor = primary700,
+    )
 }
 
 @Composable
-private fun DeliveryCard(deliveryItem: DeliveryItem) {
-    Card(
-        modifier = Modifier
+fun ScreenHeader(title: String, modifier: Modifier) {
+    Text(
+        text = title,
+        fontWeight = FontWeight.Bold,
+        color = Color.Black,
+        modifier = modifier,
+        textAlign = TextAlign.Center,
+        fontSize = 20.sp
+    )
+}
+
+@Composable
+fun PrimaryButton(title: String) {
+    Button(
+        onClick = {
+
+        }, modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(top = 8.dp),
-        shape = MaterialTheme.shapes.medium,
-        elevation = 5.dp,
-        backgroundColor = MaterialTheme.colors.surface
+            .padding(start = 16.dp, end = 16.dp)
+            .height(48.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                painter = painterResource(id = deliveryItem.imageRes),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(100.dp)
-                    .padding(8.dp),
-                contentScale = ContentScale.Fit
-            )
-            Column {
-                Text(
-                    text = deliveryItem.code,
-                    style = MaterialTheme.typography.h6,
-                    color = MaterialTheme.colors.onSurface
-                )
-                Text(
-                    text = deliveryItem.description,
-                    style = MaterialTheme.typography.body2
-                )
-            }
-        }
+        Text(text = title)
     }
 }
