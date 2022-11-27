@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -53,7 +54,7 @@ fun DeliveryTextField() {
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = "Digite o código da sua encomenda") },
+            label = { Text(text = stringResource(id = R.string.input_code_label)) },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
                 focusedIndicatorColor = colorResource(id = R.color.text_field_border_color),
@@ -99,7 +100,7 @@ fun CustomTopAppBar() {
         title = {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Rastreamento",
+                    text = stringResource(id = R.string.app_title),
                     modifier = Modifier.align(Alignment.Center),
                     color = Color.White,
                     style = TextStyle(
