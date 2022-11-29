@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.home.tabbar
+package br.com.smdevelopment.rastreamentocorreios.presentation.tabbar
 
 import br.com.smdevelopment.rastreamentocorreios.R
 

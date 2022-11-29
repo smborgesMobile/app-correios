@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios
+package br.com.smdevelopment.rastreamentocorreios.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -20,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import br.com.smdevelopment.rastreamentocorreios.presentation.home.components.CustomTopAppBar
-import br.com.smdevelopment.rastreamentocorreios.presentation.home.navigation.HomeBottomNavigation
-import br.com.smdevelopment.rastreamentocorreios.presentation.home.navigation.NavigationGraph
+import br.com.smdevelopment.rastreamentocorreios.presentation.components.CustomTopAppBar
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.HomeBottomNavigation
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.NavigationGraph
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import com.google.accompanist.systemuicontroller.rememberSystemUiController

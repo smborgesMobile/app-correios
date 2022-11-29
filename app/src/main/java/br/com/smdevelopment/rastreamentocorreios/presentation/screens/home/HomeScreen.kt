@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.home.screens
+package br.com.smdevelopment.rastreamentocorreios.presentation.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,14 +23,16 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.entities.DeliveryItem
-import br.com.smdevelopment.rastreamentocorreios.presentation.home.components.DeliveryTextField
-import br.com.smdevelopment.rastreamentocorreios.presentation.home.components.PrimaryButton
-import br.com.smdevelopment.rastreamentocorreios.presentation.home.components.SessionHeader
+import br.com.smdevelopment.rastreamentocorreios.presentation.components.DeliveryTextField
+import br.com.smdevelopment.rastreamentocorreios.presentation.components.PrimaryButton
+import br.com.smdevelopment.rastreamentocorreios.presentation.components.SessionHeader
 
 @Composable
 fun HomeScreen() {
+    val viewModel: HomeViewModel = hiltViewModel()
     Column(
         modifier = Modifier
             .fillMaxWidth()

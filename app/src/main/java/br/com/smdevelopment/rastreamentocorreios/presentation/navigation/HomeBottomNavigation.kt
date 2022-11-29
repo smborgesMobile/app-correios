@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.home.navigation
+package br.com.smdevelopment.rastreamentocorreios.presentation.navigation
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.presentation.home.tabbar.BottomNavItem
+import br.com.smdevelopment.rastreamentocorreios.presentation.tabbar.BottomNavItem
 
 @Composable
 fun HomeBottomNavigation(navController: NavController) {

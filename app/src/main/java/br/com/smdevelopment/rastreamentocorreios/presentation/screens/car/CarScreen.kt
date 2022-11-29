@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.home.screens
+package br.com.smdevelopment.rastreamentocorreios.presentation.screens.car
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.presentation.home.components.ScreenHeader
+import br.com.smdevelopment.rastreamentocorreios.presentation.components.ScreenHeader
 
 @Composable
 fun CarScreen() {
