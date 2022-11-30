@@ -16,6 +16,10 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -39,9 +43,22 @@ fun HomeScreen() {
             .background(colorResource(id = R.color.white))
             .wrapContentSize(Alignment.Center)
     ) {
-        DeliveryTextField()
-        PrimaryButton(title = stringResource(id = R.string.home_title))
+        var code by remember { mutableStateOf("") }
+
+        // text field
+        DeliveryTextField {
+            code = it
+        }
+
+        // code button
+        PrimaryButton(title = stringResource(id = R.string.home_title)) {
+            viewModel.fetchDelivery(code)
+        }
+
+        // session header
         SessionHeader(title = stringResource(id = R.string.home_my_products))
+
+        // delivery list
         AllDeliveries(deliveryList = getList())
     }
 }
