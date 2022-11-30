@@ -28,7 +28,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.smdevelopment.rastreamentocorreios.R
@@ -38,8 +37,7 @@ import br.com.smdevelopment.rastreamentocorreios.utils.alphaNumericOnly
 private const val MAX_FIELD_SIZE = 13
 
 @Composable
-@Preview
-fun DeliveryTextField() {
+fun DeliveryTextField(onValueChanged: (String) -> Unit) {
     var code by remember { mutableStateOf(TextFieldValue(String())) }
     Column(
         modifier = Modifier
@@ -51,6 +49,7 @@ fun DeliveryTextField() {
             onValueChange = { newCode ->
                 if (newCode.text.length <= MAX_FIELD_SIZE) {
                     code = newCode.copy(text = newCode.text.uppercase().alphaNumericOnly())
+                    onValueChanged.invoke(code.text)
                 }
             },
             modifier = Modifier.fillMaxWidth(),
@@ -128,10 +127,10 @@ fun ScreenHeader(title: String, modifier: Modifier) {
 }
 
 @Composable
-fun PrimaryButton(title: String) {
+fun PrimaryButton(title: String, onCodeClick: (() -> Unit?)? = null) {
     Button(
         onClick = {
-
+            onCodeClick?.invoke()
         }, modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp)
