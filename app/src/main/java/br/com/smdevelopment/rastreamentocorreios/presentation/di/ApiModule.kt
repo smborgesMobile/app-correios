@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-    private const val BASE_URL = "https://proxyapp.correios.com.br"
+    private const val BASE_URL = "https://proxyapp.correios.com.br/v1/"
 
     @Provides
     @Singleton
