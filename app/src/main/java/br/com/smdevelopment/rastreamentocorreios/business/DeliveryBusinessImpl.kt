@@ -18,7 +18,7 @@ class DeliveryBusinessImpl @Inject constructor(private val deliveryRepository: D
     }
 }
 
-fun DeliveryResponse.toDeliveryData() = DeliveryData(
+private fun DeliveryResponse.toDeliveryData() = DeliveryData(
     code = delivery.objectCode.orEmpty(),
     eventList = delivery.eventList,
     type = delivery.type,
