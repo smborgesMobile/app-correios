@@ -1,10 +1,20 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
@@ -12,12 +22,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -28,16 +40,21 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.smdevelopment.rastreamentocorreios.R
+import br.com.smdevelopment.rastreamentocorreios.ui.theme.disabledButton
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import br.com.smdevelopment.rastreamentocorreios.utils.alphaNumericOnly
+import kotlinx.coroutines.delay
 
 private const val MAX_FIELD_SIZE = 13
 
+//#region --- text delivery
+
 @Composable
-fun DeliveryTextField(onValueChanged: (String) -> Unit) {
+fun DeliveryTextField(hasError: Boolean, errorMessage: String, onValueChanged: (String, Boolean) -> Unit) {
     var code by remember { mutableStateOf(TextFieldValue(String())) }
     Column(
         modifier = Modifier
@@ -49,7 +66,7 @@ fun DeliveryTextField(onValueChanged: (String) -> Unit) {
             onValueChange = { newCode ->
                 if (newCode.text.length <= MAX_FIELD_SIZE) {
                     code = newCode.copy(text = newCode.text.uppercase().alphaNumericOnly())
-                    onValueChanged.invoke(code.text)
+                    onValueChanged.invoke(code.text, code.text.length == MAX_FIELD_SIZE)
                 }
             },
             modifier = Modifier.fillMaxWidth(),
@@ -64,6 +81,22 @@ fun DeliveryTextField(onValueChanged: (String) -> Unit) {
         )
         CharacterCounter(newValue = code.text.length.toString())
     }
+
+    if (hasError && code.text.length == MAX_FIELD_SIZE) {
+        Text(
+            text = errorMessage,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 8.dp
+                ),
+            color = Color.Red,
+            style = MaterialTheme.typography.caption,
+        )
+    }
 }
 
 @Composable
@@ -77,6 +110,10 @@ fun CharacterCounter(newValue: String) {
         textAlign = TextAlign.End
     )
 }
+
+//#endregion --- text delivery
+
+//#region --- session header
 
 @Composable
 fun SessionHeader(title: String) {
@@ -126,16 +163,102 @@ fun ScreenHeader(title: String, modifier: Modifier) {
     )
 }
 
+//#endregion --- session header
+
+//#region --- primary button
+
 @Composable
-fun PrimaryButton(title: String, onCodeClick: (() -> Unit?)? = null) {
+fun PrimaryButton(
+    title: String,
+    enabled: Boolean = true,
+    loading: Boolean = false,
+    onCodeClick: (() -> Unit?)? = null
+) {
     Button(
+        enabled = enabled,
         onClick = {
             onCodeClick?.invoke()
         }, modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp)
             .height(48.dp)
+            .background(chooseButtonBackground(enabled))
     ) {
-        Text(text = title)
+        Box(contentAlignment = Alignment.Center) {
+            LoadingAnimation(loading = loading)
+        }
+
+        if (!loading) {
+            Text(text = title)
+        }
     }
 }
+
+@Composable
+fun LoadingAnimation(
+    circleColor: Color = Color.White,
+    circleSize: Dp = 5.dp,
+    animationDelay: Int = 400,
+    initialAlpha: Float = 0.3f,
+    loading: Boolean
+) {
+
+    val circles = listOf(
+        remember {
+            Animatable(initialValue = initialAlpha)
+        },
+        remember {
+            Animatable(initialValue = initialAlpha)
+        },
+        remember {
+            Animatable(initialValue = initialAlpha)
+        }
+    )
+
+    circles.forEachIndexed { index, animate ->
+        LaunchedEffect(key1 = loading) {
+            if (loading) {
+                delay(timeMillis = (animationDelay / circles.size).toLong() * index)
+                animate.animateTo(
+                    targetValue = 1f,
+                    animationSpec = infiniteRepeatable(
+                        animation = tween(
+                            durationMillis = animationDelay
+                        ),
+                        repeatMode = RepeatMode.Reverse
+                    )
+                )
+            }
+        }
+    }
+
+    Row(modifier = Modifier) {
+        if (loading) {
+            circles.forEachIndexed { index, animate ->
+                if (index != 0) {
+                    Spacer(modifier = Modifier.width(width = 6.dp))
+                }
+
+                Box(
+                    modifier = Modifier
+                        .size(size = circleSize)
+                        .clip(shape = CircleShape)
+                        .background(
+                            color = circleColor
+                                .copy(alpha = animate.value)
+                        )
+                ) {
+                }
+            }
+        }
+    }
+}
+
+private fun chooseButtonBackground(enabled: Boolean) = if (enabled) {
+    primary700
+} else {
+    disabledButton
+}
+
+//#endregion --- primary button
+
