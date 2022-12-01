@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.entities
+package br.com.smdevelopment.rastreamentocorreios.entities.view
 
 data class DeliveryItem(
     val code: String,

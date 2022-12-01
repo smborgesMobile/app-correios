@@ -1,7 +1,7 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.di
+package br.com.smdevelopment.rastreamentocorreios.di
 
-import br.com.smdevelopment.rastreamentocorreios.presentation.business.DeliveryBusiness
-import br.com.smdevelopment.rastreamentocorreios.presentation.business.DeliveryBusinessImpl
+import br.com.smdevelopment.rastreamentocorreios.business.DeliveryBusiness
+import br.com.smdevelopment.rastreamentocorreios.business.DeliveryBusinessImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

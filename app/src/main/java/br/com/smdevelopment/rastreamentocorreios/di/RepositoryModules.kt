@@ -1,7 +1,7 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.di
+package br.com.smdevelopment.rastreamentocorreios.di
 
-import br.com.smdevelopment.rastreamentocorreios.presentation.repositories.DeliveryRepository
-import br.com.smdevelopment.rastreamentocorreios.presentation.repositories.DeliveryRepositoryImpl
+import br.com.smdevelopment.rastreamentocorreios.repositories.DeliveryRepository
+import br.com.smdevelopment.rastreamentocorreios.repositories.DeliveryRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
