@@ -18,6 +18,13 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
     val state: StateFlow<Resource<DeliveryData>>
         get() = _state
 
+    var resource: Resource<DeliveryData> = Resource.Initial()
+        set(value) {
+            //Resets view model state when user start typing
+            field = value
+            _state.value = resource
+        }
+
     fun fetchDelivery(code: String) {
         _state.value = Resource.Loading()
         viewModelScope.launch {

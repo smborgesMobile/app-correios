@@ -16,7 +16,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +28,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
@@ -37,10 +38,11 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.components.Deliver
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.PrimaryButton
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.SessionHeader
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun HomeScreen() {
     val viewModel: HomeViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsState(initial = Resource.Initial())
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     // objects to be remembered
     var deliveryItem: DeliveryData? = null
@@ -80,6 +82,7 @@ fun HomeScreen() {
         ) { value, isValid ->
             deliveryCode = value
             buttonEnabled = isValid
+            viewModel.resource = Resource.Initial()
         }
 
         // code button
