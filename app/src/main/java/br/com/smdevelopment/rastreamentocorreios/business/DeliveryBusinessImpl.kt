@@ -14,6 +14,7 @@ class DeliveryBusinessImpl @Inject constructor(private val deliveryRepository: D
         val deliveryFlow: Flow<DeliveryData> = responseFlow.mapNotNull {
             it.toDeliveryData()
         }
+
         return deliveryFlow
     }
 }
