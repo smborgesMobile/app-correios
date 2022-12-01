@@ -4,4 +4,5 @@
     <string name="app_title">Rastreamento</string>
     <string name="home_title">Rastrear</string>
     <string name="home_my_products">Minhas encomendas:</string>
+    <string name="error_message">Não encontramos sua encomenda na base dos correios! </string>
 </resources>
