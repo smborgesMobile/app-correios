@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.repositories
+package br.com.smdevelopment.rastreamentocorreios.repositories
 
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.DeliveryResponse
 import kotlinx.coroutines.flow.Flow

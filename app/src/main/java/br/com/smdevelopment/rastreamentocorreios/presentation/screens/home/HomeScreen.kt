@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +31,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.entities.DeliveryItem
+import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
+import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
+import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryItem
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DeliveryTextField
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.PrimaryButton
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.SessionHeader
@@ -37,6 +41,16 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.components.Session
 @Composable
 fun HomeScreen() {
     val viewModel: HomeViewModel = hiltViewModel()
+    val state by viewModel.state.collectAsState()
+    var deliveryItem: DeliveryData? = null
+
+    when (state) {
+        is Resource.Success -> deliveryItem = state.data
+        is Resource.Error -> Log.d("sm.borges", "Error")
+        is Resource.Loading -> Log.d("sm.borges", "Loading Button")
+        is Resource.Initial -> Unit
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,37 +73,23 @@ fun HomeScreen() {
         SessionHeader(title = stringResource(id = R.string.home_my_products))
 
         // delivery list
-        AllDeliveries(deliveryList = getList())
+        AllDeliveries(deliveryList = getDeliveryList(deliveryItem))
     }
 }
 
-private fun getList() = listOf(
-    DeliveryItem(
-        code = " SL123456789BR",
-        imageRes = R.drawable.delivery_icon,
-        description = "Objeto em transito para Jaguariuna"
-    ),
-    DeliveryItem(
-        code = " SL123456789BR",
-        imageRes = R.drawable.delivery_icon,
-        description = "Objeto em transito para Campinas"
-    ),
-    DeliveryItem(
-        code = " SL123456789BR",
-        imageRes = R.drawable.delivery_icon,
-        description = "Objeto em transito para Casa"
-    ),
-    DeliveryItem(
-        code = " SL123456780BR",
-        imageRes = R.drawable.delivery_icon,
-        description = "Objeto em transito para Casa"
-    ),
-    DeliveryItem(
-        code = " SL123456779BR",
-        imageRes = R.drawable.delivery_icon,
-        description = "Objeto em transito para Casa"
-    )
-)
+private fun getDeliveryList(delivery: DeliveryData?): List<DeliveryItem> {
+    return if (delivery == null) {
+        emptyList()
+    } else {
+        listOf(
+            DeliveryItem(
+                code = delivery.code,
+                imageRes = R.drawable.delivery_icon,
+                description = delivery.description
+            )
+        )
+    }
+}
 
 @Composable
 fun AllDeliveries(deliveryList: List<DeliveryItem>) {

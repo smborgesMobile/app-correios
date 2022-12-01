@@ -1,6 +1,6 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.di
+package br.com.smdevelopment.rastreamentocorreios.di
 
-import br.com.smdevelopment.rastreamentocorreios.presentation.api.DeliveryApi
+import br.com.smdevelopment.rastreamentocorreios.api.DeliveryApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-    private const val BASE_URL = "https://proxyapp.correios.com.br/v1/"
+    private const val BASE_URL = "http://192.168.68.101:7000/"
 
     @Provides
     @Singleton
