@@ -1,6 +1,5 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -41,14 +40,29 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.components.Session
 @Composable
 fun HomeScreen() {
     val viewModel: HomeViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsState(initial = Resource.Initial())
+
+    // objects to be remembered
     var deliveryItem: DeliveryData? = null
+    var loading by remember { mutableStateOf(false) }
+    var hasError by remember { mutableStateOf(false) }
+    var deliveryCode by remember { mutableStateOf("") }
 
     when (state) {
-        is Resource.Success -> deliveryItem = state.data
-        is Resource.Error -> Log.d("sm.borges", "Error")
-        is Resource.Loading -> Log.d("sm.borges", "Loading Button")
-        is Resource.Initial -> Unit
+        is Resource.Success -> {
+            deliveryItem = state.data
+            loading = false
+            hasError = false
+        }
+        is Resource.Error -> {
+            loading = false
+            hasError = true
+        }
+        is Resource.Loading -> {
+            loading = true
+            hasError = false
+        }
+        else -> Unit
     }
 
     Column(
@@ -57,16 +71,24 @@ fun HomeScreen() {
             .background(colorResource(id = R.color.white))
             .wrapContentSize(Alignment.Center)
     ) {
-        var code by remember { mutableStateOf("") }
+        var buttonEnabled: Boolean by remember { mutableStateOf(false) }
 
         // text field
-        DeliveryTextField {
-            code = it
+        DeliveryTextField(
+            hasError = hasError,
+            errorMessage = stringResource(id = R.string.error_message)
+        ) { value, isValid ->
+            deliveryCode = value
+            buttonEnabled = isValid
         }
 
         // code button
-        PrimaryButton(title = stringResource(id = R.string.home_title)) {
-            viewModel.fetchDelivery(code)
+        PrimaryButton(
+            title = stringResource(id = R.string.home_title),
+            enabled = buttonEnabled,
+            loading = loading
+        ) {
+            viewModel.fetchDelivery(deliveryCode)
         }
 
         // session header
