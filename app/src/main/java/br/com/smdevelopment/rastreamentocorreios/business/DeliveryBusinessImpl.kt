@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
-class DeliveryBusinessImpl @Inject constructor(private val deliveryRepository: DeliveryRepository) : DeliveryBusiness {
+class DeliveryBusinessImpl @Inject constructor(
+    private val deliveryRepository: DeliveryRepository
+) : DeliveryBusiness {
 
     override suspend fun fetchDelivery(code: String): Flow<DeliveryData> {
         val responseFlow = deliveryRepository.fetchDelivery(code)
