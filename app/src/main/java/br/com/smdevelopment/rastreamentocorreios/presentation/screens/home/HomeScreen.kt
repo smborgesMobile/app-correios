@@ -64,7 +64,10 @@ fun HomeScreen() {
             loading = true
             hasError = false
         }
-        else -> Unit
+        is Resource.Initial -> {
+            loading = false
+            hasError = false
+        }
     }
 
     Column(
