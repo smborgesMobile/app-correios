@@ -41,4 +41,7 @@ data class Address(
     val city: String,
     @SerializedName("uf")
     val uf: String
-)
+) {
+    fun buildLocation() =
+        "$city - $uf"
+}

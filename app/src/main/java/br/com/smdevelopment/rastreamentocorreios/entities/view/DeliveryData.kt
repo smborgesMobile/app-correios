@@ -6,5 +6,7 @@ data class DeliveryData(
     val code: String,
     val eventList: List<Event>,
     val type: String? = null,
-    val description: String
+    val description: String,
+    val destination: String,
+    val imageRes: Int
 )

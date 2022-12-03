@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.di
 
+import br.com.smdevelopment.rastreamentocorreios.BuildConfig
 import br.com.smdevelopment.rastreamentocorreios.api.DeliveryApi
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-    private const val BASE_URL = "http://192.168.68.101:7000/"
 
     @Provides
     @Singleton
@@ -37,7 +37,7 @@ object ApiModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(BASE_URL)
+        .baseUrl(BuildConfig.SERVER_URL)
         .client(okHttpClient)
         .build()
 
