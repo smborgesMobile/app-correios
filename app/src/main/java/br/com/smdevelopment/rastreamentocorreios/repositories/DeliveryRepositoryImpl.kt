@@ -2,12 +2,17 @@ package br.com.smdevelopment.rastreamentocorreios.repositories
 
 import br.com.smdevelopment.rastreamentocorreios.api.DeliveryApi
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.DeliveryResponse
+import br.com.smdevelopment.rastreamentocorreios.entities.room.LocalDeliveryData
+import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import javax.inject.Inject
 
-class DeliveryRepositoryImpl @Inject constructor(private val api: DeliveryApi) : DeliveryRepository {
+class DeliveryRepositoryImpl @Inject constructor(
+    private val api: DeliveryApi,
+    private val deliveryDao: DeliveryDao
+) : DeliveryRepository {
 
     override suspend fun fetchDelivery(code: String): Flow<DeliveryResponse> {
         return flow {
@@ -22,6 +27,14 @@ class DeliveryRepositoryImpl @Inject constructor(private val api: DeliveryApi) :
                 handleBackendException(response)
             }
         }
+    }
+
+    override suspend fun fetchDeliveryListFromLocal(): Flow<List<LocalDeliveryData>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insertNewDelivery(delivery: LocalDeliveryData) {
+        TODO("Not yet implemented")
     }
 
     private fun handleBackendException(response: Response<DeliveryResponse>) {
