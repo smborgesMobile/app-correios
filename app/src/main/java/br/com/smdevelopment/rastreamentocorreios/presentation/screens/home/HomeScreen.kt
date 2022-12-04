@@ -44,30 +44,42 @@ import coil.compose.rememberAsyncImagePainter
 fun HomeScreen() {
     val viewModel: HomeViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
+    val deliveryState by viewModel.deliveryState.collectAsState()
 
     // objects to be remembered
-    var deliveryItem: DeliveryData? = null
     var loading by remember { mutableStateOf(false) }
     var hasError by remember { mutableStateOf(false) }
+    var clearState by remember { mutableStateOf(false) }
     var deliveryCode by remember { mutableStateOf("") }
+    var deliveryList: List<DeliveryData> by remember { mutableStateOf(emptyList()) }
+
+    when (deliveryState) {
+        is Resource.Success -> {
+            deliveryList = deliveryState.data ?: emptyList()
+        }
+        else -> Unit
+    }
 
     when (state) {
         is Resource.Success -> {
-            deliveryItem = state.data
             loading = false
             hasError = false
+            clearState = true
         }
         is Resource.Error -> {
             loading = false
             hasError = true
+            clearState = false
         }
         is Resource.Loading -> {
             loading = true
             hasError = false
+            clearState = false
         }
         is Resource.Initial -> {
             loading = false
             hasError = false
+            clearState = false
         }
     }
 
@@ -82,11 +94,13 @@ fun HomeScreen() {
         // text field
         DeliveryTextField(
             hasError = hasError,
-            errorMessage = stringResource(id = R.string.error_message)
+            errorMessage = stringResource(id = R.string.error_message),
+            clearState = clearState
         ) { value, isValid ->
             deliveryCode = value
             buttonEnabled = isValid
             viewModel.resource = Resource.Initial()
+            clearState = false
         }
 
         // code button
@@ -102,15 +116,7 @@ fun HomeScreen() {
         SessionHeader(title = stringResource(id = R.string.home_my_products))
 
         // delivery list
-        AllDeliveries(deliveryList = getDeliveryList(deliveryItem))
-    }
-}
-
-private fun getDeliveryList(delivery: DeliveryData?): List<DeliveryData> {
-    return if (delivery == null) {
-        emptyList()
-    } else {
-        listOf(delivery)
+        AllDeliveries(deliveryList = deliveryList)
     }
 }
 

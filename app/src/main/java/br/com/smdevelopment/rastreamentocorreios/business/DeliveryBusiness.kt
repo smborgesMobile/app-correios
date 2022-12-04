@@ -7,4 +7,8 @@ interface DeliveryBusiness {
 
     suspend fun fetchDelivery(code: String): Flow<DeliveryData>
 
+    suspend fun getAllDeliveries(): List<DeliveryData>
+
+    suspend fun insertNewDelivery(delivery: DeliveryData)
+
 }

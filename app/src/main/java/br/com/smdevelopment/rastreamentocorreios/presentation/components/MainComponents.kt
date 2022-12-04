@@ -54,8 +54,11 @@ private const val MAX_FIELD_SIZE = 13
 //#region --- text delivery
 
 @Composable
-fun DeliveryTextField(hasError: Boolean, errorMessage: String, onValueChanged: (String, Boolean) -> Unit) {
+fun DeliveryTextField(hasError: Boolean, errorMessage: String, clearState: Boolean, onValueChanged: (String, Boolean) -> Unit) {
     var code by remember { mutableStateOf(TextFieldValue(String())) }
+    if (clearState) {
+        code = TextFieldValue(String())
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
