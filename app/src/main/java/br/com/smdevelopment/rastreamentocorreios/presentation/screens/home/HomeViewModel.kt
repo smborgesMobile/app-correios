@@ -9,6 +9,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +25,9 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
     val deliveryState: StateFlow<Resource<List<DeliveryData>>>
         get() = _deliveryState
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     var resource: Resource<DeliveryData> = Resource.Initial()
         set(value) {
             //Resets view model state when user start typing
@@ -30,9 +35,13 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
             _state.value = resource
         }
 
+    //#region --- view model init
+
     init {
         fetchAllDeliveries()
     }
+
+    //#endregion --- view model init
 
     //#region --- fetchDelivery
 
@@ -56,7 +65,6 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
     //#region --- fetchAllDeliveries
 
     private fun fetchAllDeliveries() {
-
         _deliveryState.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -69,4 +77,16 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
     }
 
     //#endregion --- fetchAllDeliveries
+
+    //#region --- refresh
+
+    fun refresh() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _isRefreshing.update { true }
+            fetchAllDeliveries()
+            _isRefreshing.update { false }
+        }
+    }
+
+    //#endregion --- refresh
 }
