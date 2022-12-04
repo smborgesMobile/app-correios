@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +8,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Event
+import br.com.smdevelopment.rastreamentocorreios.presentation.components.CustomTopAppBar
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
 
 class DetailActivity : ComponentActivity() {
@@ -22,7 +23,7 @@ class DetailActivity : ComponentActivity() {
             RastreamentoCorreiosTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+                    DetailScreen()
                 }
             }
         }
@@ -37,15 +38,12 @@ class DetailActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
+fun DetailScreen() {
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = { CustomTopAppBar() }) {
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    RastreamentoCorreiosTheme {
-        Greeting("Android")
     }
 }
