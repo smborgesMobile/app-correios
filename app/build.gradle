@@ -25,21 +25,21 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "SERVER_URL", "\"http://192.168.68.106:7000\""
+            buildConfigField "String", "SERVER_URL", "\"http://api-correios.onrender.com\""
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         beta {
-            buildConfigField "String", "SERVER_URL", "\"http://192.168.68.105:7000\""
+            buildConfigField "String", "SERVER_URL", "\"http://api-correios.onrender.com\""
             applicationIdSuffix ".beta"
             versionNameSuffix "-beta"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            buildConfigField "String", "SERVER_URL", "\"http://192.168.68.105:7000\""
+            buildConfigField "String", "SERVER_URL", "\"http://api-correios.onrender.com\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
