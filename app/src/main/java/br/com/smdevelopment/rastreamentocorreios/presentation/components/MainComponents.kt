@@ -16,11 +16,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -134,12 +138,16 @@ fun SessionHeader(title: String) {
 
 @Composable
 @Preview
-fun CustomTopAppBar() {
+fun CustomTopAppBar(hasBackButton: Boolean = false, endMargin: Dp = 0.dp, closeActivityListener: (() -> Unit)? = null) {
     TopAppBar(
         elevation = 0.dp,
         modifier = Modifier.fillMaxWidth(),
         title = {
-            Box(modifier = Modifier.fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = endMargin)
+            ) {
                 Text(
                     text = stringResource(id = R.string.app_title),
                     modifier = Modifier.align(Alignment.Center),
@@ -153,6 +161,21 @@ fun CustomTopAppBar() {
             }
         },
         backgroundColor = primary700,
+        navigationIcon = if (hasBackButton) {
+            {
+                IconButton(
+                    onClick = {
+                        closeActivityListener?.invoke()
+                    }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            }
+        } else {
+            null
+        }
     )
 }
 

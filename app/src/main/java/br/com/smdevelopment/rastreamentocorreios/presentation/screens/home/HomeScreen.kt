@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -42,7 +43,6 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.DetailActivity
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DeliveryTextField
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.PrimaryButton
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.SessionHeader
-import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -168,7 +168,7 @@ private fun DeliveryCard(deliveryItem: DeliveryData, onClick: ((DeliveryData) ->
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = rememberAsyncImagePainter(deliveryItem.imageRes),
+                painter = painterResource(deliveryItem.imageRes),
                 contentDescription = null,
                 modifier = Modifier
                     .size(87.dp)
