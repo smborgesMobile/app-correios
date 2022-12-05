@@ -52,7 +52,6 @@ import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.disabledButton
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import br.com.smdevelopment.rastreamentocorreios.utils.alphaNumericOnly
-import kotlinx.coroutines.delay
 
 private const val MAX_FIELD_SIZE = 13
 
@@ -203,7 +202,7 @@ fun PrimaryButton(
     onCodeClick: (() -> Unit?)? = null
 ) {
     Button(
-        enabled = enabled,
+        enabled = enabled || !loading,
         onClick = {
             onCodeClick?.invoke()
         }, modifier = Modifier
@@ -226,7 +225,6 @@ fun PrimaryButton(
 fun LoadingAnimation(
     circleColor: Color = Color.White,
     circleSize: Dp = 5.dp,
-    animationDelay: Int = 400,
     initialAlpha: Float = 0.3f,
     loading: Boolean
 ) {
@@ -243,18 +241,12 @@ fun LoadingAnimation(
         }
     )
 
-    circles.forEachIndexed { index, animate ->
+    circles.forEachIndexed { _, animate ->
         LaunchedEffect(key1 = loading) {
             if (loading) {
-                delay(timeMillis = (animationDelay / circles.size).toLong() * index)
                 animate.animateTo(
                     targetValue = 1f,
-                    animationSpec = infiniteRepeatable(
-                        animation = tween(
-                            durationMillis = animationDelay
-                        ),
-                        repeatMode = RepeatMode.Reverse
-                    )
+                    animationSpec = infiniteRepeatable(tween(700), RepeatMode.Reverse)
                 )
             }
         }
