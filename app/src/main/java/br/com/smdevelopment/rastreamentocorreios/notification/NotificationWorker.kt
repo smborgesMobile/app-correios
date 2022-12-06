@@ -8,6 +8,7 @@ import androidx.work.WorkerParameters
 import br.com.smdevelopment.rastreamentocorreios.business.NotificationBusiness
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.catch
 
 @HiltWorker
 class NotificationWorker @AssistedInject constructor(
@@ -18,10 +19,24 @@ class NotificationWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        //call services
-        Log.d("sm.borges", "My Service is running")
+        var result = Result.success()
         business.checkForUpdate()
+            .catch {
+                result = Result.failure()
+                Log.d(NOTIFICATION_TAG, "Failed to fetch data")
+            }
+            .collect { deliveryData ->
+                notificationManager.createNotification(
+                    title = deliveryData.code,
+                    description = deliveryData.eventList.firstOrNull()?.description.orEmpty(),
+                    location = deliveryData.eventList.firstOrNull()?.formattedDestination.orEmpty()
+                )
+            }
 
-        return Result.success()
+        return result
+    }
+
+    private companion object {
+        const val NOTIFICATION_TAG = "NOTIFICATION_TAG"
     }
 }

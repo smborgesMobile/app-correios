@@ -1,6 +1,7 @@
 package br.com.smdevelopment.rastreamentocorreios.application
 
 import android.app.Application
+import android.util.Log.DEBUG
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -27,11 +28,11 @@ class MainApplication : Application(), Configuration.Provider {
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()
             .setWorkerFactory(workerFactory)
-            .setMinimumLoggingLevel(android.util.Log.DEBUG)
+            .setMinimumLoggingLevel(DEBUG)
             .build()
 
     private fun setupNotificationWork() {
-        val repeatingRequest = PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.DAYS).build()
+        val repeatingRequest = PeriodicWorkRequestBuilder<NotificationWorker>(MIN_WORKER_TIME, TimeUnit.MINUTES).build()
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
             WORKER_NAME,
             ExistingPeriodicWorkPolicy.REPLACE,
@@ -43,5 +44,6 @@ class MainApplication : Application(), Configuration.Provider {
 
     private companion object {
         private const val WORKER_NAME = "WORKER_NAME"
+        private const val MIN_WORKER_TIME: Long = 15L
     }
 }

@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import br.com.smdevelopment.rastreamentocorreios.converters.DeliveryConverter
 import br.com.smdevelopment.rastreamentocorreios.notification.NotificationManager
+import br.com.smdevelopment.rastreamentocorreios.notification.NotificationManagerImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +27,14 @@ class AppModule {
 
     @Provides
     fun provideNotificationManager(@ApplicationContext appContext: Context) =
-        NotificationManager(application = appContext as Application)
+        NotificationManagerImpl(application = appContext as Application)
 
     //#endregion --- provider notification manager
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface NotificationManager {
+    @Binds
+    fun provideNotificationManager(notificationManager: NotificationManagerImpl): NotificationManager
 }
