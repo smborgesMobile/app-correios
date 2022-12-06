@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.smdevelopment.rastreamentocorreios.business.DeliveryBusiness
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
+import br.com.smdevelopment.rastreamentocorreios.notification.NotificationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val business: DeliveryBusiness,
+    private val notificationManager: NotificationManager
+) : ViewModel() {
 
     private val _state = MutableStateFlow<Resource<DeliveryData>>(Resource.Initial())
     val state: StateFlow<Resource<DeliveryData>>
@@ -51,8 +55,12 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
             try {
                 business.fetchDelivery(code = code).collect { delivery ->
                     _state.value = Resource.Success(delivery)
+                    notificationManager.createNotification(
+                        title = delivery.code,
+                        description = delivery.eventList.firstOrNull()?.description.orEmpty(),
+                        location = delivery.eventList.firstOrNull()?.formattedDestination.orEmpty()
+                    )
                 }
-
                 fetchAllDeliveries()
             } catch (exception: Exception) {
                 _state.value = Resource.Error(exception.message.toString())
