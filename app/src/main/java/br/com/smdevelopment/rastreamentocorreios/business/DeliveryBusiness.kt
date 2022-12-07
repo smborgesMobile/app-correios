@@ -11,4 +11,8 @@ interface DeliveryBusiness {
 
     suspend fun insertNewDelivery(delivery: DeliveryData)
 
+    suspend fun getDeliveredList() : Flow<List<DeliveryData>>
+
+    suspend fun getPendingList() : Flow<List<DeliveryData>>
+
 }

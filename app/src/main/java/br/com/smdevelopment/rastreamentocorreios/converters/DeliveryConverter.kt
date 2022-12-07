@@ -5,6 +5,7 @@ import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Address
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.DeliveryResponse
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Event
 import br.com.smdevelopment.rastreamentocorreios.entities.view.AddressData
+import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveredType
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.entities.view.EventData
 import br.com.smdevelopment.rastreamentocorreios.entities.view.LocationData
@@ -28,7 +29,8 @@ class DeliveryConverter {
             delivery.eventList.firstOrNull()?.postLocation?.address,
             delivery.eventList.firstOrNull()?.destinationLocation?.address
         ),
-        imageRes = getDeliveredIcon(delivery.eventList.firstOrNull()?.code.orEmpty())
+        imageRes = getDeliveredIcon(delivery.eventList.firstOrNull()?.code.orEmpty()),
+        deliveredType = getDeliveredType(delivery.objectCode.orEmpty())
     )
 
     private fun List<Event>.toDeliveryDataList() = map {
@@ -63,6 +65,11 @@ class DeliveryConverter {
         DELIVERED_CODE -> R.drawable.delivered_icon
         DELIVERED_START_CODE -> R.drawable.delivered_start_icon
         else -> R.drawable.package_delivery
+    }
+
+    private fun getDeliveredType(code: String) = when (code) {
+        DELIVERED_CODE -> DeliveredType.DELIVERED
+        else -> DeliveredType.IN_PROGRESS
     }
 
     private fun buildLocationDescription(startAddress: Address?, endAddress: Address?) = when (endAddress) {

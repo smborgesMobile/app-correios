@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.screens.car
+package br.com.smdevelopment.rastreamentocorreios.presentation.screens.delivered
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,7 @@ import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.ScreenHeader
 
 @Composable
-fun CarScreen() {
+fun PendingScreen() {
     Column(
         modifier = Modifier
             .fillMaxWidth()

@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.screens.star
+package br.com.smdevelopment.rastreamentocorreios.presentation.screens.pending
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

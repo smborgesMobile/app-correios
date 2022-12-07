@@ -13,6 +13,9 @@ data class DeliveryData(
     @ColumnInfo(name = "code")
     val code: String,
 
+    @ColumnInfo(name = "deliveredType")
+    val deliveredType: DeliveredType,
+
     @ColumnInfo(name = "eventList")
     val eventList: List<EventData>,
 
@@ -39,6 +42,11 @@ data class EventData(
     val iconUrl: Int,
     val formattedDestination: String
 ) : Parcelable
+
+enum class DeliveredType {
+    DELIVERED,
+    IN_PROGRESS
+}
 
 @Parcelize
 data class LocationData(

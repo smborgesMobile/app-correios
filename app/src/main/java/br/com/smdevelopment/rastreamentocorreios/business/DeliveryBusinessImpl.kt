@@ -1,6 +1,7 @@
 package br.com.smdevelopment.rastreamentocorreios.business
 
 import br.com.smdevelopment.rastreamentocorreios.converters.DeliveryConverter
+import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveredType
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.repositories.DeliveryRepository
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +14,7 @@ class DeliveryBusinessImpl @Inject constructor(
     private val converter: DeliveryConverter
 ) : DeliveryBusiness {
 
-    //#region --- fetch data
+    //#region --- get data
 
     override suspend fun fetchDelivery(code: String): Flow<DeliveryData> {
         val responseFlow = deliveryRepository.fetchDelivery(code)
@@ -46,11 +47,25 @@ class DeliveryBusinessImpl @Inject constructor(
         emit(updateList)
     }
 
+    override suspend fun getDeliveredList(): Flow<List<DeliveryData>> = flow {
+        val localList = deliveryRepository.fetchDeliveryListFromLocal()
+        emit(localList.filter { it.deliveredType == DeliveredType.DELIVERED })
+    }
+
+    override suspend fun getPendingList(): Flow<List<DeliveryData>> = flow {
+        val localList = deliveryRepository.fetchDeliveryListFromLocal()
+        emit(localList.filter { it.deliveredType == DeliveredType.IN_PROGRESS })
+    }
+
+    //#endregion --- get data
+
+    //#region --- insert data
+
     override suspend fun insertNewDelivery(delivery: DeliveryData) {
         deliveryRepository.insertNewDelivery(delivery)
     }
 
-    //#endregion --- fetch data
+    //#endregion --- insert data
 
     private companion object {
         private const val DELIVERED_CODE = "BDE"
