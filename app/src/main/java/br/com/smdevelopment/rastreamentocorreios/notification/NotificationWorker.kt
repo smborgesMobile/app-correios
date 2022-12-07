@@ -19,6 +19,7 @@ class NotificationWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
+        Log.d(NOTIFICATION_TAG, "Running")
         var result = Result.success()
         business.checkForUpdate()
             .catch {

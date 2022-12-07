@@ -67,8 +67,9 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
         _deliveryState.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val deliveries: List<DeliveryData> = business.getAllDeliveries()
-                _deliveryState.value = Resource.Success(deliveries)
+                business.getAllDeliveries().collect {
+                    _deliveryState.value = Resource.Success(it)
+                }
             } catch (ex: Exception) {
                 _deliveryState.value = Resource.Error(ex.message.orEmpty())
             }

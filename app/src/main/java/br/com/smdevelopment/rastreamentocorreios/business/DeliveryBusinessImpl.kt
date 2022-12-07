@@ -4,6 +4,7 @@ import br.com.smdevelopment.rastreamentocorreios.converters.DeliveryConverter
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.repositories.DeliveryRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
@@ -27,8 +28,9 @@ class DeliveryBusinessImpl @Inject constructor(
         return deliveryFlow
     }
 
-    override suspend fun getAllDeliveries(): List<DeliveryData> {
+    override suspend fun getAllDeliveries(): Flow<List<DeliveryData>> = flow {
         val deliveries = deliveryRepository.fetchDeliveryListFromLocal()
+        emit(deliveries)
 
         // update existing deliveries because api does not support multiples requests.
         deliveries.forEach { oldDelivery ->
@@ -40,7 +42,8 @@ class DeliveryBusinessImpl @Inject constructor(
             }
         }
 
-        return deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.eventList[0].code == DELIVERED_CODE }
+        val updateList = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.eventList[0].code == DELIVERED_CODE }
+        emit(updateList)
     }
 
     override suspend fun insertNewDelivery(delivery: DeliveryData) {
