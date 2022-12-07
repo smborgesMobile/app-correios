@@ -202,7 +202,7 @@ fun PrimaryButton(
     onCodeClick: (() -> Unit?)? = null
 ) {
     Button(
-        enabled = enabled || !loading,
+        enabled = enabled,
         onClick = {
             onCodeClick?.invoke()
         }, modifier = Modifier

@@ -25,7 +25,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "SERVER_URL", "\"http://192.168.68.101:7000\""
+            buildConfigField "String", "SERVER_URL", "\"http://api-correios.onrender.com\""
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             minifyEnabled false
