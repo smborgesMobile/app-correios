@@ -2,7 +2,7 @@ package br.com.smdevelopment.rastreamentocorreios.repositories
 
 import br.com.smdevelopment.rastreamentocorreios.api.DeliveryApi
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.DeliveryResponse
-import br.com.smdevelopment.rastreamentocorreios.entities.room.LocalDeliveryData
+import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -29,19 +29,19 @@ class DeliveryRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchDeliveryListFromLocal(): Flow<List<LocalDeliveryData>> {
-        TODO("Not yet implemented")
+    override suspend fun fetchDeliveryListFromLocal(): List<DeliveryData> {
+        return deliveryDao.getAllDeliveries() ?: throw Exception()
     }
 
-    override suspend fun insertNewDelivery(delivery: LocalDeliveryData) {
-        TODO("Not yet implemented")
+    override suspend fun insertNewDelivery(delivery: DeliveryData) {
+        deliveryDao.insertNewDelivery(delivery)
     }
 
     private fun handleBackendException(response: Response<DeliveryResponse>) {
         if (response.code() == CODE_NOT_FOUND) {
-            throw CodeNotFoundException(code = response.code(), errorMessage = response.message())
+            throw CodeNotFoundException(code = response.code())
         } else {
-            throw DeliveryErrorException(code = response.code(), errorMessage = response.message())
+            throw DeliveryErrorException(code = response.code())
         }
     }
 
@@ -50,6 +50,6 @@ class DeliveryRepositoryImpl @Inject constructor(
     }
 }
 
-class DeliveryErrorException(val code: Int, val errorMessage: String) : Exception()
+class DeliveryErrorException(val code: Int) : Exception()
 
-class CodeNotFoundException(val code: Int, val errorMessage: String) : Exception()
+class CodeNotFoundException(val code: Int) : Exception()

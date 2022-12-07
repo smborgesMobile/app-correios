@@ -16,11 +16,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,6 +44,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,15 +52,17 @@ import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.disabledButton
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import br.com.smdevelopment.rastreamentocorreios.utils.alphaNumericOnly
-import kotlinx.coroutines.delay
 
 private const val MAX_FIELD_SIZE = 13
 
 //#region --- text delivery
 
 @Composable
-fun DeliveryTextField(hasError: Boolean, errorMessage: String, onValueChanged: (String, Boolean) -> Unit) {
+fun DeliveryTextField(hasError: Boolean, errorMessage: String, clearState: Boolean, onValueChanged: (String, Boolean) -> Unit) {
     var code by remember { mutableStateOf(TextFieldValue(String())) }
+    if (clearState) {
+        code = TextFieldValue(String())
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -129,12 +136,17 @@ fun SessionHeader(title: String) {
 }
 
 @Composable
-fun CustomTopAppBar() {
+@Preview
+fun CustomTopAppBar(hasBackButton: Boolean = false, endMargin: Dp = 0.dp, closeActivityListener: (() -> Unit)? = null) {
     TopAppBar(
         elevation = 0.dp,
         modifier = Modifier.fillMaxWidth(),
         title = {
-            Box(modifier = Modifier.fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = endMargin)
+            ) {
                 Text(
                     text = stringResource(id = R.string.app_title),
                     modifier = Modifier.align(Alignment.Center),
@@ -148,6 +160,21 @@ fun CustomTopAppBar() {
             }
         },
         backgroundColor = primary700,
+        navigationIcon = if (hasBackButton) {
+            {
+                IconButton(
+                    onClick = {
+                        closeActivityListener?.invoke()
+                    }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            }
+        } else {
+            null
+        }
     )
 }
 
@@ -175,7 +202,7 @@ fun PrimaryButton(
     onCodeClick: (() -> Unit?)? = null
 ) {
     Button(
-        enabled = enabled,
+        enabled = enabled || !loading,
         onClick = {
             onCodeClick?.invoke()
         }, modifier = Modifier
@@ -198,7 +225,6 @@ fun PrimaryButton(
 fun LoadingAnimation(
     circleColor: Color = Color.White,
     circleSize: Dp = 5.dp,
-    animationDelay: Int = 400,
     initialAlpha: Float = 0.3f,
     loading: Boolean
 ) {
@@ -215,18 +241,12 @@ fun LoadingAnimation(
         }
     )
 
-    circles.forEachIndexed { index, animate ->
+    circles.forEachIndexed { _, animate ->
         LaunchedEffect(key1 = loading) {
             if (loading) {
-                delay(timeMillis = (animationDelay / circles.size).toLong() * index)
                 animate.animateTo(
                     targetValue = 1f,
-                    animationSpec = infiniteRepeatable(
-                        animation = tween(
-                            durationMillis = animationDelay
-                        ),
-                        repeatMode = RepeatMode.Reverse
-                    )
+                    animationSpec = infiniteRepeatable(tween(700), RepeatMode.Reverse)
                 )
             }
         }

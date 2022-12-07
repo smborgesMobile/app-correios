@@ -1,15 +1,15 @@
 package br.com.smdevelopment.rastreamentocorreios.repositories
 
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.DeliveryResponse
-import br.com.smdevelopment.rastreamentocorreios.entities.room.LocalDeliveryData
+import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import kotlinx.coroutines.flow.Flow
 
 interface DeliveryRepository {
 
     suspend fun fetchDelivery(code: String): Flow<DeliveryResponse>
 
-    suspend fun fetchDeliveryListFromLocal(): Flow<List<LocalDeliveryData>>
+    suspend fun fetchDeliveryListFromLocal(): List<DeliveryData>
 
-    suspend fun insertNewDelivery(delivery: LocalDeliveryData)
+    suspend fun insertNewDelivery(delivery: DeliveryData)
 
 }
