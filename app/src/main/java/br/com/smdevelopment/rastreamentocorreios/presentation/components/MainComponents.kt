@@ -192,18 +192,6 @@ fun CustomTopAppBar(hasBackButton: Boolean = false, endMargin: Dp = 0.dp, closeA
     )
 }
 
-@Composable
-fun ScreenHeader(title: String, modifier: Modifier) {
-    Text(
-        text = title,
-        fontWeight = FontWeight.Bold,
-        color = Color.Black,
-        modifier = modifier,
-        textAlign = TextAlign.Center,
-        fontSize = 20.sp
-    )
-}
-
 //#endregion --- session header
 
 //#region --- primary button
@@ -366,4 +354,35 @@ private fun DeliveryCard(deliveryItem: DeliveryData, onClick: ((DeliveryData) ->
 }
 
 //#endregion
+
+//#region --- empty state
+
+@Composable
+@Preview
+fun EmptyState() {
+    Column(Modifier.fillMaxWidth().padding(top = 36.dp)) {
+        Text(
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.CenterHorizontally),
+            textAlign = TextAlign.Center,
+            text = stringResource(id = R.string.empty_state_message),
+            fontWeight = FontWeight.Bold
+        )
+
+        Image(
+            painter = painterResource(R.drawable.empty_state_image),
+            contentDescription = null,
+            modifier = Modifier
+                .size(150.dp)
+                .padding(8.dp, top = 16.dp)
+                .align(Alignment.CenterHorizontally)
+                .clip(RoundedCornerShape(10.dp)),
+            contentScale = ContentScale.Fit
+        )
+    }
+}
+
+//#endregion --- empty state
 

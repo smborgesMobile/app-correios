@@ -8,4 +8,5 @@
     <string name="pending_label">Minhas encomendas em trânsito</string>
     <string name="error_message">Não encontramos sua encomenda na base dos correios! </string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="empty_state_message">Ops ainda não encontramos encomendas para essa sessão!</string>
 </resources>

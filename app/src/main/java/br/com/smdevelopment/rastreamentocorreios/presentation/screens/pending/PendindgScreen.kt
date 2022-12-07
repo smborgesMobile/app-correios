@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.AllDeliveries
+import br.com.smdevelopment.rastreamentocorreios.presentation.components.EmptyState
 
 @Composable
 fun PendingScreen() {
@@ -34,16 +35,20 @@ fun PendingScreen() {
             viewModel.getPendingDeliveries()
         })
 
-        Text(
-            style = MaterialTheme.typography.body1,
-            modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Start,
-            text = stringResource(id = R.string.pending_label),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold
-        )
-        AllDeliveries(deliveryList = viewModel.deliveredList)
+        if (viewModel.deliveredList.isEmpty()) {
+            EmptyState()
+        } else {
+            Text(
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.CenterHorizontally),
+                textAlign = TextAlign.Start,
+                text = stringResource(id = R.string.pending_label),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
+            AllDeliveries(deliveryList = viewModel.deliveredList)
+        }
     }
 }
