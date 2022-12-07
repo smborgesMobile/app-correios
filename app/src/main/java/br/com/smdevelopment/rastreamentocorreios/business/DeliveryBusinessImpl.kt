@@ -31,7 +31,14 @@ class DeliveryBusinessImpl @Inject constructor(
         val deliveries = deliveryRepository.fetchDeliveryListFromLocal()
 
         // update existing deliveries because api does not support multiples requests.
-        deliveries.forEach { deliveryRepository.fetchDelivery(it.code) }
+        deliveries.forEach { oldDelivery ->
+            val deliveryData = deliveryRepository.fetchDelivery(oldDelivery.code)
+            deliveryData.collect { newDelivery ->
+                val convertedDelivery = converter.convert(newDelivery)
+                if (oldDelivery != convertedDelivery)
+                    deliveryRepository.insertNewDelivery(convertedDelivery)
+            }
+        }
 
         return deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.eventList[0].code == DELIVERED_CODE }
     }
