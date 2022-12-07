@@ -30,7 +30,7 @@ class DeliveryConverter {
             delivery.eventList.firstOrNull()?.destinationLocation?.address
         ),
         imageRes = getDeliveredIcon(delivery.eventList.firstOrNull()?.code.orEmpty()),
-        deliveredType = getDeliveredType(delivery.objectCode.orEmpty())
+        deliveredType = getDeliveredType(delivery.eventList.firstOrNull()?.code.orEmpty())
     )
 
     private fun List<Event>.toDeliveryDataList() = map {

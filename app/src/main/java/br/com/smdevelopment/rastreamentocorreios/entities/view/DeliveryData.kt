@@ -43,11 +43,6 @@ data class EventData(
     val formattedDestination: String
 ) : Parcelable
 
-enum class DeliveredType {
-    DELIVERED,
-    IN_PROGRESS
-}
-
 @Parcelize
 data class LocationData(
     val address: AddressData
@@ -58,3 +53,8 @@ data class AddressData(
     val city: String,
     val uf: String
 ) : Parcelable
+
+enum class DeliveredType {
+    DELIVERED,
+    IN_PROGRESS
+}
