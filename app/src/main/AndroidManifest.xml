@@ -22,7 +22,8 @@
             android:exported="false"
             android:label="@string/title_activity_detail"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.RastreamentoCorreios">
+            android:theme="@style/Theme.RastreamentoCorreios"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -31,7 +32,8 @@
             android:name=".presentation.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.RastreamentoCorreios">
+            android:theme="@style/Theme.RastreamentoCorreios"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
