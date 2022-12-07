@@ -9,4 +9,18 @@
     <string name="error_message">Não encontramos sua encomenda na base dos correios! </string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="empty_state_message">Ops ainda não encontramos encomendas para essa sessão!</string>
+
+    <!-- About Screen !-->
+    <string name="app_email">sergioborgesmendes12@gmail.com</string>
+    <string name="email_subject">App Correios sugestões</string>
+    <string name="about_sac_title">Telefones do SAC</string>
+    <string name="about_screen_title">Aviso!</string>
+    <string name="about_screen_description">O nosso app apenas mostra as movimentações das encomendas</string>
+    <string name="about_screen_info">Se estiver com problemas com o recebimento da encomenda, entre em contato através do SAC dos correios</string>
+    <string name="about_screen_contacts"><b>3003 0100</b> - Capitais e Regiões Metropolitanas \n0800 725 7282 - Demais Localidades (fixo)\n0800 725 0100 - Todo Brasil (fixo)\n\n
+
+Horário de atendimento (exceto feriados):\n
+Segunda à sexta, das 8h às 20h\n
+Sábado, das 8h às 14h.</string>
+    <string name="about_screen_button_title">Sugestões</string>
 </resources>

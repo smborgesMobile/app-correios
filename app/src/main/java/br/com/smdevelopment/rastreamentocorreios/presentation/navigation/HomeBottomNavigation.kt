@@ -20,7 +20,8 @@ fun HomeBottomNavigation(navController: NavController) {
     val items = listOf(
         BottomNavItem.Delivered,
         BottomNavItem.Home,
-        BottomNavItem.Pending
+        BottomNavItem.Pending,
+        BottomNavItem.About
     )
 
     BottomNavigation(
