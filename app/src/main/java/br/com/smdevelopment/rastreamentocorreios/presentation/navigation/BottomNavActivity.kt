@@ -12,13 +12,13 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.tabbar.BottomNavIt
 @Composable
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.route) {
-        composable(BottomNavItem.Car.route) {
+        composable(BottomNavItem.Delivered.route) {
             CarScreen()
         }
         composable(BottomNavItem.Home.route) {
             HomeScreen()
         }
-        composable(BottomNavItem.Star.route) {
+        composable(BottomNavItem.About.route) {
             StarScreen()
         }
     }

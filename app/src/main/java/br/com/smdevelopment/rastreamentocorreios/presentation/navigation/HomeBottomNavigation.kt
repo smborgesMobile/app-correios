@@ -18,9 +18,9 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.tabbar.BottomNavIt
 @Composable
 fun HomeBottomNavigation(navController: NavController) {
     val items = listOf(
-        BottomNavItem.Car,
+        BottomNavItem.Delivered,
         BottomNavItem.Home,
-        BottomNavItem.Star
+        BottomNavItem.About
     )
 
     BottomNavigation(
