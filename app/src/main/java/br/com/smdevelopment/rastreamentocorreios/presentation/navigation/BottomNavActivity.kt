@@ -18,7 +18,7 @@ fun NavigationGraph(navController: NavHostController) {
         composable(BottomNavItem.Home.route) {
             HomeScreen()
         }
-        composable(BottomNavItem.About.route) {
+        composable(BottomNavItem.Pending.route) {
             StarScreen()
         }
     }
