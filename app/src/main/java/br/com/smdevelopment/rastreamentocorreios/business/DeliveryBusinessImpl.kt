@@ -30,7 +30,7 @@ class DeliveryBusinessImpl @Inject constructor(
     }
 
     override suspend fun getAllDeliveries(): Flow<List<DeliveryData>> = flow {
-        val deliveries = deliveryRepository.fetchDeliveryListFromLocal()
+        val deliveries = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.deliveredType == DeliveredType.DELIVERED }
         emit(deliveries)
 
         // update existing deliveries because api does not support multiples requests.
@@ -43,7 +43,7 @@ class DeliveryBusinessImpl @Inject constructor(
             }
         }
 
-        val updateList = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.eventList[0].code == DELIVERED_CODE }
+        val updateList = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.deliveredType == DeliveredType.DELIVERED }
         emit(updateList)
     }
 
