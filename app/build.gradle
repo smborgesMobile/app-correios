@@ -40,7 +40,7 @@ android {
         }
         release {
             buildConfigField "String", "SERVER_URL", "\"http://api-correios.onrender.com\""
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
