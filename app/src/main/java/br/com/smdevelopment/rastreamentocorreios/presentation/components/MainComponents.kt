@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -64,7 +65,7 @@ import androidx.compose.ui.unit.sp
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.presentation.DetailActivity
-import br.com.smdevelopment.rastreamentocorreios.presentation.components.navigation.MenuItem
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemenu.NavDrawerItem
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.disabledButton
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import br.com.smdevelopment.rastreamentocorreios.utils.alphaNumericOnly
@@ -412,26 +413,31 @@ fun DrawerHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
             .background(primary700)
     ) {
-        Text(
-            text = stringResource(id = R.string.app_title),
-            style = MaterialTheme.typography.h6,
-            fontFamily = FontFamily(Font((R.font.josefin_sans_semibold_italic))),
-            color = Color.White,
-            modifier = Modifier.padding(16.dp)
-        )
+        Column {
+            Text(
+                text = stringResource(id = R.string.app_title),
+                style = MaterialTheme.typography.h6,
+                fontFamily = FontFamily(Font((R.font.josefin_sans_semibold_italic))),
+                color = Color.White,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
     }
 }
 
 @Composable
 fun DrawerBody(
-    items: List<MenuItem>,
     modifier: Modifier = Modifier,
     itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
-    onItemClick: (MenuItem) -> Unit
+    onItemClick: (NavDrawerItem) -> Unit
 ) {
+    val items = listOf(
+        NavDrawerItem.About,
+        NavDrawerItem.Settings
+    )
+
     LazyColumn(modifier) {
         items(items) { item ->
             Row(modifier = Modifier
@@ -442,14 +448,27 @@ fun DrawerBody(
                 .padding(16.dp)
             ) {
                 Icon(
-                    imageVector = item.icon,
-                    contentDescription = item.contentDescription
+                    painter = painterResource(id = item.icon),
+                    contentDescription = null
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = item.title,
                     style = itemTextStyle,
                     modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    modifier = Modifier.size(20.dp),
+                    painter = painterResource(id = R.drawable.icon_right),
+                    contentDescription = null
+                )
+            }
+            Column {
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(colorResource(id = R.color.gray_color_75))
                 )
             }
         }

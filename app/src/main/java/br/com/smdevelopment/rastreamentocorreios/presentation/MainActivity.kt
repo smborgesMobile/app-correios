@@ -14,24 +14,19 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.CustomTopAppBar
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DrawerBody
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DrawerHeader
-import br.com.smdevelopment.rastreamentocorreios.presentation.components.navigation.MenuItem
-import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.HomeBottomNavigation
-import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.NavigationGraph
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.HomeBottomNavigation
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.NavigationGraph
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -74,15 +69,19 @@ fun MainScreenView() {
         drawerContent = {
             DrawerHeader()
             DrawerBody(
-                items = listOf(
-                    MenuItem(
-                        id = stringResource(id = R.string.about_id),
-                        title = stringResource(id = R.string.about_title),
-                        contentDescription = stringResource(id = R.string.about_screen_description),
-                        icon = Icons.Default.Info
-                    )
-                ), onItemClick = {
-                    println("clicked on ${it.title}")
+                onItemClick = { item ->
+                    navController.navigate(item.route) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                    }
                 })
         },
         scaffoldState = scaffoldState,
