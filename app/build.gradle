@@ -7,6 +7,13 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/Users/sergiob/keys/Untitled')
+            storePassword '9429289'
+            keyPassword '9429289'
+        }
+    }
     namespace 'br.com.smdevelopment.rastreamentocorreios'
     compileSdk 33
 
