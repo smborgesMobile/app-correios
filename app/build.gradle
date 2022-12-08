@@ -7,6 +7,10 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+        }
+    }
     namespace 'br.com.smdevelopment.rastreamentocorreios'
     compileSdk 33
 
@@ -14,8 +18,8 @@ android {
         applicationId "br.com.smdevelopment.rastreamentocorreios"
         minSdk 26
         targetSdk 33
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -29,6 +33,7 @@ android {
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             minifyEnabled false
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         beta {
@@ -36,11 +41,15 @@ android {
             applicationIdSuffix ".beta"
             versionNameSuffix "-beta"
             minifyEnabled true
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
+            applicationIdSuffix ".release"
+            versionNameSuffix "-release"
             buildConfigField "String", "SERVER_URL", "\"http://api-correios.onrender.com\""
-            minifyEnabled true
+            minifyEnabled false
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
