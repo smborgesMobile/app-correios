@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Rastreamento Correios</string>
     <string name="input_code_label">Digite o código da sua encomenda</string>
-    <string name="app_title">Rastreamento</string>
+    <string name="app_title">Rastreamento dos Correios</string>
     <string name="home_title">Rastrear</string>
     <string name="home_my_products">Minhas encomendas:</string>
     <string name="delivered_label">Minhas encomendas entregues</string>
@@ -9,6 +9,11 @@
     <string name="error_message">Não encontramos sua encomenda na base dos correios! </string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="empty_state_message">Ops ainda não encontramos encomendas para essa sessão!</string>
+
+    <!-- Menu item !-->
+    <string name="about_id">about</string>
+    <string name="about_title">Sobre</string>
+    <string name="about_content_description">about screen</string>
 
     <!-- About Screen !-->
     <string name="app_email">sergioborgesmendes12@gmail.com</string>
