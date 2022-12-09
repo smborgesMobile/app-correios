@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.presentation.navigation
+package br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -20,8 +20,7 @@ fun HomeBottomNavigation(navController: NavController) {
     val items = listOf(
         BottomNavItem.Delivered,
         BottomNavItem.Home,
-        BottomNavItem.Pending,
-        BottomNavItem.About
+        BottomNavItem.Pending
     )
 
     BottomNavigation(

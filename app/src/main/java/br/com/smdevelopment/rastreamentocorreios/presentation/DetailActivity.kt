@@ -36,6 +36,7 @@ import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class DetailActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val eventList: List<EventData> = intent.getParcelableArrayListExtra<EventData>(DELIVERY_DATA)?.toList() ?: emptyList()
@@ -68,6 +69,8 @@ class DetailActivity : ComponentActivity() {
         }
     }
 }
+
+//#region --- composes
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -127,3 +130,5 @@ fun DetailScreen(eventList: List<EventData>, closeActivityListener: (() -> Unit)
         }
     }
 }
+
+//#endregion --- composes

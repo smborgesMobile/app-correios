@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -33,6 +34,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -63,6 +65,7 @@ import androidx.compose.ui.unit.sp
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.presentation.DetailActivity
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemenu.NavDrawerItem
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.disabledButton
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import br.com.smdevelopment.rastreamentocorreios.utils.alphaNumericOnly
@@ -150,8 +153,11 @@ fun SessionHeader(title: String, fontSize: TextUnit = 12.sp) {
 }
 
 @Composable
-@Preview
-fun CustomTopAppBar(hasBackButton: Boolean = false, endMargin: Dp = 0.dp, closeActivityListener: (() -> Unit)? = null) {
+fun CustomTopAppBar(
+    hasBackButton: Boolean = false, endMargin: Dp = 0.dp,
+    onNavigationClick: (() -> Unit)? = null,
+    closeActivityListener: (() -> Unit)? = null
+) {
     TopAppBar(
         elevation = 0.dp,
         modifier = Modifier.fillMaxWidth(),
@@ -187,7 +193,17 @@ fun CustomTopAppBar(hasBackButton: Boolean = false, endMargin: Dp = 0.dp, closeA
                 }
             }
         } else {
-            null
+            {
+                IconButton(
+                    onClick = {
+                        onNavigationClick?.invoke()
+                    }) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = "Menu"
+                    )
+                }
+            }
         }
     )
 }
@@ -360,7 +376,11 @@ private fun DeliveryCard(deliveryItem: DeliveryData, onClick: ((DeliveryData) ->
 @Composable
 @Preview
 fun EmptyState() {
-    Column(Modifier.fillMaxWidth().padding(top = 36.dp)) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(top = 36.dp)
+    ) {
         Text(
             style = MaterialTheme.typography.h6,
             modifier = Modifier
@@ -385,4 +405,81 @@ fun EmptyState() {
 }
 
 //#endregion --- empty state
+
+//#region --- navigation drawer
+
+@Composable
+fun DrawerHeader(modifier: Modifier) {
+    Box(modifier = modifier) {
+        Column {
+            Text(
+                text = stringResource(id = R.string.app_title),
+                style = MaterialTheme.typography.h6,
+                fontFamily = FontFamily(Font((R.font.josefin_sans_semibold_italic))),
+                color = Color.White,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun DrawerFooter(text: String, modifier: Modifier) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.body1,
+        color = Color.Black,
+        modifier = modifier,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+fun DrawerBody(
+    modifier: Modifier = Modifier,
+    itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
+    onItemClick: (NavDrawerItem) -> Unit
+) {
+    val items = listOf(
+        NavDrawerItem.About
+    )
+
+    LazyColumn(modifier) {
+        items(items) { item ->
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    onItemClick(item)
+                }
+                .padding(16.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = item.icon),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = item.title,
+                    style = itemTextStyle,
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    modifier = Modifier.size(20.dp),
+                    painter = painterResource(id = R.drawable.icon_arrow_right),
+                    contentDescription = null
+                )
+            }
+            Column {
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(colorResource(id = R.color.gray_color_75))
+                )
+            }
+        }
+    }
+}
+
+//#endregion --- navigation drawer
 

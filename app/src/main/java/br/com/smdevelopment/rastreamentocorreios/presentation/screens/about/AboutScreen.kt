@@ -58,7 +58,7 @@ fun AboutScreen() {
                 modifier = Modifier
                     .align(Alignment.Start)
                     .padding(top = 16.dp),
-                fontSize = 14.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
@@ -75,7 +75,7 @@ fun AboutScreen() {
                 modifier = Modifier
                     .align(Alignment.Start)
                     .padding(top = 8.dp),
-                fontSize = 14.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
