@@ -409,12 +409,8 @@ fun EmptyState() {
 //#region --- navigation drawer
 
 @Composable
-fun DrawerHeader() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(primary700)
-    ) {
+fun DrawerHeader(modifier: Modifier) {
+    Box(modifier = modifier) {
         Column {
             Text(
                 text = stringResource(id = R.string.app_title),
@@ -428,14 +424,24 @@ fun DrawerHeader() {
 }
 
 @Composable
+fun DrawerFooter(text: String, modifier: Modifier) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.body1,
+        color = Color.Black,
+        modifier = modifier,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
 fun DrawerBody(
     modifier: Modifier = Modifier,
     itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
     onItemClick: (NavDrawerItem) -> Unit
 ) {
     val items = listOf(
-        NavDrawerItem.About,
-        NavDrawerItem.Settings
+        NavDrawerItem.About
     )
 
     LazyColumn(modifier) {
@@ -459,7 +465,7 @@ fun DrawerBody(
                 )
                 Icon(
                     modifier = Modifier.size(20.dp),
-                    painter = painterResource(id = R.drawable.icon_right),
+                    painter = painterResource(id = R.drawable.icon_arrow_right),
                     contentDescription = null
                 )
             }

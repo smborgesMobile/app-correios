@@ -28,4 +28,5 @@ Horário de atendimento (exceto feriados):\n
 Segunda à sexta, das 8h às 20h\n
 Sábado, das 8h às 14h.</string>
     <string name="about_screen_button_title">Sugestões</string>
+    <string name="title_activity_about">AboutActivity</string>
 </resources>

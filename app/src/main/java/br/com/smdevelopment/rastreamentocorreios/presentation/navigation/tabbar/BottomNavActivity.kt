@@ -23,9 +23,6 @@ fun NavigationGraph(navController: NavHostController) {
         composable(BottomNavItem.Pending.route) {
             PendingScreen()
         }
-        composable(NavDrawerItem.Settings.route) {
-            AboutScreen()
-        }
         composable(NavDrawerItem.About.route) {
             AboutScreen()
         }
