@@ -30,7 +30,7 @@ jobs:
 
       # App Build
       - name: Build the app
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
         
       - name: Run detekt
         run: ./gradlew detektCheck
