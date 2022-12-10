@@ -23,25 +23,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Execute unit tests
-      - name: Unit Test with Android Emulator Runner
-        uses: ReactiveCircus/android-emulator-runner@v2.14.3
-        with:
-          api-level: 29
-          script: ./gradlew connectedCheck
+      # App Build
+      - name: Build the app
+        run: ./gradlew assembleDebug
+        
+      - name: Run detekt
+        run: ./gradlew detektCheck
 
-      # run: ./gradlew testDebugUnitTest
-      - name: generate report
-        uses: actions/upload-artifact@v2
-        with:
-          name: report
-          path: app/build/reports/coverage/debug
-
-      - name: Download Test Reports Folder
-        uses: actions/download-artifact@v2
-        with:
-          name: report
-          path: app/build/reports/coverage/debug
-
-      - name: Upload Test Report
-        run: bash <(curl -s https://codecov.io/bash) -f "app/build/reports/coverage/debug/report.xml"
+      - name: Run unit tests
+        run: ./gradlew test --stacktrace
