@@ -30,7 +30,7 @@ jobs:
 
       # App Build
       - name: Build the app
-        run: ./gradlew assembleDebug
+        run: ./gradlew build
         
       - name: Run detekt
         run: ./gradlew detektCheck
