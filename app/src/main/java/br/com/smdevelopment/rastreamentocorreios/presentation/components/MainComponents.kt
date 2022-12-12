@@ -154,7 +154,8 @@ fun SessionHeader(title: String, fontSize: TextUnit = 12.sp) {
 
 @Composable
 fun CustomTopAppBar(
-    hasBackButton: Boolean = false, endMargin: Dp = 0.dp,
+    hasBackButton: Boolean = false,
+    endMargin: Dp = 0.dp,
     onNavigationClick: (() -> Unit)? = null,
     closeActivityListener: (() -> Unit)? = null
 ) {

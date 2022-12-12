@@ -82,7 +82,7 @@ fun MainScreenView() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(primary700)
-                        .weight(0.2f)
+                        .weight(0.1f)
                 )
                 DrawerBody(
                     modifier = Modifier.weight(1f),
@@ -106,11 +106,13 @@ fun MainScreenView() {
         },
         scaffoldState = scaffoldState,
         topBar = {
-            CustomTopAppBar(onNavigationClick = {
-                scope.launch {
-                    scaffoldState.drawerState.open()
-                }
-            })
+            CustomTopAppBar(
+                onNavigationClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                }, endMargin = 16.dp
+            )
         },
         bottomBar = {
             HomeBottomNavigation(navController = navController)
