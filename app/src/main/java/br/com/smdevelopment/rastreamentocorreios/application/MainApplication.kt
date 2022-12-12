@@ -32,7 +32,7 @@ class MainApplication : Application(), Configuration.Provider {
             .build()
 
     private fun setupNotificationWork() {
-        val repeatingRequest = PeriodicWorkRequestBuilder<NotificationWorker>(MIN_WORKER_TIME, TimeUnit.HOURS).build()
+        val repeatingRequest = PeriodicWorkRequestBuilder<NotificationWorker>(MIN_WORKER_TIME, TimeUnit.MINUTES).build()
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
             WORKER_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
@@ -44,6 +44,6 @@ class MainApplication : Application(), Configuration.Provider {
 
     private companion object {
         private const val WORKER_NAME = "WORKER_NAME"
-        private const val MIN_WORKER_TIME: Long = 1
+        private const val MIN_WORKER_TIME: Long = 30
     }
 }

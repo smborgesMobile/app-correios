@@ -44,7 +44,7 @@ class DeliveryBusinessImpl @Inject constructor(
         }
 
         val updateList = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.deliveredType == DeliveredType.DELIVERED }
-        emit(updateList)
+        if (updateList.isNotEmpty()) emit(updateList)
     }
 
     override suspend fun getDeliveredList(): Flow<List<DeliveryData>> = flow {
@@ -66,8 +66,4 @@ class DeliveryBusinessImpl @Inject constructor(
     }
 
     //#endregion --- insert data
-
-    private companion object {
-        private const val DELIVERED_CODE = "BDE"
-    }
 }
