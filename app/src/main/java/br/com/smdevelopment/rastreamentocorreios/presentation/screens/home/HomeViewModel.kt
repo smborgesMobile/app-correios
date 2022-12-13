@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.screens.home
 
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.smdevelopment.rastreamentocorreios.business.DeliveryBusiness
@@ -27,6 +28,13 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
+
+    private val _showPermission = MutableStateFlow(false)
+    val showPermission = _showPermission.asStateFlow()
+
+    init {
+        _showPermission.value = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+    }
 
     var resource: Resource<DeliveryData> = Resource.Initial()
         set(value) {

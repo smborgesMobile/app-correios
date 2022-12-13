@@ -29,4 +29,10 @@ Segunda à sexta, das 8h às 20h\n
 Sábado, das 8h às 14h.</string>
     <string name="about_screen_button_title">Sugestões</string>
     <string name="title_activity_about">AboutActivity</string>
+
+    <!-- Permission !-->
+    <string name="permission_title">Vamos habilitar a permissão de notificações?</string>
+    <string name="permission_description">Com ela você será notificado quando sua encomenda movimentar!</string>
+    <string name="permission_leave_button">Sair</string>
+    <string name="permission_enable_button">Autorizar</string>
 </resources>
