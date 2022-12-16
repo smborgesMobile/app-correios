@@ -14,9 +14,9 @@ class DeliveryRepositoryImpl @Inject constructor(
     private val deliveryDao: DeliveryDao
 ) : DeliveryRepository {
 
-    override suspend fun fetchDelivery(code: String): Flow<DeliveryResponse> {
+    override suspend fun fetchDelivery(codeList: List<String>): Flow<DeliveryResponse> {
         return flow {
-            val response = api.fetchDelivery(code)
+            val response = api.fetchDelivery(codeList)
 
             if (response.isSuccessful) {
                 val deliveryData = response.body()

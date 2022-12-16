@@ -16,9 +16,9 @@ class DeliveryBusinessImpl @Inject constructor(
 
     //#region --- get data
 
-    override suspend fun fetchDelivery(code: String): Flow<DeliveryData> {
-        val responseFlow = deliveryRepository.fetchDelivery(code)
-        val deliveryFlow: Flow<DeliveryData> = responseFlow.mapNotNull {
+    override suspend fun fetchDelivery(code: String): Flow<List<DeliveryData>> {
+        val responseFlow = deliveryRepository.fetchDelivery(listOf(code))
+        val deliveryFlow: Flow<List<DeliveryData>> = responseFlow.mapNotNull {
             converter.convert(it)
         }
 
@@ -30,20 +30,21 @@ class DeliveryBusinessImpl @Inject constructor(
     }
 
     override suspend fun getAllDeliveries(): Flow<List<DeliveryData>> = flow {
-        val deliveries = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.deliveredType == DeliveredType.DELIVERED }
+        val deliveries = deliveryRepository.fetchDeliveryListFromLocal()
+            .sortedBy { it.deliveredType == DeliveredType.DELIVERED }
         emit(deliveries)
 
         // update existing deliveries because api does not support multiples requests.
-        deliveries.forEach { oldDelivery ->
-            val deliveryData = deliveryRepository.fetchDelivery(oldDelivery.code)
-            deliveryData.collect { newDelivery ->
-                val convertedDelivery = converter.convert(newDelivery)
-                if (oldDelivery != convertedDelivery)
-                    deliveryRepository.insertNewDelivery(convertedDelivery)
-            }
+        val mapCodeList: List<String> = deliveries.map {
+            it.code
         }
 
-        val updateList = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.deliveredType == DeliveredType.DELIVERED }
+        // update dependencies
+        deliveryRepository.fetchDelivery(mapCodeList)
+
+        val updateList = deliveryRepository.fetchDeliveryListFromLocal()
+            .sortedBy { it.deliveredType == DeliveredType.DELIVERED }
+
         if (updateList.isNotEmpty()) emit(updateList)
     }
 
@@ -61,8 +62,10 @@ class DeliveryBusinessImpl @Inject constructor(
 
     //#region --- insert data
 
-    override suspend fun insertNewDelivery(delivery: DeliveryData) {
-        deliveryRepository.insertNewDelivery(delivery)
+    override suspend fun insertNewDelivery(delivery: List<DeliveryData>) {
+        delivery.forEach {
+            deliveryRepository.insertNewDelivery(it)
+        }
     }
 
     //#endregion --- insert data

@@ -8,5 +8,5 @@ import retrofit2.http.Path
 interface DeliveryApi {
 
     @GET("v1/sro-rastro/{code}")
-    suspend fun fetchDelivery(@Path("code") code: String): Response<DeliveryResponse>
+    suspend fun fetchDelivery(@Path("code") code: List<String>): Response<DeliveryResponse>
 }

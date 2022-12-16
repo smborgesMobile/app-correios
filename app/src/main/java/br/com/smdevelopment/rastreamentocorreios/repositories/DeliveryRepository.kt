@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface DeliveryRepository {
 
-    suspend fun fetchDelivery(code: String): Flow<DeliveryResponse>
+    suspend fun fetchDelivery(codeList: List<String>): Flow<DeliveryResponse>
 
     suspend fun fetchDeliveryListFromLocal(): List<DeliveryData>
 
