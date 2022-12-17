@@ -60,7 +60,6 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
                 business.fetchDelivery(code = code).collect { delivery ->
                     _state.value = Resource.Success(delivery)
                 }
-                fetchAllDeliveries()
             } catch (exception: Exception) {
                 _state.value = Resource.Error(exception.message.toString())
             }
