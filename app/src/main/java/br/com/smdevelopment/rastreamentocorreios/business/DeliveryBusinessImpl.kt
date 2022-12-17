@@ -40,7 +40,13 @@ class DeliveryBusinessImpl @Inject constructor(
         }
 
         // update dependencies
-        deliveryRepository.fetchDelivery(mapCodeList)
+        val response = deliveryRepository.fetchDelivery(mapCodeList).mapNotNull {
+            converter.convert(it)
+        }
+
+        response.collect { delivery ->
+            insertNewDelivery(delivery)
+        }
 
         val updateList = deliveryRepository.fetchDeliveryListFromLocal()
             .sortedBy { it.deliveredType == DeliveredType.DELIVERED }
