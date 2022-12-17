@@ -1,49 +1,51 @@
 package br.com.smdevelopment.rastreamentocorreios.business
 
-import br.com.smdevelopment.rastreamentocorreios.converters.DeliveryConverter
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveredType
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.repositories.DeliveryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 class DeliveryBusinessImpl @Inject constructor(
-    private val deliveryRepository: DeliveryRepository,
-    private val converter: DeliveryConverter
+    private val deliveryRepository: DeliveryRepository
 ) : DeliveryBusiness {
 
     //#region --- get data
 
-    override suspend fun fetchDelivery(code: String): Flow<DeliveryData> {
-        val responseFlow = deliveryRepository.fetchDelivery(code)
-        val deliveryFlow: Flow<DeliveryData> = responseFlow.mapNotNull {
-            converter.convert(it)
-        }
+    override suspend fun fetchDelivery(code: String): Flow<List<DeliveryData>> {
+        val deliveryCodes = deliveryRepository.fetchDeliveryListFromLocal().map {
+            it.code
+        }.toMutableList()
+        deliveryCodes.add(code)
 
-        deliveryFlow.collect { delivery ->
+        val responseFlow = deliveryRepository.fetchDelivery(deliveryCodes)
+        responseFlow.collect { delivery ->
             insertNewDelivery(delivery)
         }
 
-        return deliveryFlow
+        return responseFlow
     }
 
     override suspend fun getAllDeliveries(): Flow<List<DeliveryData>> = flow {
-        val deliveries = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.deliveredType == DeliveredType.DELIVERED }
+        val deliveries = deliveryRepository.fetchDeliveryListFromLocal()
+            .sortedBy { it.deliveredType == DeliveredType.DELIVERED }
         emit(deliveries)
 
         // update existing deliveries because api does not support multiples requests.
-        deliveries.forEach { oldDelivery ->
-            val deliveryData = deliveryRepository.fetchDelivery(oldDelivery.code)
-            deliveryData.collect { newDelivery ->
-                val convertedDelivery = converter.convert(newDelivery)
-                if (oldDelivery != convertedDelivery)
-                    deliveryRepository.insertNewDelivery(convertedDelivery)
-            }
+        val mapCodeList: List<String> = deliveries.map {
+            it.code
         }
 
-        val updateList = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.deliveredType == DeliveredType.DELIVERED }
+        // update dependencies
+        val response = deliveryRepository.fetchDelivery(mapCodeList)
+        response.collect { delivery ->
+            insertNewDelivery(delivery)
+        }
+
+        val updateList = deliveryRepository.fetchDeliveryListFromLocal()
+            .sortedBy { it.deliveredType == DeliveredType.DELIVERED }
+
         if (updateList.isNotEmpty()) emit(updateList)
     }
 
@@ -61,8 +63,10 @@ class DeliveryBusinessImpl @Inject constructor(
 
     //#region --- insert data
 
-    override suspend fun insertNewDelivery(delivery: DeliveryData) {
-        deliveryRepository.insertNewDelivery(delivery)
+    override suspend fun insertNewDelivery(delivery: List<DeliveryData>) {
+        delivery.forEach {
+            deliveryRepository.insertNewDelivery(it)
+        }
     }
 
     //#endregion --- insert data

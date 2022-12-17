@@ -14,24 +14,26 @@ import java.time.format.DateTimeFormatter
 
 class DeliveryConverter {
 
-    fun convert(deliveryResponse: DeliveryResponse): DeliveryData {
-        return deliveryResponse.toDeliveryData()
+    fun convert(deliveryResponse: DeliveryResponse): List<DeliveryData> {
+        return deliveryResponse.toDeliveryList()
     }
 
     //#region --- helpers
 
-    private fun DeliveryResponse.toDeliveryData() = DeliveryData(
-        code = delivery.objectCode.orEmpty(),
-        eventList = delivery.eventList.toDeliveryDataList(),
-        type = delivery.type,
-        description = delivery.eventList.firstOrNull()?.description.orEmpty(),
-        destination = buildLocationDescription(
-            delivery.eventList.firstOrNull()?.postLocation?.address,
-            delivery.eventList.firstOrNull()?.destinationLocation?.address
-        ),
-        imageRes = getDeliveredIcon(delivery.eventList.firstOrNull()?.code.orEmpty()),
-        deliveredType = getDeliveredType(delivery.eventList.firstOrNull()?.code.orEmpty())
-    )
+    private fun DeliveryResponse.toDeliveryList() = deliveryList.map { delivery ->
+        DeliveryData(
+            code = delivery.objectCode.orEmpty(),
+            eventList = delivery.eventList.toDeliveryDataList(),
+            type = delivery.type,
+            description = delivery.eventList.firstOrNull()?.description.orEmpty(),
+            destination = buildLocationDescription(
+                delivery.eventList.firstOrNull()?.postLocation?.address,
+                delivery.eventList.firstOrNull()?.destinationLocation?.address
+            ),
+            imageRes = getDeliveredIcon(delivery.eventList.firstOrNull()?.code.orEmpty()),
+            deliveredType = getDeliveredType(delivery.eventList.firstOrNull()?.code.orEmpty())
+        )
+    }
 
     private fun List<Event>.toDeliveryDataList() = map {
         EventData(
@@ -51,7 +53,10 @@ class DeliveryConverter {
                 )
             ),
             iconUrl = getDeliveredIcon(it.code),
-            formattedDestination = buildLocationDescription(it.postLocation?.address, it.destinationLocation?.address)
+            formattedDestination = buildLocationDescription(
+                it.postLocation?.address,
+                it.destinationLocation?.address
+            )
         )
     }
 
@@ -72,10 +77,14 @@ class DeliveryConverter {
         else -> DeliveredType.IN_PROGRESS
     }
 
-    private fun buildLocationDescription(startAddress: Address?, endAddress: Address?) = when (endAddress) {
-        null -> DELIVERED_PATTERN.format(startAddress?.buildLocation())
-        else -> DESCRIPTION_PATTERN.format(startAddress?.buildLocation(), endAddress.buildLocation())
-    }
+    private fun buildLocationDescription(startAddress: Address?, endAddress: Address?) =
+        when (endAddress) {
+            null -> DELIVERED_PATTERN.format(startAddress?.buildLocation())
+            else -> DESCRIPTION_PATTERN.format(
+                startAddress?.buildLocation(),
+                endAddress.buildLocation()
+            )
+        }
 
     //#endregion --- helpers
 

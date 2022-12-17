@@ -18,8 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) : ViewModel() {
 
-    private val _state = MutableStateFlow<Resource<DeliveryData>>(Resource.Initial())
-    val state: StateFlow<Resource<DeliveryData>>
+    private val _state = MutableStateFlow<Resource<List<DeliveryData>>>(Resource.Initial())
+    val state: StateFlow<Resource<List<DeliveryData>>>
         get() = _state
 
     private val _deliveryState = MutableStateFlow<Resource<List<DeliveryData>>>(Resource.Initial())
@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
         _showPermission.value = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
     }
 
-    var resource: Resource<DeliveryData> = Resource.Initial()
+    var resource: Resource<List<DeliveryData>> = Resource.Initial()
         set(value) {
             //Resets view model state when user start typing
             field = value
@@ -60,7 +60,6 @@ class HomeViewModel @Inject constructor(private val business: DeliveryBusiness) 
                 business.fetchDelivery(code = code).collect { delivery ->
                     _state.value = Resource.Success(delivery)
                 }
-                fetchAllDeliveries()
             } catch (exception: Exception) {
                 _state.value = Resource.Error(exception.message.toString())
             }

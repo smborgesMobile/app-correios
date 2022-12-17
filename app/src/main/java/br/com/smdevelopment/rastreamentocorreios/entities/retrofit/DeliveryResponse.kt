@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 data class DeliveryResponse(
     @SerializedName("data")
-    val delivery: Delivery
+    val deliveryList: List<Delivery>
 )
 
 data class Delivery(

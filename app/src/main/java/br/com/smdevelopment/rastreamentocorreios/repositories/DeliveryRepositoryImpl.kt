@@ -1,22 +1,25 @@
 package br.com.smdevelopment.rastreamentocorreios.repositories
 
 import br.com.smdevelopment.rastreamentocorreios.api.DeliveryApi
+import br.com.smdevelopment.rastreamentocorreios.converters.DeliveryConverter
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.DeliveryResponse
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import retrofit2.Response
 import javax.inject.Inject
 
 class DeliveryRepositoryImpl @Inject constructor(
     private val api: DeliveryApi,
-    private val deliveryDao: DeliveryDao
+    private val deliveryDao: DeliveryDao,
+    private val converter: DeliveryConverter
 ) : DeliveryRepository {
 
-    override suspend fun fetchDelivery(code: String): Flow<DeliveryResponse> {
+    override suspend fun fetchDelivery(codeList: List<String>): Flow<List<DeliveryData>> {
         return flow {
-            val response = api.fetchDelivery(code)
+            val response = api.fetchDelivery(codeList.joinToString())
 
             if (response.isSuccessful) {
                 val deliveryData = response.body()
@@ -26,6 +29,8 @@ class DeliveryRepositoryImpl @Inject constructor(
             } else {
                 handleBackendException(response)
             }
+        }.map {
+            converter.convert(it)
         }
     }
 
