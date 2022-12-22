@@ -43,10 +43,13 @@ data class Location(
 @Parcelize
 data class Address(
     @SerializedName("cidade")
-    val city: String,
+    val city: String? = null,
     @SerializedName("uf")
-    val uf: String
+    val uf: String? = null
 ) : Parcelable {
-    fun buildLocation() =
+    fun buildLocation() = if (city != null && uf != null) {
         "$city - $uf"
+    } else {
+        String()
+    }
 }

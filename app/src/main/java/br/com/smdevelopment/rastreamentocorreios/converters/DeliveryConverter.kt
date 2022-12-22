@@ -26,8 +26,7 @@ class DeliveryConverter {
         type = delivery.type,
         description = delivery.eventList.firstOrNull()?.description.orEmpty(),
         destination = buildLocationDescription(
-            delivery.eventList.firstOrNull()?.postLocation?.address,
-            delivery.eventList.firstOrNull()?.destinationLocation?.address
+            delivery.eventList.firstOrNull()?.postLocation?.address, delivery.eventList.firstOrNull()?.destinationLocation?.address
         ),
         imageRes = getDeliveredIcon(delivery.eventList.firstOrNull()?.code.orEmpty()),
         deliveredType = getDeliveredType(delivery.eventList.firstOrNull()?.code.orEmpty())
@@ -72,10 +71,15 @@ class DeliveryConverter {
         else -> DeliveredType.IN_PROGRESS
     }
 
-    private fun buildLocationDescription(startAddress: Address?, endAddress: Address?) = when (endAddress) {
-        null -> DELIVERED_PATTERN.format(startAddress?.buildLocation())
-        else -> DESCRIPTION_PATTERN.format(startAddress?.buildLocation(), endAddress.buildLocation())
+    private fun buildLocationDescription(startAddress: Address?, endAddress: Address?) = when {
+        endAddress != null && startAddress != null -> DESCRIPTION_PATTERN.format(startAddress.buildLocation(), endAddress.buildLocation())
+        else -> if (startAddress?.buildLocation()?.isEmpty() == true) {
+            DELIVERED_ITEM
+        } else {
+            DELIVERED_PATTERN.format(startAddress?.buildLocation())
+        }
     }
+
 
     //#endregion --- helpers
 
@@ -84,6 +88,7 @@ class DeliveryConverter {
         private const val DELIVERED_START_CODE = "PO"
         private const val DESCRIPTION_PATTERN = "De %s para %s"
         private const val DELIVERED_PATTERN = "Objeto em  %s"
+        private const val DELIVERED_ITEM = "Objeto postado"
         private const val DATE_PATTERN = "dd/MM/yyyy - HH:mm:ss"
     }
 }

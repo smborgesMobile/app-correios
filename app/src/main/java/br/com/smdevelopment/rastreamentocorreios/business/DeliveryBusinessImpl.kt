@@ -30,21 +30,26 @@ class DeliveryBusinessImpl @Inject constructor(
     }
 
     override suspend fun getAllDeliveries(): Flow<List<DeliveryData>> = flow {
-        val deliveries = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.deliveredType == DeliveredType.DELIVERED }
+        val deliveries =
+            deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.deliveredType == DeliveredType.DELIVERED }.toMutableList()
+
+        // Notify Screen to change the list
         emit(deliveries)
 
         // update existing deliveries because api does not support multiples requests.
-        deliveries.forEach { oldDelivery ->
+        deliveries.forEachIndexed { index, oldDelivery ->
             val deliveryData = deliveryRepository.fetchDelivery(oldDelivery.code)
             deliveryData.collect { newDelivery ->
                 val convertedDelivery = converter.convert(newDelivery)
-                if (oldDelivery != convertedDelivery)
+                if (oldDelivery != convertedDelivery) {
+                    deliveries[index] = convertedDelivery
                     deliveryRepository.insertNewDelivery(convertedDelivery)
+                }
             }
         }
 
-        val updateList = deliveryRepository.fetchDeliveryListFromLocal().sortedBy { it.deliveredType == DeliveredType.DELIVERED }
-        if (updateList.isNotEmpty()) emit(updateList)
+        // Notify screen again without updated data
+        emit(deliveries)
     }
 
     override suspend fun getDeliveredList(): Flow<List<DeliveryData>> = flow {
