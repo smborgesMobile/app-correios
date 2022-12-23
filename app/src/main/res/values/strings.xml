@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Rastreamento Correios</string>
     <string name="input_code_label">Digite o código da sua encomenda</string>
-    <string name="app_title">Rastreamento dos Correios</string>
+    <string name="app_title">Rastreamento de pacotes</string>
     <string name="home_title">Rastrear</string>
     <string name="home_my_products">Minhas encomendas:</string>
     <string name="delivered_label">Minhas encomendas entregues</string>
