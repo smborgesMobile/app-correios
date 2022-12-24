@@ -18,8 +18,8 @@ android {
         applicationId "br.com.smdevelopment.rastreamentocorreios"
         minSdk 26
         targetSdk 33
-        versionCode 8
-        versionName "3.0"
+        versionCode 9
+        versionName "4.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
