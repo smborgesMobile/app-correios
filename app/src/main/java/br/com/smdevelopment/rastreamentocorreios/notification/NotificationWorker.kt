@@ -2,18 +2,14 @@ package br.com.smdevelopment.rastreamentocorreios.notification
 
 import android.content.Context
 import android.util.Log
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import br.com.smdevelopment.rastreamentocorreios.business.NotificationBusiness
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.catch
 
-@HiltWorker
-class NotificationWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted params: WorkerParameters,
+class NotificationWorker(
+    context: Context,
+    params: WorkerParameters,
     private val business: NotificationBusiness,
     private val notificationManager: NotificationManager
 ) : CoroutineWorker(context, params) {

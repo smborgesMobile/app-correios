@@ -7,9 +7,8 @@ import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
-import javax.inject.Inject
 
-class DeliveryRepositoryImpl @Inject constructor(
+class DeliveryRepositoryImpl(
     private val api: DeliveryApi,
     private val deliveryDao: DeliveryDao
 ) : DeliveryRepository {

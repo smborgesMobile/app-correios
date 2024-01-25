@@ -5,14 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.smdevelopment.rastreamentocorreios.business.DeliveryBusiness
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class DeliveredViewModel @Inject constructor(private val business: DeliveryBusiness) : ViewModel() {
+class DeliveredViewModel(private val business: DeliveryBusiness) : ViewModel() {
 
     private val _deliveredList = mutableStateListOf<DeliveryData>()
     val deliveredList: List<DeliveryData>

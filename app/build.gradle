@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
     id 'kotlin-parcelize'
 }
 
@@ -12,7 +11,7 @@ android {
         }
     }
     namespace 'br.com.smdevelopment.rastreamentocorreios'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "br.com.smdevelopment.rastreamentocorreios"
@@ -47,14 +46,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
     buildFeatures {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.1.1'
+        kotlinCompilerExtensionVersion '1.4.0'
     }
     packagingOptions {
         resources {
@@ -69,66 +65,57 @@ kapt {
 }
 
 dependencies {
-    implementation 'androidx.hilt:hilt-common:1.0.0'
-    def lifecycle_version = "2.6.0-alpha03"
+    // Koin core features
+    implementation "io.insert-koin:koin-android:3.5.0"
+    implementation "io.insert-koin:koin-androidx-compose:3.5.0"
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
     // Coroutine Lifecycle Scopes
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0"
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
-    implementation "com.squareup.okhttp3:logging-interceptor:4.6.0"
-
-    // Hilt
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
-    implementation "com.google.dagger:hilt-android:2.44"
-    implementation 'androidx.hilt:hilt-work:1.0.0'
-    kapt "com.google.dagger:hilt-compiler:2.44"
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-    annotationProcessor "com.google.dagger:hilt-compiler:2.44"
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
 
     // Compose
-    implementation "androidx.compose.ui:ui:$compose_ui_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
-    implementation 'androidx.compose.material:material:1.3.1'
-    implementation "androidx.navigation:navigation-compose:2.6.0-alpha04"
-    implementation 'androidx.activity:activity-compose:1.6.1'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version"
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material")
+    implementation platform('androidx.compose:compose-bom:2023.01.00')
+    implementation 'androidx.compose.material3:material3:1.1.2'
+    implementation 'androidx.compose.foundation:foundation'
+    implementation "androidx.navigation:navigation-compose:2.7.6"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0"
     implementation "com.google.accompanist:accompanist-swiperefresh:0.25.1"
-
-    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
-
-    // Tests
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
+    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.compose.runtime:runtime-livedata")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
     // Room
-    implementation "androidx.room:room-runtime:2.4.3"
-    implementation "androidx.room:room-ktx:2.4.3"
-    implementation "androidx.compose.runtime:runtime-livedata:1.3.1"
-    annotationProcessor "androidx.room:room-compiler:2.4.3"
-    kapt "androidx.room:room-compiler:2.4.3"
+    implementation "androidx.room:room-runtime:2.6.1"
+    implementation "androidx.room:room-ktx:2.6.1"
+    implementation "androidx.compose.runtime:runtime-livedata:1.6.0"
+    annotationProcessor "androidx.room:room-compiler:2.6.1"
+    kapt "androidx.room:room-compiler:2.6.1"
 
     //Work manager
-    implementation("androidx.work:work-runtime-ktx:2.7.1")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 
     //Permissions
     implementation "com.google.accompanist:accompanist-permissions:0.28.0"
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.23.1"
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
     testImplementation 'junit:junit:4.13.2'
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.6.0"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.6.0"
 
 }

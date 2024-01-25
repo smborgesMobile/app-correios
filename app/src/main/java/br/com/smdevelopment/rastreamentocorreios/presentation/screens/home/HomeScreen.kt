@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
@@ -41,11 +40,12 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen() {
     // Create view model and init it.
-    val viewModel: HomeViewModel = hiltViewModel()
+    val viewModel: HomeViewModel = koinViewModel()
 
     val state by viewModel.state.collectAsState()
     val deliveryState by viewModel.deliveryState.collectAsState()

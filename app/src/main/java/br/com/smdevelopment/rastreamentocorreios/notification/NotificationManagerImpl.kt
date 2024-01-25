@@ -11,10 +11,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.presentation.MainActivity
-import javax.inject.Inject
 import br.com.smdevelopment.rastreamentocorreios.notification.NotificationManager as NotificationInterface
 
-class NotificationManagerImpl @Inject constructor(private val application: Application) : NotificationInterface {
+class NotificationManagerImpl(private val application: Application) : NotificationInterface {
 
     init {
         createNotificationChannel()

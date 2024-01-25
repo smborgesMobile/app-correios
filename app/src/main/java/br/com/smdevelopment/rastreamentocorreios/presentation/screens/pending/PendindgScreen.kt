@@ -17,10 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.AllDeliveries
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.EmptyState
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PendingScreen() {
@@ -30,7 +30,7 @@ fun PendingScreen() {
             .background(colorResource(id = R.color.white))
             .wrapContentSize(Alignment.Center)
     ) {
-        val viewModel: PendingViewModel = hiltViewModel()
+        val viewModel: PendingViewModel = koinViewModel()
         LaunchedEffect(Unit, block = {
             viewModel.getPendingDeliveries()
         })

@@ -7,9 +7,8 @@ import br.com.smdevelopment.rastreamentocorreios.repositories.DeliveryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapNotNull
-import javax.inject.Inject
 
-class DeliveryBusinessImpl @Inject constructor(
+class DeliveryBusinessImpl(
     private val deliveryRepository: DeliveryRepository,
     private val converter: DeliveryConverter
 ) : DeliveryBusiness {

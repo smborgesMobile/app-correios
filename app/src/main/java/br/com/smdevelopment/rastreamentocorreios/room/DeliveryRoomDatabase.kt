@@ -7,8 +7,8 @@ import br.com.smdevelopment.rastreamentocorreios.converters.DeliveryDataConverte
 import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
 
-@TypeConverters(DeliveryDataConverter::class)
 @Database(entities = [DeliveryData::class], version = 1)
+@TypeConverters(DeliveryDataConverter::class)
 abstract class DeliveryRoomDatabase : RoomDatabase() {
     abstract fun deliveryDao(): DeliveryDao
 }

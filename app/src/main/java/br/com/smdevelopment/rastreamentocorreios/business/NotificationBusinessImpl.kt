@@ -5,9 +5,8 @@ import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.repositories.DeliveryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class NotificationBusinessImpl @Inject constructor(
+class NotificationBusinessImpl(
     private val repository: DeliveryRepository,
     private val converter: DeliveryConverter
 ) : NotificationBusiness {
