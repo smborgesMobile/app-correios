@@ -29,8 +29,6 @@ class MainApplication : Application(), Configuration.Provider {
 
     //#region --- configure workers
 
-    //TODO ADJUST WORKER.
-
     private fun setupNotificationWork() {
         val repeatingRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
             MIN_WORKER_TIME,
