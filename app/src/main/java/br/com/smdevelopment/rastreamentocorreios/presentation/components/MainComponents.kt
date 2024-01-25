@@ -63,7 +63,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
+import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.DetailActivity
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemenu.NavDrawerItem
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.disabledButton
@@ -75,7 +75,12 @@ private const val MAX_FIELD_SIZE = 13
 //#region --- text delivery
 
 @Composable
-fun DeliveryTextField(hasError: Boolean, errorMessage: String, clearState: Boolean, onValueChanged: (String, Boolean) -> Unit) {
+fun DeliveryTextField(
+    hasError: Boolean,
+    errorMessage: String,
+    clearState: Boolean,
+    onValueChanged: (String, Boolean) -> Unit
+) {
     var code by remember { mutableStateOf(TextFieldValue(String())) }
     if (clearState) {
         code = TextFieldValue(String())
@@ -304,7 +309,7 @@ private fun chooseButtonBackground(enabled: Boolean) = if (enabled) {
 //#region -- delivery list
 
 @Composable
-fun AllDeliveries(deliveryList: List<DeliveryData>) {
+fun AllDeliveries(deliveryList: List<TrackingModel>) {
     val context = LocalContext.current
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -312,14 +317,14 @@ fun AllDeliveries(deliveryList: List<DeliveryData>) {
     ) {
         items(deliveryList) { delivery ->
             DeliveryCard(deliveryItem = delivery) {
-                context.startActivity(DetailActivity.getLaunchIntent(context, delivery.eventList))
+                context.startActivity(DetailActivity.getLaunchIntent(context, delivery.events))
             }
         }
     }
 }
 
 @Composable
-private fun DeliveryCard(deliveryItem: DeliveryData, onClick: ((DeliveryData) -> Unit)) {
+private fun DeliveryCard(deliveryItem: TrackingModel, onClick: ((TrackingModel) -> Unit)) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -334,7 +339,7 @@ private fun DeliveryCard(deliveryItem: DeliveryData, onClick: ((DeliveryData) ->
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = painterResource(deliveryItem.imageRes),
+                painter = painterResource(R.drawable.delivered_start_icon),
                 contentDescription = null,
                 modifier = Modifier
                     .size(87.dp)
@@ -354,15 +359,16 @@ private fun DeliveryCard(deliveryItem: DeliveryData, onClick: ((DeliveryData) ->
                     fontSize = 16.sp
                 )
                 Text(
-                    text = deliveryItem.destination,
+                    text = deliveryItem.events.first().status,
                     style = MaterialTheme.typography.body2,
                     fontSize = 13.sp,
-                    modifier = Modifier.padding(top = 3.dp),
-                    fontFamily = FontFamily.SansSerif
+                    modifier = Modifier.padding(top = 4.dp),
+                    fontFamily = FontFamily.SansSerif,
                 )
                 Text(
-                    text = deliveryItem.description,
+                    text = deliveryItem.events.first().date,
                     style = MaterialTheme.typography.body2,
+                    modifier = Modifier.padding(top = 8.dp),
                     fontSize = 13.sp
                 )
             }
@@ -373,6 +379,23 @@ private fun DeliveryCard(deliveryItem: DeliveryData, onClick: ((DeliveryData) ->
 //#endregion
 
 //#region --- empty state
+
+@Composable
+@Preview
+fun CardPreview() {
+    DeliveryCard(
+        deliveryItem = TrackingModel(
+            "123456789",
+            "Correios",
+            emptyList(),
+            0.0,
+            1,
+            "2222",
+            "2222"
+        ),
+        onClick = {}
+    )
+}
 
 @Composable
 @Preview

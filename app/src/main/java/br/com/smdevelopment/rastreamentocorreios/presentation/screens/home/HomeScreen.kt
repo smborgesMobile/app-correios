@@ -32,7 +32,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
-import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.AllDeliveries
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DeliveryTextField
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.PrimaryButton
@@ -44,53 +43,20 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.compose.koinViewModel
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeScreen() {
     // Create view model and init it.
     val viewModel: HomeViewModel = koinViewModel()
+    val linkTrackViewModel: LinkTrackViewModel = koinViewModel()
 
-    val state by viewModel.state.collectAsState()
-    val deliveryState by viewModel.deliveryState.collectAsState()
+    val deliveryList by linkTrackViewModel.trackingInfo.collectAsState()
     val showPermission by viewModel.showPermission.collectAsState()
     val isRefreshing = viewModel.isRefreshing.collectAsState().value
 
     // objects to be remembered
-    var loading by remember { mutableStateOf(false) }
-    var hasError by remember { mutableStateOf(false) }
-    var clearState by remember { mutableStateOf(false) }
     var deliveryCode by remember { mutableStateOf("") }
-    var deliveryList: List<DeliveryData> by remember { mutableStateOf(emptyList()) }
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
-
-    when (deliveryState) {
-        is Resource.Success -> {
-            deliveryList = deliveryState.data ?: emptyList()
-        }
-        else -> Unit
-    }
-
-    when (state) {
-        is Resource.Success -> {
-            loading = false
-            hasError = false
-            clearState = true
-        }
-        is Resource.Error -> {
-            loading = false
-            hasError = true
-            clearState = false
-        }
-        is Resource.Loading -> {
-            loading = true
-            hasError = false
-            clearState = false
-        }
-        is Resource.Initial -> {
-            loading = false
-            hasError = false
-            clearState = false
-        }
-    }
 
     SwipeRefresh(
         state = swipeRefreshState,
@@ -104,7 +70,6 @@ fun HomeScreen() {
                 .wrapContentSize(Alignment.Center)
         ) {
             var buttonEnabled: Boolean by remember { mutableStateOf(false) }
-            if (clearState) buttonEnabled = false
 
             // Permission checker
             if (showPermission) {
@@ -113,23 +78,22 @@ fun HomeScreen() {
 
             // text field
             DeliveryTextField(
-                hasError = hasError,
+                hasError = false,
                 errorMessage = stringResource(id = R.string.error_message),
-                clearState = clearState
+                clearState = false
             ) { value, isValid ->
                 deliveryCode = value
                 buttonEnabled = isValid
                 viewModel.resource = Resource.Initial()
-                clearState = false
             }
 
             // code button
             PrimaryButton(
                 title = stringResource(id = R.string.home_title),
                 enabled = buttonEnabled,
-                loading = loading
+                loading = false
             ) {
-                viewModel.fetchDelivery(deliveryCode)
+                linkTrackViewModel.findForCode(deliveryCode)
             }
 
             // session header

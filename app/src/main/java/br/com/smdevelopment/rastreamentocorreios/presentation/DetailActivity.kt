@@ -29,7 +29,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.smdevelopment.rastreamentocorreios.entities.view.EventData
+import br.com.smdevelopment.rastreamentocorreios.R
+import br.com.smdevelopment.rastreamentocorreios.entities.view.EventModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.CustomTopAppBar
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
@@ -39,7 +40,9 @@ class DetailActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val eventList: List<EventData> = intent.getParcelableArrayListExtra<EventData>(DELIVERY_DATA)?.toList() ?: emptyList()
+        val eventList: List<EventModel> = intent.getParcelableArrayListExtra<EventModel>(
+            DELIVERY_DATA
+        )?.toList() ?: emptyList()
 
         setContent {
             RastreamentoCorreiosTheme {
@@ -52,7 +55,10 @@ class DetailActivity : ComponentActivity() {
                 }
 
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
                     DetailScreen(eventList) {
                         finish()
                     }
@@ -64,9 +70,10 @@ class DetailActivity : ComponentActivity() {
     companion object {
         private const val DELIVERY_DATA = "DELIVERY_DATA"
 
-        fun getLaunchIntent(context: Context, deliveryList: List<EventData>) = Intent(context, DetailActivity::class.java).apply {
-            putParcelableArrayListExtra(DELIVERY_DATA, ArrayList(deliveryList))
-        }
+        fun getLaunchIntent(context: Context, deliveryList: List<EventModel>) =
+            Intent(context, DetailActivity::class.java).apply {
+                putParcelableArrayListExtra(DELIVERY_DATA, ArrayList(deliveryList))
+            }
     }
 }
 
@@ -74,7 +81,7 @@ class DetailActivity : ComponentActivity() {
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DetailScreen(eventList: List<EventData>, closeActivityListener: (() -> Unit)) {
+fun DetailScreen(eventList: List<EventModel>, closeActivityListener: (() -> Unit)) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -90,30 +97,27 @@ fun DetailScreen(eventList: List<EventData>, closeActivityListener: (() -> Unit)
             items(eventList) { event ->
                 Row {
                     Image(
-                        painter = painterResource(event.iconUrl),
+                        painter = painterResource(R.drawable.delivered_icon),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(60.dp)
-                            .padding(8.dp, top = 16.dp)
-                            .clip(RoundedCornerShape(10.dp)),
+                            .size(100.dp)
+                            .padding(horizontal = 8.dp, vertical = 16.dp)
+                            .clip(RoundedCornerShape(15.dp)),
                         contentScale = ContentScale.Fit
                     )
                     Column(
                         modifier = Modifier.padding(
-                            start = 16.dp,
-                            end = 16.dp,
-                            top = 8.dp,
-                            bottom = 8.dp
+                            vertical = 16.dp
                         )
                     ) {
                         Text(
-                            text = event.formattedDestination,
+                            text = event.location,
                             style = MaterialTheme.typography.h6,
                             color = MaterialTheme.colors.onSurface,
                             fontSize = 14.sp
                         )
                         Text(
-                            text = event.description,
+                            text = event.status,
                             style = MaterialTheme.typography.body2,
                             color = MaterialTheme.colors.onSurface
                         )
@@ -121,7 +125,8 @@ fun DetailScreen(eventList: List<EventData>, closeActivityListener: (() -> Unit)
                             text = event.date,
                             style = MaterialTheme.typography.body2,
                             color = MaterialTheme.colors.onSurface,
-                            fontSize = 12.sp
+                            fontSize = 12.sp,
+                            modifier = Modifier.padding(top = 16.dp)
                         )
                     }
                 }

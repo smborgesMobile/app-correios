@@ -5,6 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
+@Deprecated("This API is no longer available")
 interface DeliveryApi {
 
     @GET("v1/sro-rastro/{code}")

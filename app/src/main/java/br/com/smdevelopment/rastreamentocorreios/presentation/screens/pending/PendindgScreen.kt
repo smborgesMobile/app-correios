@@ -48,7 +48,7 @@ fun PendingScreen() {
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
-            AllDeliveries(deliveryList = viewModel.deliveredList)
+            AllDeliveries(deliveryList = emptyList())
         }
     }
 }
