@@ -1,6 +1,8 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.screens.home
 
 import android.Manifest
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -142,6 +144,7 @@ fun HomeScreen() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun FeatureThatRequiresCameraPermission() {

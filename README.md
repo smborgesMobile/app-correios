@@ -10,9 +10,9 @@ O App tem finalidade de fazer o rastreamento de encomendas dos correios sem um a
 3. MVVM
 4. Clean - SOLID
 5. Rest Retrofit
-4. Kotlin Flows
-6. Coroutines 
-7. Hilt for dependencie injection 
+6. Kotlin Flows
+7. Coroutines 
+8. Hilt for dependencie injection 
 
 &nbsp; 
 &nbsp; 
