@@ -339,7 +339,7 @@ private fun DeliveryCard(deliveryItem: TrackingModel, onClick: ((TrackingModel) 
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = painterResource(R.drawable.delivered_start_icon),
+                painter = painterResource(id = deliveryItem.icon),
                 contentDescription = null,
                 modifier = Modifier
                     .size(87.dp)
@@ -359,14 +359,14 @@ private fun DeliveryCard(deliveryItem: TrackingModel, onClick: ((TrackingModel) 
                     fontSize = 16.sp
                 )
                 Text(
-                    text = deliveryItem.events.first().status,
+                    text = deliveryItem.events.firstOrNull()?.status.orEmpty(),
                     style = MaterialTheme.typography.body2,
                     fontSize = 13.sp,
                     modifier = Modifier.padding(top = 4.dp),
                     fontFamily = FontFamily.SansSerif,
                 )
                 Text(
-                    text = deliveryItem.events.first().date,
+                    text = deliveryItem.events.firstOrNull()?.date.orEmpty(),
                     style = MaterialTheme.typography.body2,
                     modifier = Modifier.padding(top = 8.dp),
                     fontSize = 13.sp
@@ -391,7 +391,8 @@ fun CardPreview() {
             0.0,
             1,
             "2222",
-            "2222"
+            "2222",
+            R.drawable.delivered_start_icon
         ),
         onClick = {}
     )

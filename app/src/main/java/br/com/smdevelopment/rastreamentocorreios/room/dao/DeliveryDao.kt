@@ -4,14 +4,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import br.com.smdevelopment.rastreamentocorreios.entities.view.DeliveryData
+import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
 
 @Dao
 interface DeliveryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewDelivery(delivery: DeliveryData)
+    fun insertNewDelivery(delivery: TrackingModel)
 
     @Query("SELECT * FROM delivery")
-    fun getAllDeliveries(): List<DeliveryData>?
+    fun getAllDeliveries(): List<TrackingModel>?
 }

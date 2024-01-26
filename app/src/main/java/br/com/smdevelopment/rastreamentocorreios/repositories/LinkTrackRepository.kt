@@ -5,5 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LinkTrackRepository {
 
-    fun fetchTrackByCode(code: String): Flow<TrackingModel>
+    suspend fun fetchTrackByCode(code: String): Flow<List<TrackingModel>>
+
+    suspend fun getAllDeliveries(): Flow<List<TrackingModel>>
 }

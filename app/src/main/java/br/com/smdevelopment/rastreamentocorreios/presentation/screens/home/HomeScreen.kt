@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.AllDeliveries
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DeliveryTextField
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.PrimaryButton
@@ -47,20 +46,17 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen() {
     // Create view model and init it.
-    val viewModel: HomeViewModel = koinViewModel()
     val linkTrackViewModel: LinkTrackViewModel = koinViewModel()
 
     val deliveryList by linkTrackViewModel.trackingInfo.collectAsState()
-    val showPermission by viewModel.showPermission.collectAsState()
-    val isRefreshing = viewModel.isRefreshing.collectAsState().value
 
     // objects to be remembered
     var deliveryCode by remember { mutableStateOf("") }
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
 
     SwipeRefresh(
         state = swipeRefreshState,
-        onRefresh = viewModel::refresh,
+        onRefresh = {},
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
@@ -72,7 +68,7 @@ fun HomeScreen() {
             var buttonEnabled: Boolean by remember { mutableStateOf(false) }
 
             // Permission checker
-            if (showPermission) {
+            if (false) {
                 FeatureThatRequiresCameraPermission()
             }
 
@@ -84,7 +80,6 @@ fun HomeScreen() {
             ) { value, isValid ->
                 deliveryCode = value
                 buttonEnabled = isValid
-                viewModel.resource = Resource.Initial()
             }
 
             // code button

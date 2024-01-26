@@ -29,7 +29,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.entities.view.EventModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.CustomTopAppBar
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
@@ -97,7 +96,7 @@ fun DetailScreen(eventList: List<EventModel>, closeActivityListener: (() -> Unit
             items(eventList) { event ->
                 Row {
                     Image(
-                        painter = painterResource(R.drawable.delivered_icon),
+                        painter = painterResource(id = event.icon),
                         contentDescription = null,
                         modifier = Modifier
                             .size(100.dp)
