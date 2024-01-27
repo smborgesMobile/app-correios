@@ -35,4 +35,5 @@ Sábado, das 8h às 14h.</string>
     <string name="permission_description">Com ela você será notificado quando sua encomenda movimentar!</string>
     <string name="permission_leave_button">Sair</string>
     <string name="permission_enable_button">Autorizar</string>
+    <string name="link_track"> Esse aplicativo usa a API do site (https://linketrack.com/)</string>
 </resources>

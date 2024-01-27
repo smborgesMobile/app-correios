@@ -3,6 +3,7 @@ package br.com.smdevelopment.rastreamentocorreios.presentation.screens.about
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -80,6 +81,15 @@ fun AboutScreen() {
             )
             Text(
                 text = stringResource(id = R.string.about_screen_contacts),
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(top = 8.dp),
+                fontSize = 14.sp
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = stringResource(id = R.string.link_track),
                 style = MaterialTheme.typography.body1,
                 modifier = Modifier
                     .align(Alignment.Start)

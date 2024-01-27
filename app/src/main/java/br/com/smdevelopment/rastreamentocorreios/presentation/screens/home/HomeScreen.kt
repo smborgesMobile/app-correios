@@ -43,7 +43,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class)
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeScreen() {
@@ -70,10 +70,8 @@ fun HomeScreen() {
     ) {
         var buttonEnabled: Boolean by remember { mutableStateOf(false) }
 
-        // Permission checker
-        if (false) {
-            FeatureThatRequiresCameraPermission()
-        }
+        // Check for permission
+        FeatureThatRequiresNotificationPermission()
 
         // text field
         DeliveryTextField(
@@ -114,7 +112,7 @@ fun HomeScreen() {
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-private fun FeatureThatRequiresCameraPermission() {
+private fun FeatureThatRequiresNotificationPermission() {
     var showDialog by remember { mutableStateOf(true) }
 
     // Camera permission state
