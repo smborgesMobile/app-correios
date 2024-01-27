@@ -79,7 +79,8 @@ class LinkTrackRepositoryImpl(
                         else -> {
                             R.drawable.delivered_start_icon
                         }
-                    }
+                    },
+                    isDelivered = event.status == OBJECT_DONE
                 )
             },
             icon = when {
@@ -90,7 +91,8 @@ class LinkTrackRepositoryImpl(
                 else -> {
                     R.drawable.delivered_start_icon
                 }
-            }
+            },
+            isDelivered = this.events.first().status == OBJECT_DONE
         )
     }
 

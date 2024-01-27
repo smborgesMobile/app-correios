@@ -392,7 +392,8 @@ fun CardPreview() {
             1,
             "2222",
             "2222",
-            R.drawable.delivered_start_icon
+            R.drawable.delivered_start_icon,
+            false
         ),
         onClick = {}
     )

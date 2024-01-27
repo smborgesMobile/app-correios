@@ -24,7 +24,9 @@ data class TrackingModel(
     @ColumnInfo(name = "last")
     val last: String,
     @ColumnInfo(name = "icon")
-    val icon: Int
+    val icon: Int,
+    @ColumnInfo(name = "isDelivered")
+    val isDelivered: Boolean
 ) : Parcelable
 
 @Parcelize
@@ -34,5 +36,6 @@ data class EventModel(
     val location: String,
     val status: String,
     val subStatus: List<String>,
-    val icon: Int
+    val icon: Int,
+    val isDelivered: Boolean
 ) : Parcelable
