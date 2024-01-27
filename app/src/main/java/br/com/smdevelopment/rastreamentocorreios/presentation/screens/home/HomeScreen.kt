@@ -6,15 +6,18 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -38,10 +41,9 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.components.Session
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeScreen() {
@@ -49,57 +51,63 @@ fun HomeScreen() {
     val linkTrackViewModel: LinkTrackViewModel = koinViewModel()
 
     val deliveryList by linkTrackViewModel.trackingInfo.collectAsState()
+    val errorState by linkTrackViewModel.errorState.collectAsState()
+    val loading by linkTrackViewModel.loadingState.collectAsState()
+    val isRefreshing by linkTrackViewModel.isRefreshing.collectAsState()
+    val deliveryCode by linkTrackViewModel.deliveryCode.collectAsState()
 
     // objects to be remembered
-    var deliveryCode by remember { mutableStateOf("") }
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, {
+        linkTrackViewModel.fetchAllLinkTrackItems()
+    })
 
-    SwipeRefresh(
-        state = swipeRefreshState,
-        onRefresh = {},
-        modifier = Modifier.fillMaxSize()
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(colorResource(id = R.color.white))
+            .wrapContentSize(Alignment.Center)
+            .pullRefresh(pullRefreshState)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colorResource(id = R.color.white))
-                .wrapContentSize(Alignment.Center)
-        ) {
-            var buttonEnabled: Boolean by remember { mutableStateOf(false) }
+        var buttonEnabled: Boolean by remember { mutableStateOf(false) }
 
-            // Permission checker
-            if (false) {
-                FeatureThatRequiresCameraPermission()
-            }
-
-            // text field
-            DeliveryTextField(
-                hasError = false,
-                errorMessage = stringResource(id = R.string.error_message),
-                clearState = false
-            ) { value, isValid ->
-                deliveryCode = value
-                buttonEnabled = isValid
-            }
-
-            // code button
-            PrimaryButton(
-                title = stringResource(id = R.string.home_title),
-                enabled = buttonEnabled,
-                loading = false
-            ) {
-                linkTrackViewModel.findForCode(deliveryCode)
-            }
-
-            // session header
-            SessionHeader(
-                title = stringResource(id = R.string.home_my_products),
-                fontSize = 16.sp
-            )
-
-            // delivery list
-            AllDeliveries(deliveryList = deliveryList)
+        // Permission checker
+        if (false) {
+            FeatureThatRequiresCameraPermission()
         }
+
+        // text field
+        DeliveryTextField(
+            hasError = errorState,
+            errorMessage = stringResource(id = R.string.error_message),
+            clearState = false
+        ) { value, isValid ->
+            linkTrackViewModel.onCodeChange(value)
+            buttonEnabled = isValid
+        }
+
+        // code button
+        PrimaryButton(
+            title = stringResource(id = R.string.home_title),
+            enabled = buttonEnabled,
+            loading = loading
+        ) {
+            linkTrackViewModel.findForCode(deliveryCode)
+        }
+
+        // session header
+        SessionHeader(
+            title = stringResource(id = R.string.home_my_products),
+            fontSize = 16.sp
+        )
+
+        // delivery list
+        AllDeliveries(deliveryList = deliveryList)
+
+        PullRefreshIndicator(
+            isRefreshing,
+            pullRefreshState,
+            Modifier.align(Alignment.CenterHorizontally)
+        )
     }
 }
 

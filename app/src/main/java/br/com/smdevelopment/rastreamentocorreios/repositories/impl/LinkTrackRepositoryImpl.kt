@@ -32,6 +32,8 @@ class LinkTrackRepositoryImpl(
                         } catch (e: Exception) {
                             Log.d("LinkTrackRepository", "Error: ${e.message}")
                         }
+                    } else {
+                        handleBackendException(response)
                     }
                 } else {
                     handleBackendException(response)
@@ -98,15 +100,21 @@ class LinkTrackRepositoryImpl(
 
     private fun handleBackendException(response: Response<TrackingResponse>) {
         if (response.code() == CODE_NOT_FOUND) {
-            throw CodeNotFoundException(code = response.code())
+            throw CodeNotFoundException(
+                code = response.code(),
+                message = response.message()
+            )
         } else {
-            throw DeliveryErrorException(code = response.code())
+            throw DeliveryErrorException(
+                code = response.code(),
+                message = response.message()
+            )
         }
     }
 
-    class DeliveryErrorException(val code: Int) : Exception()
+    class DeliveryErrorException(val code: Int, override val message: String) : Exception()
 
-    class CodeNotFoundException(val code: Int) : Exception()
+    class CodeNotFoundException(val code: Int, override val message: String) : Exception()
 
     private companion object {
         const val CODE_NOT_FOUND = 422

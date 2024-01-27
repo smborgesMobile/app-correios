@@ -19,15 +19,29 @@ class LinkTrackViewModel(
     private val _trackingInfo = MutableStateFlow<List<TrackingModel>>(emptyList())
     val trackingInfo: StateFlow<List<TrackingModel>> get() = _trackingInfo
 
-    private val _errorState = MutableStateFlow<String?>(null)
-    val errorState: StateFlow<String?> get() = _errorState
+    private val _errorState = MutableStateFlow(false)
+    val errorState: StateFlow<Boolean> get() = _errorState
+
+    private val _loadingState = MutableStateFlow(false)
+    val loadingState: StateFlow<Boolean> get() = _loadingState
+
+    private val _deliveryCode = MutableStateFlow(String())
+    val deliveryCode: StateFlow<String> get() = _deliveryCode
+
+    val isRefreshing = MutableStateFlow(false)
 
     init {
+        fetchAllLinkTrackItems()
+    }
+
+    fun onCodeChange(code: String) {
+        _errorState.value = false
+        _deliveryCode.value = code
+    }
+
+    fun fetchAllLinkTrackItems() {
         viewModelScope.launch(Dispatchers.Default) {
             getAllTrackingUseCase.getTrackingList()
-                .catch { error ->
-                    _errorState.value = error.message
-                }
                 .collect { result ->
                     _trackingInfo.value = result
                 }
@@ -36,13 +50,18 @@ class LinkTrackViewModel(
 
     fun findForCode(code: String) {
         viewModelScope.launch(Dispatchers.Default) {
+            _errorState.value = false
+            _loadingState.value = true
             trackingUseCase.getTrackingInfo(code)
-                .catch { error ->
-                    _errorState.value = error.message
+                .catch {
+                    _errorState.value = true
                 }
                 .collect { result ->
                     _trackingInfo.value = result
+                    _errorState.value = false
                 }
+
+            _loadingState.value = false
         }
     }
 }
