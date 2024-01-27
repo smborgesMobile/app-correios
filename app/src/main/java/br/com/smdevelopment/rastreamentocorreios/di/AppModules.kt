@@ -2,7 +2,6 @@ package br.com.smdevelopment.rastreamentocorreios.di
 
 import androidx.room.Room
 import br.com.smdevelopment.rastreamentocorreios.api.LinkTrackApi
-import br.com.smdevelopment.rastreamentocorreios.converters.DeliveryConverter
 import br.com.smdevelopment.rastreamentocorreios.presentation.screens.delivered.DeliveredViewModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.screens.home.LinkTrackViewModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.screens.pending.PendingScreenViewModel
@@ -32,9 +31,6 @@ val appModule = module {
             linkTrackDao = get()
         )
     }
-
-    // converter
-    factory<DeliveryConverter> { DeliveryConverter() }
 
     // dao
     single {
