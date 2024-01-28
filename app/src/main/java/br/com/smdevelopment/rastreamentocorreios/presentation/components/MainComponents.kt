@@ -79,7 +79,7 @@ fun DeliveryTextField(
     hasError: Boolean,
     errorMessage: String,
     clearState: Boolean,
-    onValueChanged: (String, Boolean) -> Unit
+    onValueChanged: (String) -> Unit
 ) {
     var code by remember { mutableStateOf(TextFieldValue(String())) }
     if (clearState) {
@@ -95,7 +95,7 @@ fun DeliveryTextField(
             onValueChange = { newCode ->
                 if (newCode.text.length <= MAX_FIELD_SIZE) {
                     code = newCode.copy(text = newCode.text.uppercase().alphaNumericOnly())
-                    onValueChanged.invoke(code.text, code.text.length == MAX_FIELD_SIZE)
+                    onValueChanged.invoke(code.text)
                 }
             },
             modifier = Modifier.fillMaxWidth(),

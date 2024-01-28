@@ -28,6 +28,9 @@ class LinkTrackViewModel(
     private val _deliveryCode = MutableStateFlow(String())
     val deliveryCode: StateFlow<String> get() = _deliveryCode
 
+    private val _buttonEnabled = MutableStateFlow(false)
+    val buttonEnabled: StateFlow<Boolean> get() = _buttonEnabled
+
     val isRefreshing = MutableStateFlow(false)
 
     init {
@@ -37,6 +40,7 @@ class LinkTrackViewModel(
     fun onCodeChange(code: String) {
         _errorState.value = false
         _deliveryCode.value = code
+        _buttonEnabled.value = code.length == CODE_LENGTH
     }
 
     fun fetchAllLinkTrackItems() {
@@ -54,15 +58,19 @@ class LinkTrackViewModel(
             _loadingState.value = true
             trackingUseCase.getTrackingInfo(code)
                 .catch {
-                    _deliveryCode.value = String()
                     _errorState.value = true
                 }
                 .collect { result ->
+                    onCodeChange(String())
                     _trackingInfo.value = result
                     _errorState.value = false
                 }
 
             _loadingState.value = false
         }
+    }
+
+    private companion object {
+        const val CODE_LENGTH = 13
     }
 }

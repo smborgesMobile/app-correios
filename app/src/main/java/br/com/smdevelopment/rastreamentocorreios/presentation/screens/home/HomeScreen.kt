@@ -54,6 +54,7 @@ fun HomeScreen() {
     val loading by linkTrackViewModel.loadingState.collectAsState()
     val isRefreshing by linkTrackViewModel.isRefreshing.collectAsState()
     val deliveryCode by linkTrackViewModel.deliveryCode.collectAsState()
+    val buttonEnabled by linkTrackViewModel.buttonEnabled.collectAsState()
 
     // objects to be remembered
     val pullRefreshState = rememberPullRefreshState(isRefreshing, {
@@ -67,7 +68,6 @@ fun HomeScreen() {
             .wrapContentSize(Alignment.Center)
             .pullRefresh(pullRefreshState)
     ) {
-        var buttonEnabled: Boolean by remember { mutableStateOf(false) }
 
         // Check for permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
@@ -78,9 +78,8 @@ fun HomeScreen() {
             hasError = errorState,
             errorMessage = stringResource(id = R.string.error_message),
             clearState = deliveryCode.isEmpty()
-        ) { value, isValid ->
+        ) { value ->
             linkTrackViewModel.onCodeChange(value)
-            buttonEnabled = isValid
         }
 
         // code button
