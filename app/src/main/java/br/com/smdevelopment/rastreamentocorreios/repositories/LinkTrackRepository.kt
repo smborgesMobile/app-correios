@@ -8,4 +8,6 @@ interface LinkTrackRepository {
     suspend fun fetchTrackByCode(code: String): Flow<List<TrackingModel>>
 
     suspend fun getAllDeliveries(): Flow<List<TrackingModel>>
+
+    suspend fun updateCache()
 }

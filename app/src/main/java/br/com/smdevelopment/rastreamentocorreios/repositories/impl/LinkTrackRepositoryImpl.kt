@@ -48,6 +48,25 @@ class LinkTrackRepositoryImpl(
         }
     }
 
+    override suspend fun updateCache() {
+        withContext(Dispatchers.IO) {
+            val list = getListFromRoom()
+            list.forEach { delivery ->
+                val response = api.fetchTrackByCode(code = delivery.code)
+                if (response.isSuccessful) {
+                    val deliveryResponse = response.body()
+                    if (deliveryResponse != null) {
+                        try {
+                            linkTrackDao.insertNewDelivery(deliveryResponse.toDeliveryData())
+                        } catch (e: Exception) {
+                            Log.d("LinkTrackRepository", "Error: ${e.message}")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun getListFromRoom(): List<TrackingModel> {
         return linkTrackDao.getAllDeliveries()
             ?.sortedWith(compareByDescending { it.events.firstOrNull()?.date })

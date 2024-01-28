@@ -16,6 +16,8 @@ import br.com.smdevelopment.rastreamentocorreios.usecase.impl.DeliveredUserCaseI
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.InProgressUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.TrackingUseCaseImpl
+import br.com.smdevelopment.rastreamentocorreios.usecase.impl.UpdateCacheUseCase
+import br.com.smdevelopment.rastreamentocorreios.usecase.impl.UpdateCacheUseCaseImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -68,4 +70,5 @@ val appModule = module {
     factory<GetAllTrackingUseCase> { GetAllTrackingUseCase(repository = get()) }
     factory<DeliveredUseCase> { DeliveredUserCaseImpl(repository = get()) }
     factory<InProgressUseCase> { InProgressUseCaseImpl(repository = get()) }
+    factory<UpdateCacheUseCase> { UpdateCacheUseCaseImpl(repository = get()) }
 }

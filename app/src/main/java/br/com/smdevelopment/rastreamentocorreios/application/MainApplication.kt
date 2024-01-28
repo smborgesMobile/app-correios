@@ -6,10 +6,13 @@ import android.app.NotificationManager
 import android.util.Log
 import androidx.work.Configuration
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import br.com.smdevelopment.rastreamentocorreios.di.appModule
 import br.com.smdevelopment.rastreamentocorreios.workmanager.NotificationCheckWorkManager
+import br.com.smdevelopment.rastreamentocorreios.workmanager.UpdateCacheWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import java.util.concurrent.TimeUnit
@@ -21,6 +24,7 @@ class MainApplication : Application(), Configuration.Provider {
         setupKoin()
         configureNotification()
         setupNotificationWork()
+        setupUpdateCache()
     }
 
     private fun setupKoin() {
@@ -32,7 +36,7 @@ class MainApplication : Application(), Configuration.Provider {
 
     private fun setupNotificationWork() {
         val repeatingRequest = PeriodicWorkRequestBuilder<NotificationCheckWorkManager>(
-            WORKER_TIME,
+            UPDATE_WORKER,
             TimeUnit.MINUTES
         ).build()
 
@@ -41,6 +45,16 @@ class MainApplication : Application(), Configuration.Provider {
             ExistingPeriodicWorkPolicy.KEEP,
             repeatingRequest
         )
+    }
+
+    private fun setupUpdateCache() {
+        val uploadWorkRequest: WorkRequest =
+            OneTimeWorkRequestBuilder<UpdateCacheWorker>()
+                .build()
+
+        WorkManager
+            .getInstance(this)
+            .enqueue(uploadWorkRequest)
     }
 
     private fun configureNotification() {
@@ -61,6 +75,7 @@ class MainApplication : Application(), Configuration.Provider {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "app_notification_chanel"
         const val WORKER_TIME = 2L
+        const val UPDATE_WORKER = 5L
         const val WORKER_NAME = "notification_check_worker"
     }
 }
