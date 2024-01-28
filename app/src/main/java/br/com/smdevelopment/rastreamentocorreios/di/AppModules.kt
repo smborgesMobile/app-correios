@@ -12,11 +12,11 @@ import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
 import br.com.smdevelopment.rastreamentocorreios.usecase.DeliveredUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.InProgressUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.TrackingUseCase
+import br.com.smdevelopment.rastreamentocorreios.usecase.UpdateCacheUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.DeliveredUserCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.InProgressUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.TrackingUseCaseImpl
-import br.com.smdevelopment.rastreamentocorreios.usecase.impl.UpdateCacheUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.UpdateCacheUseCaseImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel

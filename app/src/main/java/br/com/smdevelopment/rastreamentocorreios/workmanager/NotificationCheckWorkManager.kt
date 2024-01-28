@@ -21,14 +21,14 @@ class NotificationCheckWorkManager(
     private val deliveryNotificationChannel: DeliveryNotificationChannel by inject()
 
     override suspend fun doWork(): Result {
-        try {
+        return try {
             getAllTrackingUseCase.getTrackingList().collectLatest { allList ->
-                val trackingCode = allList.firstOrNull()?.code
-                trackingCode?.let {
+                allList.firstOrNull()?.code?.let { trackingCode ->
                     getCodeUseCase.getTrackingInfo(trackingCode).collectLatest { trackingInfo ->
                         val shouldShowNotification =
-                            allList.firstOrNull()?.events?.firstOrNull()?.status ==
+                            allList.firstOrNull()?.events?.firstOrNull()?.status !=
                                     trackingInfo.firstOrNull()?.events?.firstOrNull()?.status
+
                         if (shouldShowNotification) {
                             deliveryNotificationChannel.showBasicNotification(
                                 title = trackingCode,
@@ -38,9 +38,9 @@ class NotificationCheckWorkManager(
                     }
                 }
             }
-            return Result.success()
+            Result.success()
         } catch (e: Exception) {
-            return Result.failure()
+            Result.failure()
         }
     }
 }
