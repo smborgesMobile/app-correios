@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -12,7 +13,8 @@ android {
     defaultConfig {
         applicationId "br.com.smdevelopment.rastreamentocorreios"
         minSdk 26
-        targetSdk 33
+        targetSdk 34
+        minSdkVersion 26
         versionCode 11
         versionName "6.0"
 
