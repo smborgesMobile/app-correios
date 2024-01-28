@@ -45,6 +45,7 @@ class LinkTrackRepositoryImpl(
     override suspend fun getAllDeliveries(): Flow<List<TrackingModel>> {
         return flow {
             emit(getListFromRoom())
+            updateCache()
         }
     }
 
