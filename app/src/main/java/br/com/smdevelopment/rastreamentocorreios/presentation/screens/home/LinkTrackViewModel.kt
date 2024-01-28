@@ -8,6 +8,7 @@ import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseC
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
@@ -31,7 +32,9 @@ class LinkTrackViewModel(
     private val _buttonEnabled = MutableStateFlow(false)
     val buttonEnabled: StateFlow<Boolean> get() = _buttonEnabled
 
-    val isRefreshing = MutableStateFlow(false)
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
 
     init {
         fetchAllLinkTrackItems()
@@ -49,6 +52,7 @@ class LinkTrackViewModel(
                 .collect { result ->
                     _trackingInfo.value = result
                 }
+            _isRefreshing.emit(false)
         }
     }
 

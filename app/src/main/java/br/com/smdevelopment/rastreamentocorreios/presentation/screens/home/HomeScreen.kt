@@ -4,6 +4,7 @@ import android.Manifest
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -52,58 +53,60 @@ fun HomeScreen() {
     val deliveryList by linkTrackViewModel.trackingInfo.collectAsState()
     val errorState by linkTrackViewModel.errorState.collectAsState()
     val loading by linkTrackViewModel.loadingState.collectAsState()
-    val isRefreshing by linkTrackViewModel.isRefreshing.collectAsState()
     val deliveryCode by linkTrackViewModel.deliveryCode.collectAsState()
     val buttonEnabled by linkTrackViewModel.buttonEnabled.collectAsState()
+
+    val isRefreshing by linkTrackViewModel.isRefreshing.collectAsState()
 
     // objects to be remembered
     val pullRefreshState = rememberPullRefreshState(isRefreshing, {
         linkTrackViewModel.fetchAllLinkTrackItems()
     })
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(colorResource(id = R.color.white))
-            .wrapContentSize(Alignment.Center)
-            .pullRefresh(pullRefreshState)
-    ) {
-
-        // Check for permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            FeatureThatRequiresNotificationPermission()
-
-        // text field
-        DeliveryTextField(
-            hasError = errorState,
-            errorMessage = stringResource(id = R.string.error_message),
-            clearState = deliveryCode.isEmpty()
-        ) { value ->
-            linkTrackViewModel.onCodeChange(value)
-        }
-
-        // code button
-        PrimaryButton(
-            title = stringResource(id = R.string.home_title),
-            enabled = buttonEnabled,
-            loading = loading
+    Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(colorResource(id = R.color.white))
+                .wrapContentSize(Alignment.Center)
         ) {
-            linkTrackViewModel.findForCode(deliveryCode)
+
+            // Check for permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) FeatureThatRequiresNotificationPermission()
+
+            // text field
+            DeliveryTextField(
+                hasError = errorState,
+                errorMessage = stringResource(id = R.string.error_message),
+                clearState = deliveryCode.isEmpty()
+            ) { value ->
+                linkTrackViewModel.onCodeChange(value)
+            }
+
+            // code button
+            PrimaryButton(
+                title = stringResource(id = R.string.home_title),
+                enabled = buttonEnabled,
+                loading = loading
+            ) {
+                linkTrackViewModel.findForCode(deliveryCode)
+            }
+
+            // session header
+            SessionHeader(
+                title = stringResource(id = R.string.home_my_products), fontSize = 16.sp
+            )
+
+            // delivery list
+            AllDeliveries(deliveryList = deliveryList)
         }
 
-        // session header
-        SessionHeader(
-            title = stringResource(id = R.string.home_my_products),
-            fontSize = 16.sp
-        )
-
-        // delivery list
-        AllDeliveries(deliveryList = deliveryList)
-
+        // swipe to refresh
         PullRefreshIndicator(
-            isRefreshing,
-            pullRefreshState,
-            Modifier.align(Alignment.CenterHorizontally)
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
         )
     }
 }
@@ -121,15 +124,12 @@ private fun FeatureThatRequiresNotificationPermission() {
 
     if (!notificationPermission.status.isGranted) {
         Column {
-            CustomAlertDialog(
-                showDialog = showDialog,
-                onDismiss = {
-                    showDialog = false
-                },
-                onExit = {
-                    showDialog = false
-                    notificationPermission.launchPermissionRequest()
-                })
+            CustomAlertDialog(showDialog = showDialog, onDismiss = {
+                showDialog = false
+            }, onExit = {
+                showDialog = false
+                notificationPermission.launchPermissionRequest()
+            })
         }
     }
 }
@@ -138,10 +138,8 @@ private fun FeatureThatRequiresNotificationPermission() {
 fun CustomAlertDialog(showDialog: Boolean, onDismiss: () -> Unit, onExit: () -> Unit) {
     if (showDialog) {
         Dialog(
-            onDismissRequest = { onDismiss() },
-            properties = DialogProperties(
-                dismissOnBackPress = false,
-                dismissOnClickOutside = false
+            onDismissRequest = { onDismiss() }, properties = DialogProperties(
+                dismissOnBackPress = false, dismissOnClickOutside = false
             )
         ) {
             Card(
@@ -150,8 +148,7 @@ fun CustomAlertDialog(showDialog: Boolean, onDismiss: () -> Unit, onExit: () -> 
                 // modifier = modifier.size(280.dp, 240.dp)
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                elevation = 8.dp
+                    .padding(16.dp), elevation = 8.dp
             ) {
                 Column(
                     Modifier
@@ -160,7 +157,8 @@ fun CustomAlertDialog(showDialog: Boolean, onDismiss: () -> Unit, onExit: () -> 
                 ) {
                     Text(
                         text = stringResource(id = R.string.permission_title),
-                        modifier = Modifier.padding(16.dp), fontSize = 20.sp
+                        modifier = Modifier.padding(16.dp),
+                        fontSize = 20.sp
                     )
 
                     Text(
