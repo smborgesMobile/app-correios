@@ -77,7 +77,7 @@ fun HomeScreen() {
         DeliveryTextField(
             hasError = errorState,
             errorMessage = stringResource(id = R.string.error_message),
-            clearState = false
+            clearState = deliveryCode.isEmpty()
         ) { value, isValid ->
             linkTrackViewModel.onCodeChange(value)
             buttonEnabled = isValid

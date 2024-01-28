@@ -13,9 +13,9 @@ data class TrackingResponse(
     val time: Double,
     @SerializedName("quantity")
     val quantity: Int,
-    @SerializedName("service")
+    @SerializedName("servico")
     val service: String? = null,
-    @SerializedName("last")
+    @SerializedName("ultimo")
     val last: String?= null
 )
 

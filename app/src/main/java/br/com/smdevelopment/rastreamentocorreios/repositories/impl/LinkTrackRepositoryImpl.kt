@@ -25,7 +25,7 @@ class LinkTrackRepositoryImpl(
                 val response = api.fetchTrackByCode(code = code)
                 if (response.isSuccessful) {
                     val deliveryResponse = response.body()
-                    if (deliveryResponse != null && deliveryResponse.events.isNotEmpty()) {
+                    if (deliveryResponse != null) {
                         try {
                             linkTrackDao.insertNewDelivery(deliveryResponse.toDeliveryData())
                             emit(getListFromRoom())
@@ -62,7 +62,7 @@ class LinkTrackRepositoryImpl(
             quantity = this.quantity,
             service = this.service.orEmpty(),
             time = this.time,
-            events = this.events.mapIndexed { index, event ->
+            events = this.events.takeIf { it.isNotEmpty() }?.mapIndexed { index, event ->
                 EventModel(
                     date = event.date,
                     time = event.time,
@@ -84,9 +84,9 @@ class LinkTrackRepositoryImpl(
                     },
                     isDelivered = event.status == OBJECT_DONE
                 )
-            },
-            icon = when {
-                this.events.first().status == OBJECT_DONE -> {
+            } ?: emptyList(), // Provide an empty list if events is null or empty
+            icon = when (this.events.firstOrNull()?.status) {
+                OBJECT_DONE -> {
                     R.drawable.delivered_icon
                 }
 
@@ -94,7 +94,7 @@ class LinkTrackRepositoryImpl(
                     R.drawable.delivered_start_icon
                 }
             },
-            isDelivered = this.events.first().status == OBJECT_DONE
+            isDelivered = this.events.firstOrNull()?.status == OBJECT_DONE
         )
     }
 
@@ -119,6 +119,5 @@ class LinkTrackRepositoryImpl(
     private companion object {
         const val CODE_NOT_FOUND = 422
         const val OBJECT_DONE = "Objeto entregue ao destinatário"
-        const val POSTED = "postado"
     }
 }

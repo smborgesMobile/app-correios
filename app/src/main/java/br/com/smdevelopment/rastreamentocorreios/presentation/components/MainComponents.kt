@@ -366,7 +366,7 @@ private fun DeliveryCard(deliveryItem: TrackingModel, onClick: ((TrackingModel) 
                     fontFamily = FontFamily.SansSerif,
                 )
                 Text(
-                    text = deliveryItem.events.firstOrNull()?.date.orEmpty(),
+                    text = deliveryItem.events.firstOrNull()?.date ?: deliveryItem.service,
                     style = MaterialTheme.typography.body2,
                     modifier = Modifier.padding(top = 8.dp),
                     fontSize = 13.sp
