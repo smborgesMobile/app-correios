@@ -32,6 +32,7 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.components.DrawerF
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DrawerHeader
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemenu.NavDrawerItem
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.HomeBottomNavigation
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.HomeNavGraph
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.NavigationGraph
 import br.com.smdevelopment.rastreamentocorreios.presentation.sidemenu.AboutActivity
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
@@ -57,7 +58,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainScreenView()
+                    HomeNavGraph(navController = rememberNavController())
                 }
             }
         }

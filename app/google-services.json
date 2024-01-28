@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "246896357178-277mvb8v2l49olj698t9lub7u3gojhhd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.smdevelopment.rastreamentocorreios.debug",
+            "certificate_hash": "9a7fb86fa2b84d449acd9909eb6e7b538f068b74"
+          }
+        },
+        {
           "client_id": "246896357178-7qg9i2pnrcmmsfqv60609mql8dhfhmqf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
