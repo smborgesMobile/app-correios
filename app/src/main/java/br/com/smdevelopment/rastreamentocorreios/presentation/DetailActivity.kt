@@ -23,16 +23,26 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.entities.view.EventModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.CustomTopAppBar
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class DetailActivity : ComponentActivity() {
@@ -90,6 +100,10 @@ fun DetailScreen(eventList: List<EventModel>, closeActivityListener: (() -> Unit
                 closeActivityListener = closeActivityListener
             )
         }) {
+        if (eventList.isEmpty()) {
+            AnimatedPreloader()
+        }
+
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -132,6 +146,40 @@ fun DetailScreen(eventList: List<EventModel>, closeActivityListener: (() -> Unit
                 Divider()
             }
         }
+    }
+}
+
+@Composable
+fun AnimatedPreloader(modifier: Modifier = Modifier) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        val preloaderLottieComposition by rememberLottieComposition(
+            LottieCompositionSpec.RawRes(
+                R.raw.empty_animation
+            )
+        )
+
+        val preloaderProgress by animateLottieCompositionAsState(
+            preloaderLottieComposition,
+            iterations = LottieConstants.IterateForever,
+            isPlaying = true
+        )
+
+        LottieAnimation(
+            composition = preloaderLottieComposition,
+            progress = preloaderProgress,
+            modifier = modifier
+                .size(400.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.detalhes_ainda_n_o_dispon_veis),
+            style = MaterialTheme.typography.h6,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(horizontal = 16.dp),
+            maxLines = 1
+        )
     }
 }
 
