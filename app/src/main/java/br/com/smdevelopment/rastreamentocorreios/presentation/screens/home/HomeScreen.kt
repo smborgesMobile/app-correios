@@ -27,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,8 +43,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class)
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen() {
     // Create view model and init it.
@@ -56,7 +54,6 @@ fun HomeScreen() {
     val loading by linkTrackViewModel.loadingState.collectAsState()
     val isRefreshing by linkTrackViewModel.isRefreshing.collectAsState()
     val deliveryCode by linkTrackViewModel.deliveryCode.collectAsState()
-    val context = LocalContext.current
 
     // objects to be remembered
     val pullRefreshState = rememberPullRefreshState(isRefreshing, {
@@ -73,7 +70,8 @@ fun HomeScreen() {
         var buttonEnabled: Boolean by remember { mutableStateOf(false) }
 
         // Check for permission
-        FeatureThatRequiresNotificationPermission()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            FeatureThatRequiresNotificationPermission()
 
         // text field
         DeliveryTextField(

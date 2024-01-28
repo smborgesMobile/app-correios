@@ -52,7 +52,7 @@ fun PendingScreen() {
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
-            AllDeliveries(deliveryList = emptyList())
+            AllDeliveries(deliveryList = pendingList)
         }
     }
 }

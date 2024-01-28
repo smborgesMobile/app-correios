@@ -54,6 +54,7 @@ class LinkTrackViewModel(
             _loadingState.value = true
             trackingUseCase.getTrackingInfo(code)
                 .catch {
+                    _deliveryCode.value = String()
                     _errorState.value = true
                 }
                 .collect { result ->
