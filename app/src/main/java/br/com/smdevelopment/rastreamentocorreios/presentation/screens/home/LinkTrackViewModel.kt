@@ -65,7 +65,6 @@ class LinkTrackViewModel(
                     _trackingInfo.value = result
                     _errorState.value = false
                 }
-
             _loadingState.value = false
         }
     }
