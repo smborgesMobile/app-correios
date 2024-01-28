@@ -84,7 +84,7 @@ class LinkTrackRepositoryImpl(
             time = this.time,
             events = this.events.takeIf { it.isNotEmpty() }?.mapIndexed { index, event ->
                 EventModel(
-                    date = event.date,
+                    date = "${event.date} - ${event.time}",
                     time = event.time,
                     location = event.location,
                     status = event.status,
