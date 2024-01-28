@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.notification.DeliveryNotificationChannel
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.AllDeliveries
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DeliveryTextField
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.PrimaryButton
@@ -92,7 +91,6 @@ fun HomeScreen() {
             enabled = buttonEnabled,
             loading = loading
         ) {
-            DeliveryNotificationChannel(context).showBasicNotification("TASK 00220", "Seu Pedido Movimentou")
             linkTrackViewModel.findForCode(deliveryCode)
         }
 
