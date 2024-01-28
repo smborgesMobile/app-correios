@@ -35,12 +35,13 @@ fun DeliveredScreen() {
 
         val viewModel: DeliveredViewModel = koinViewModel()
         val deliveryList by viewModel.deliveredList.collectAsState()
+        val emptyState by viewModel.emptyState.collectAsState()
 
         LaunchedEffect(Unit, block = {
             viewModel.getDeliveredList()
         })
 
-        if (deliveryList.isEmpty()) {
+        if (emptyState) {
             EmptyState()
         } else {
             Text(

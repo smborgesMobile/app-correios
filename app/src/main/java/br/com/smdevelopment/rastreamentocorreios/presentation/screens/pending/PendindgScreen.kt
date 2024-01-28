@@ -34,12 +34,13 @@ fun PendingScreen() {
     ) {
         val viewModel: PendingScreenViewModel = koinViewModel()
         val pendingList by viewModel.inProgressList.collectAsState()
+        val emptyState by viewModel.emptyState.collectAsState()
 
         LaunchedEffect(Unit, block = {
             viewModel.getDeliveredList()
         })
 
-        if (pendingList.isEmpty()) {
+        if (emptyState) {
             EmptyState()
         } else {
             Text(

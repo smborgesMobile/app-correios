@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -55,7 +56,6 @@ fun HomeScreen() {
     val loading by linkTrackViewModel.loadingState.collectAsState()
     val deliveryCode by linkTrackViewModel.deliveryCode.collectAsState()
     val buttonEnabled by linkTrackViewModel.buttonEnabled.collectAsState()
-
     val isRefreshing by linkTrackViewModel.isRefreshing.collectAsState()
 
     // objects to be remembered
@@ -63,7 +63,11 @@ fun HomeScreen() {
         linkTrackViewModel.fetchAllLinkTrackItems()
     })
 
-    Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pullRefresh(pullRefreshState)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -72,7 +76,8 @@ fun HomeScreen() {
         ) {
 
             // Check for permission
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) FeatureThatRequiresNotificationPermission()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                FeatureThatRequiresNotificationPermission()
 
             // text field
             DeliveryTextField(
@@ -101,7 +106,7 @@ fun HomeScreen() {
             AllDeliveries(deliveryList = deliveryList)
         }
 
-        // swipe to refresh
+        // Pull to refresh indicator
         PullRefreshIndicator(
             refreshing = isRefreshing,
             state = pullRefreshState,

@@ -51,8 +51,8 @@ class LinkTrackViewModel(
             getAllTrackingUseCase.getTrackingList()
                 .collect { result ->
                     _trackingInfo.value = result
+                    _isRefreshing.emit(false)
                 }
-            _isRefreshing.emit(false)
         }
     }
 

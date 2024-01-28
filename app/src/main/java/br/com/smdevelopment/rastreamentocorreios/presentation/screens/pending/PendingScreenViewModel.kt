@@ -15,14 +15,18 @@ class PendingScreenViewModel(private val useCase: InProgressUseCase) : ViewModel
     private val _inProgressList = MutableStateFlow<List<TrackingModel>>(emptyList())
     val inProgressList: StateFlow<List<TrackingModel>> get() = _inProgressList
 
+    private val _emptyState = MutableStateFlow(false)
+    val emptyState: StateFlow<Boolean> get() = _emptyState
+
     fun getDeliveredList() {
         viewModelScope.launch(Dispatchers.Default) {
             useCase.fetchDelivered()
                 .catch {
-                    _inProgressList.value = emptyList()
+                    _emptyState.value = true
                 }
                 .collect {
                     _inProgressList.value = it
+                    _emptyState.value = it.isEmpty()
                 }
         }
     }

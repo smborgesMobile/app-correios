@@ -17,14 +17,18 @@ class DeliveredViewModel(
     private val _deliveredList = MutableStateFlow<List<TrackingModel>>(emptyList())
     val deliveredList: StateFlow<List<TrackingModel>> get() = _deliveredList
 
+    private val _emptyState = MutableStateFlow(false)
+    val emptyState: StateFlow<Boolean> get() = _emptyState
+
     fun getDeliveredList() {
         viewModelScope.launch(Dispatchers.Default) {
             deliveredUseCase.fetchDelivered()
                 .catch {
-                    _deliveredList.value = emptyList()
+                    _emptyState.value = true
                 }
                 .collect {
                     _deliveredList.value = it
+                    _emptyState.value = it.isEmpty()
                 }
         }
     }
