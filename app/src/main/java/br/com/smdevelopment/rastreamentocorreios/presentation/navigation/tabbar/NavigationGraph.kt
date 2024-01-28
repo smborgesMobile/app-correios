@@ -1,5 +1,8 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,7 +16,12 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.tabbar.BottomNavIt
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = BottomNavItem.Home.route) {
+    NavHost(
+        navController = navController,
+        startDestination = BottomNavItem.Home.route,
+        enterTransition = { fadeIn(animationSpec = tween(5)) },
+        exitTransition = { fadeOut(animationSpec = tween(5)) }
+    ) {
         composable(BottomNavItem.Delivered.route) {
             DeliveredScreen()
         }
