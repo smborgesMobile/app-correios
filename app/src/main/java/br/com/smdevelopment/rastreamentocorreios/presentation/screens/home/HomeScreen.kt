@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import br.com.smdevelopment.rastreamentocorreios.R
+import br.com.smdevelopment.rastreamentocorreios.notification.DeliveryNotificationChannel
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.AllDeliveries
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DeliveryTextField
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.PrimaryButton
@@ -55,6 +57,7 @@ fun HomeScreen() {
     val loading by linkTrackViewModel.loadingState.collectAsState()
     val isRefreshing by linkTrackViewModel.isRefreshing.collectAsState()
     val deliveryCode by linkTrackViewModel.deliveryCode.collectAsState()
+    val context = LocalContext.current
 
     // objects to be remembered
     val pullRefreshState = rememberPullRefreshState(isRefreshing, {
@@ -89,6 +92,7 @@ fun HomeScreen() {
             enabled = buttonEnabled,
             loading = loading
         ) {
+            DeliveryNotificationChannel(context).showBasicNotification("TASK 00220", "Seu Pedido Movimentou")
             linkTrackViewModel.findForCode(deliveryCode)
         }
 

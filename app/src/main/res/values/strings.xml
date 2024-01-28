@@ -9,6 +9,7 @@
     <string name="error_message">Não encontramos sua encomenda na base dos correios! </string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="empty_state_message">Ops ainda não encontramos encomendas para essa sessão!</string>
+    <string name="delivered_moving">Seu pedido movimentou</string>
 
     <!-- Menu item !-->
     <string name="about_id">about</string>
