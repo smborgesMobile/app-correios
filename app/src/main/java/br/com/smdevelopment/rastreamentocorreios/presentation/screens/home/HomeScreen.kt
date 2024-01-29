@@ -140,7 +140,12 @@ private fun FeatureThatRequiresNotificationPermission() {
 }
 
 @Composable
-fun CustomAlertDialog(showDialog: Boolean, onDismiss: () -> Unit, onExit: () -> Unit) {
+fun CustomAlertDialog(
+    showDialog: Boolean, onDismiss: () -> Unit,
+    onExit: () -> Unit,
+    titleRes: Int = R.string.permission_title,
+    descriptionRes: Int = R.string.permission_description
+) {
     if (showDialog) {
         Dialog(
             onDismissRequest = { onDismiss() }, properties = DialogProperties(
@@ -161,13 +166,13 @@ fun CustomAlertDialog(showDialog: Boolean, onDismiss: () -> Unit, onExit: () -> 
                         .background(Color.White)
                 ) {
                     Text(
-                        text = stringResource(id = R.string.permission_title),
+                        text = stringResource(id = titleRes),
                         modifier = Modifier.padding(16.dp),
                         fontSize = 20.sp
                     )
 
                     Text(
-                        text = stringResource(id = R.string.permission_description),
+                        text = stringResource(id = descriptionRes),
                         modifier = Modifier.padding(16.dp)
                     )
 

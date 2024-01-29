@@ -488,7 +488,9 @@ fun DrawerBody(
     onItemClick: (NavDrawerItem) -> Unit
 ) {
     val items = listOf(
-        NavDrawerItem.About
+        NavDrawerItem.About,
+        NavDrawerItem.DeleteAccount,
+        NavDrawerItem.SignOut
     )
 
     LazyColumn(modifier) {

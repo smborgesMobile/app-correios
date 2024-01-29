@@ -18,7 +18,11 @@ import androidx.compose.material.Surface
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,14 +30,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import br.com.smdevelopment.rastreamentocorreios.BuildConfig
+import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.CustomTopAppBar
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DrawerBody
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DrawerFooter
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.DrawerHeader
-import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemenu.NavDrawerItem
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemenu.NavDrawerItem.Companion.ABOUT
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemenu.NavDrawerItem.Companion.DELETE
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemenu.NavDrawerItem.Companion.SIGN_OUT
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.HomeBottomNavigation
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.HomeNavGraph
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.NavigationGraph
+import br.com.smdevelopment.rastreamentocorreios.presentation.screens.home.CustomAlertDialog
 import br.com.smdevelopment.rastreamentocorreios.presentation.sidemenu.AboutActivity
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
@@ -75,6 +83,27 @@ fun MainScreenView() {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var showLogoutDialog by remember { mutableStateOf(false) }
+
+    CustomAlertDialog(showDialog = showDeleteDialog, onDismiss = {
+        showDeleteDialog = false
+    }, onExit = {
+        showDeleteDialog = false
+    },
+        titleRes = R.string.delete_account_title,
+        descriptionRes = R.string.delete_account_message
+    )
+
+    CustomAlertDialog(showDialog = showLogoutDialog, onDismiss = {
+        showLogoutDialog = false
+    }, onExit = {
+        showLogoutDialog = false
+    },
+        titleRes = R.string.sign_out_title,
+        descriptionRes = R.string.sign_out_message
+    )
+
 
     Scaffold(
         drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
@@ -89,9 +118,20 @@ fun MainScreenView() {
                 DrawerBody(
                     modifier = Modifier.weight(1f),
                     onItemClick = { item ->
-                        if (item.route == NavDrawerItem.About.route) {
-                            context.startActivity(AboutActivity.getLaunchIntent(context))
+                        when (item.title) {
+                            ABOUT -> {
+                                context.startActivity(AboutActivity.getLaunchIntent(context))
+                            }
+
+                            DELETE -> {
+                                showDeleteDialog = true
+                            }
+
+                            SIGN_OUT -> {
+                                showLogoutDialog = true
+                            }
                         }
+
                         scope.launch {
                             scaffoldState.drawerState.close()
                         }

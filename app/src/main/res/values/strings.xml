@@ -39,4 +39,9 @@ Sábado, das 8h às 14h.</string>
     <string name="link_track"> Esse aplicativo usa a API do site (https://linketrack.com/)</string>
     <string name="detalhes_ainda_n_o_dispon_veis">Detalhes ainda não disponíveis …</string>
     <string name="google_login">Sign in with Google</string>
+    <string name="delete_account_title">Tem certeza de que deseja excluir sua conta?</string>
+    <string name="delete_account_message">Esta ação não pode ser revertida.</string>
+
+    <string name="sign_out_title">Tem certeza de que deseja sair?</string>
+    <string name="sign_out_message">Ao fazer logout, você será desconectado da sua conta. Lembre-se de que precisará fazer login novamente para acessar as funcionalidades exclusivas.</string>
 </resources>
