@@ -26,8 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import br.com.smdevelopment.rastreamentocorreios.BuildConfig
 import br.com.smdevelopment.rastreamentocorreios.R
@@ -40,12 +40,15 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemen
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemenu.NavDrawerItem.Companion.SIGN_OUT
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.HomeBottomNavigation
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.HomeNavGraph
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.LOGIN_ROUTE
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.MAIN_ROUTE
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.NavigationGraph
 import br.com.smdevelopment.rastreamentocorreios.presentation.screens.home.CustomAlertDialog
 import br.com.smdevelopment.rastreamentocorreios.presentation.sidemenu.AboutActivity
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -57,7 +60,8 @@ class MainActivity : ComponentActivity() {
                 val systemUiController = rememberSystemUiController()
                 SideEffect {
                     systemUiController.setStatusBarColor(
-                        color = primary700, darkIcons = false
+                        color = primary700,
+                        darkIcons = false
                     )
                 }
 
@@ -77,8 +81,7 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-@Preview
-fun MainScreenView() {
+fun MainScreenView(homeNavController: NavHostController) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -98,6 +101,14 @@ fun MainScreenView() {
     CustomAlertDialog(showDialog = showLogoutDialog, onDismiss = {
         showLogoutDialog = false
     }, onExit = {
+        FirebaseAuth.getInstance().signOut()
+        homeNavController.navigate(LOGIN_ROUTE) {
+            popUpTo(MAIN_ROUTE) {
+                inclusive = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
         showLogoutDialog = false
     },
         titleRes = R.string.sign_out_title,

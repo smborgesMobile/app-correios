@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.firebase.FIREBASE_KEYS
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.PrimaryButton
+import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.MAIN_ROUTE
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary500
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -92,7 +93,9 @@ fun LoginScreen(
                 painter = painterResource(id = R.drawable.character),
                 contentDescription = null,
                 alignment = Alignment.TopEnd,
-                modifier = Modifier.fillMaxWidth().offset(y = (-300).dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset(y = (-300).dp),
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -104,13 +107,14 @@ fun LoginScreen(
                 val signInClient = GoogleSignIn.getClient(context, gson)
                 launcher.launch(signInClient.signInIntent)
             }
+            Spacer(modifier = Modifier.height(70.dp))
         }
     }
 }
 
 @Composable
 private fun NavigateHome(navController: NavController) {
-    navController.navigate("main_screen") {
+    navController.navigate(MAIN_ROUTE) {
         popUpTo(navController.graph.startDestinationRoute.orEmpty()) {
             inclusive = true
         }
