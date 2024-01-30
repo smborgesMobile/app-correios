@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -122,11 +123,24 @@ fun LoginScreen(
 
 @Composable
 private fun NavigateHome(navController: NavController) {
-    navController.navigate(MAIN_ROUTE) {
-        popUpTo(navController.graph.startDestinationRoute.orEmpty()) {
-            inclusive = true
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(primary500),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.delivered_start_icon),
+            contentDescription = null,
+            alignment = Alignment.Center
+        )
+        navController.navigate(MAIN_ROUTE) {
+            popUpTo(navController.graph.startDestinationRoute.orEmpty()) {
+                inclusive = true
+            }
+            launchSingleTop = true
+            restoreState = true
         }
-        launchSingleTop = true
-        restoreState = true
     }
 }
