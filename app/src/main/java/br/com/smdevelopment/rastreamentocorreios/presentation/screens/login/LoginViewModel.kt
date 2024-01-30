@@ -36,7 +36,6 @@ class LoginViewModel(
         }
     }
 
-
     sealed interface GoogleState {
         data class Loading(val isLoading: Boolean) : GoogleState
         object Success : GoogleState

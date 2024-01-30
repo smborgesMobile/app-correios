@@ -13,18 +13,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.firebase.FIREBASE_KEYS
@@ -88,7 +97,7 @@ fun LoginScreen(
             .build()
 
         // If the user is not logged in, show the login button
-        Column(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -104,19 +113,42 @@ fun LoginScreen(
                 alignment = Alignment.TopEnd,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .offset(y = (-300).dp),
+                    .offset(y = (-3).dp),
                 contentScale = ContentScale.Crop
             )
-            Spacer(modifier = Modifier.weight(1f))
-            PrimaryButton(
-                title = stringResource(R.string.google_login),
-                loading = (loginState as? LoginViewModel.GoogleState.Loading)?.isLoading ?: false,
-                icon = R.drawable.logo_google
+
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .fillMaxSize()
             ) {
-                val signInClient = GoogleSignIn.getClient(context, gson)
-                launcher.launch(signInClient.signInIntent)
+                Text(
+                    text = stringResource(R.string.app_title),
+                    style = TextStyle(
+                        color = Color.White,
+                        fontSize = 30.sp
+                    ),
+                    modifier = Modifier
+                        .background(primary500, shape = RoundedCornerShape(10.dp))
+                        .padding(20.dp)
+                        .align(Alignment.CenterHorizontally),
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(Font(R.font.lemon, FontWeight.Light)),
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(150.dp))
+                PrimaryButton(
+                    title = stringResource(R.string.google_login),
+                    loading = (loginState as? LoginViewModel.GoogleState.Loading)?.isLoading
+                        ?: false,
+                    icon = R.drawable.logo_google
+                ) {
+                    val signInClient = GoogleSignIn.getClient(context, gson)
+                    launcher.launch(signInClient.signInIntent)
+                }
+                Spacer(modifier = Modifier.height(24.dp))
             }
-            Spacer(modifier = Modifier.height(70.dp))
         }
     }
 }
