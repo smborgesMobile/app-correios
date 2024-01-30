@@ -7,11 +7,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -220,24 +222,43 @@ fun CustomTopAppBar(
 
 @Composable
 fun PrimaryButton(
+    modifier: Modifier = Modifier,
     title: String,
     enabled: Boolean = true,
     loading: Boolean = false,
+    icon: Int? = null,
     onCodeClick: (() -> Unit?)? = null
 ) {
     Button(
         enabled = enabled,
         onClick = {
             onCodeClick?.invoke()
-        }, modifier = Modifier
+        },
+        modifier = modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp)
             .height(48.dp)
             .background(chooseButtonBackground(enabled))
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            LoadingAnimation(loading = loading)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            icon?.let {
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .padding(end = 8.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = it),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
         }
+        LoadingAnimation(loading = loading)
 
         if (!loading) {
             Text(text = title)
@@ -467,7 +488,9 @@ fun DrawerBody(
     onItemClick: (NavDrawerItem) -> Unit
 ) {
     val items = listOf(
-        NavDrawerItem.About
+        NavDrawerItem.About,
+        NavDrawerItem.DeleteAccount,
+        NavDrawerItem.SignOut
     )
 
     LazyColumn(modifier) {
@@ -506,6 +529,5 @@ fun DrawerBody(
         }
     }
 }
-
 //#endregion --- navigation drawer
 
