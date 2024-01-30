@@ -2,6 +2,7 @@ package br.com.smdevelopment.rastreamentocorreios.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -18,14 +19,13 @@ import androidx.compose.material.Surface
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -48,8 +48,8 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.sidemenu.AboutActi
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -81,35 +81,52 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreenView(homeNavController: NavHostController) {
+fun MainScreenView(
+    homeNavController: NavHostController,
+    mainViewModel: MainViewModel = koinViewModel()
+) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    var showDeleteDialog by remember { mutableStateOf(false) }
-    var showLogoutDialog by remember { mutableStateOf(false) }
+
+    val showDeleteDialog by mainViewModel.showDeleteDialog.collectAsState()
+    val showLogoutDialog by mainViewModel.showLogoutDialog.collectAsState()
+    val uiState by mainViewModel.sideMenuUiState.collectAsState()
+
+    when (uiState) {
+        is MainViewModel.SideMenuUiState.DeleteAccount -> {
+            NavigateToLogin(homeNavController)
+        }
+
+        is MainViewModel.SideMenuUiState.DeleteAccountError -> {
+            Toast.makeText(
+                context,
+                stringResource(R.string.fail_to_delete_account),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        is MainViewModel.SideMenuUiState.Login -> {
+            NavigateToLogin(homeNavController)
+        }
+
+        else -> {}
+    }
 
     CustomAlertDialog(showDialog = showDeleteDialog, onDismiss = {
-        showDeleteDialog = false
+        mainViewModel.onDeleteDismissClick()
     }, onExit = {
-        showDeleteDialog = false
+        mainViewModel.onDeleteDialogClick()
     },
         titleRes = R.string.delete_account_title,
         descriptionRes = R.string.delete_account_message
     )
 
     CustomAlertDialog(showDialog = showLogoutDialog, onDismiss = {
-        showLogoutDialog = false
+        mainViewModel.onLogoutDismissed()
     }, onExit = {
-        FirebaseAuth.getInstance().signOut()
-        homeNavController.navigate(LOGIN_ROUTE) {
-            popUpTo(MAIN_ROUTE) {
-                inclusive = true
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-        showLogoutDialog = false
+        mainViewModel.onLogoutConfirm()
     },
         titleRes = R.string.sign_out_title,
         descriptionRes = R.string.sign_out_message
@@ -135,11 +152,11 @@ fun MainScreenView(homeNavController: NavHostController) {
                             }
 
                             DELETE -> {
-                                showDeleteDialog = true
+                                mainViewModel.onDeleteButtonClick()
                             }
 
                             SIGN_OUT -> {
-                                showLogoutDialog = true
+                                mainViewModel.onLogoutButtonClick()
                             }
                         }
 
@@ -182,6 +199,17 @@ fun MainScreenView(homeNavController: NavHostController) {
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun NavigateToLogin(homeNavController: NavHostController) {
+    homeNavController.navigate(LOGIN_ROUTE) {
+        popUpTo(MAIN_ROUTE) {
+            inclusive = true
+        }
+        launchSingleTop = true
+        restoreState = true
     }
 }
 

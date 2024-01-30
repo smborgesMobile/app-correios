@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
 import br.com.smdevelopment.rastreamentocorreios.repositories.AuthRepository
 import com.google.firebase.auth.AuthCredential
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,22 +19,20 @@ class LoginViewModel(
 
     fun googleSignIn(credential: AuthCredential) {
         _googleState.value = GoogleState.Loading(true)
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             authRepository.googleSignIn(credential).collect {
                 when (it) {
                     is Resource.Success -> {
-                        _googleState.value = GoogleState.Success
+                        _googleState.emit(GoogleState.Success)
                     }
 
                     is Resource.Error -> {
-                        _googleState.value = GoogleState.Error
+                        _googleState.emit(GoogleState.Error)
                     }
 
                     else -> {}
                 }
             }
-
-            _googleState.value = GoogleState.Loading(false)
         }
     }
 

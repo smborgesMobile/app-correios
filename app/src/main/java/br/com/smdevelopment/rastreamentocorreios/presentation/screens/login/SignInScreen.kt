@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.screens.login
 
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -49,7 +50,14 @@ fun LoginScreen(
             NavigateHome(navController)
         }
 
-        else -> {}
+        is LoginViewModel.GoogleState.Error -> {
+            Toast.makeText(context, stringResource(R.string.fail_to_log_in), Toast.LENGTH_SHORT)
+                .show()
+        }
+
+        else -> {
+
+        }
     }
 
     // Check Firebase Authentication state
