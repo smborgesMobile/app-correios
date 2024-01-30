@@ -20,6 +20,8 @@ class LinkTrackRepositoryImpl(
     private val linkTrackDao: DeliveryDao
 ) : LinkTrackRepository {
 
+    private var isJobRunning = false
+
     override suspend fun fetchTrackByCode(code: String): Flow<List<TrackingModel>> {
         return withContext(Dispatchers.IO) {
             flow {
@@ -51,21 +53,28 @@ class LinkTrackRepositoryImpl(
     }
 
     override suspend fun updateCache() {
+        if (isJobRunning)
+            return
+
         withContext(Dispatchers.IO) {
-            val list = getListFromRoom()
-            list.forEach { delivery ->
-                val response = api.fetchTrackByCode(code = delivery.code)
-                if (response.isSuccessful) {
-                    val deliveryResponse = response.body()
-                    if (deliveryResponse != null) {
-                        try {
-                            linkTrackDao.insertNewDelivery(deliveryResponse.toDeliveryData())
-                        } catch (e: Exception) {
-                            Log.d("LinkTrackRepository", "Error: ${e.message}")
+            try {
+                val list = getListFromRoom()
+                list.forEach { delivery ->
+                    val response = api.fetchTrackByCode(code = delivery.code)
+                    if (response.isSuccessful) {
+                        val deliveryResponse = response.body()
+                        if (deliveryResponse != null) {
+                            try {
+                                linkTrackDao.insertNewDelivery(deliveryResponse.toDeliveryData())
+                            } catch (e: Exception) {
+                                Log.d("LinkTrackRepository", "Error: ${e.message}")
+                            }
                         }
                     }
+                    delay(POOLING_TIME)
                 }
-                delay(POOLING_TIME)
+            } finally {
+                isJobRunning = false
             }
         }
     }
@@ -139,7 +148,7 @@ class LinkTrackRepositoryImpl(
     class CodeNotFoundException(val code: Int, override val message: String) : Exception()
 
     private companion object {
-        const val POOLING_TIME = 2000L
+        const val POOLING_TIME = 2500L
         const val CODE_NOT_FOUND = 422
         const val OBJECT_DONE = "Objeto entregue ao destinatário"
     }
