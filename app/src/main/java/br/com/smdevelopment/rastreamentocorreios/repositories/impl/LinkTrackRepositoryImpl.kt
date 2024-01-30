@@ -9,6 +9,7 @@ import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.repositories.LinkTrackRepository
 import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
@@ -64,6 +65,7 @@ class LinkTrackRepositoryImpl(
                         }
                     }
                 }
+                delay(POOLING_TIME)
             }
         }
     }
@@ -137,6 +139,7 @@ class LinkTrackRepositoryImpl(
     class CodeNotFoundException(val code: Int, override val message: String) : Exception()
 
     private companion object {
+        const val POOLING_TIME = 2000L
         const val CODE_NOT_FOUND = 422
         const val OBJECT_DONE = "Objeto entregue ao destinatário"
     }
