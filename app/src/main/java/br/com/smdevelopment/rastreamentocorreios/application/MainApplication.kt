@@ -37,7 +37,7 @@ class MainApplication : Application(), Configuration.Provider {
     private fun setupNotificationWork() {
         val repeatingRequest = PeriodicWorkRequestBuilder<NotificationCheckWorkManager>(
             UPDATE_WORKER,
-            TimeUnit.MINUTES
+            TimeUnit.HOURS
         ).build()
 
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
@@ -74,8 +74,7 @@ class MainApplication : Application(), Configuration.Provider {
 
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "app_notification_chanel"
-        const val WORKER_TIME = 2L
-        const val UPDATE_WORKER = 5L
+        const val UPDATE_WORKER = 3L
         const val WORKER_NAME = "notification_check_worker"
     }
 }
