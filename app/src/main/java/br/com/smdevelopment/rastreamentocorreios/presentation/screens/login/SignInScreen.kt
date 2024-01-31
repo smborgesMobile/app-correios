@@ -12,19 +12,25 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.firebase.FIREBASE_KEYS
@@ -96,18 +102,28 @@ fun LoginScreen(
                     .clip(
                         shape = RoundedCornerShape(bottomStart = 120.dp)
                     )
-                    .background(primary500)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.character),
-                contentDescription = null,
-                alignment = Alignment.TopEnd,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .offset(y = (-3).dp),
-                contentScale = ContentScale.Crop
-            )
-
+                    .background(primary500),
+                contentAlignment = Alignment.Center // Align the content in the center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Image(
+                        painter = painterResource(id = R.drawable.delivered_start_icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(150.dp)
+                            .width(150.dp)
+                    )
+                    Text(
+                        text = stringResource(R.string.app_name),
+                        color = Color.White,
+                        fontSize = 24.sp,
+                        style = MaterialTheme.typography.body1,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(top = 8.dp),
+                        fontFamily = FontFamily.SansSerif
+                    )
+                }
+            }
             Column(
                 verticalArrangement = Arrangement.Bottom,
                 modifier = Modifier
