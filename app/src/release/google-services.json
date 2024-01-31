@@ -7,25 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:246896357178:android:285e0acb76702d8f9eea03",
+        "mobilesdk_app_id": "1:246896357178:android:79410c72cd489d309eea03",
         "android_client_info": {
-          "package_name": "br.com.smdevelopment.rastreamentocorreios.debug"
+          "package_name": "br.com.smdevelopment.rastreamentocorreios"
         }
       },
       "oauth_client": [
         {
-          "client_id": "246896357178-277mvb8v2l49olj698t9lub7u3gojhhd.apps.googleusercontent.com",
+          "client_id": "246896357178-8qdnlotj3s29eia0nhqm0mtal0muafu4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "br.com.smdevelopment.rastreamentocorreios.debug",
-            "certificate_hash": "9a7fb86fa2b84d449acd9909eb6e7b538f068b74"
-          }
-        },
-        {
-          "client_id": "246896357178-7qg9i2pnrcmmsfqv60609mql8dhfhmqf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "br.com.smdevelopment.rastreamentocorreios.debug",
+            "package_name": "br.com.smdevelopment.rastreamentocorreios",
             "certificate_hash": "b2de9532974fc882d985fa56b575ef49b56c327c"
           }
         },
@@ -52,18 +44,26 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:246896357178:android:5a7ba5426872cdff9eea03",
+        "mobilesdk_app_id": "1:246896357178:android:285e0acb76702d8f9eea03",
         "android_client_info": {
-          "package_name": "br.com.smdevelopment.rastreamentocorreios.release"
+          "package_name": "br.com.smdevelopment.rastreamentocorreios.debug"
         }
       },
       "oauth_client": [
         {
-          "client_id": "246896357178-rrffpj3aet4pfcmtf8vqd474f7qgsb0d.apps.googleusercontent.com",
+          "client_id": "246896357178-277mvb8v2l49olj698t9lub7u3gojhhd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "br.com.smdevelopment.rastreamentocorreios.release",
+            "package_name": "br.com.smdevelopment.rastreamentocorreios.debug",
             "certificate_hash": "9a7fb86fa2b84d449acd9909eb6e7b538f068b74"
+          }
+        },
+        {
+          "client_id": "246896357178-7qg9i2pnrcmmsfqv60609mql8dhfhmqf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.smdevelopment.rastreamentocorreios.debug",
+            "certificate_hash": "b2de9532974fc882d985fa56b575ef49b56c327c"
           }
         },
         {
