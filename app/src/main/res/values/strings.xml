@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Rastreamento Correios</string>
     <string name="input_code_label">Digite o código da sua encomenda</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+
+
     <string name="app_title">Rastreamento de pacotes</string>
     <string name="home_title">Rastrear</string>
     <string name="home_my_products">Minhas encomendas:</string>
@@ -46,4 +50,7 @@ Sábado, das 8h às 14h.</string>
     <string name="sign_out_message">Ao fazer logout, você será desconectado da sua conta. Lembre-se de que precisará fazer login novamente para acessar as funcionalidades exclusivas.</string>
     <string name="fail_to_delete_account">Falha ao deletar a conta, tente novamente mais tarde!</string>
     <string name="fail_to_log_in">Falha ao fazer login</string>
+    <string name="fail_to_sign_in">Falha ao criar account</string>
+    <string name="login">Login</string>
+    <string name="create_account">Create Account</string>
 </resources>

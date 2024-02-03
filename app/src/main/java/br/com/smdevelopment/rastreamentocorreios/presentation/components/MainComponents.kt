@@ -227,6 +227,7 @@ fun PrimaryButton(
     enabled: Boolean = true,
     loading: Boolean = false,
     icon: Int? = null,
+    primaryColor: Color = primary700,
     onCodeClick: (() -> Unit?)? = null
 ) {
     Button(
@@ -238,7 +239,7 @@ fun PrimaryButton(
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp)
             .height(48.dp)
-            .background(chooseButtonBackground(enabled))
+            .background(chooseButtonBackground(enabled, primaryColor))
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -319,11 +320,12 @@ fun LoadingAnimation(
     }
 }
 
-private fun chooseButtonBackground(enabled: Boolean) = if (enabled) {
-    primary700
-} else {
-    disabledButton
-}
+private fun chooseButtonBackground(enabled: Boolean, primaryColor: Color) =
+    if (enabled) {
+        primaryColor
+    } else {
+        disabledButton
+    }
 
 //#endregion --- primary button
 

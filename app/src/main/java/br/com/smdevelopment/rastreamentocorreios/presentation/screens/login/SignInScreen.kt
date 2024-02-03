@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,8 +16,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,13 +29,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.firebase.FIREBASE_KEYS
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.PrimaryButton
@@ -51,6 +58,12 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     val loginState by loginViewModel.googleState.collectAsState()
+    val password by loginViewModel.password.collectAsState()
+    val email by loginViewModel.email.collectAsState()
+    val passwordVisible by loginViewModel.passwordEyes.collectAsState()
+    val createUser by loginViewModel.createPasswordResult.collectAsState()
+    val loginUser by loginViewModel.loginUiState.collectAsState()
+    val validationFields by loginViewModel.fieldValidation.collectAsState()
 
     when (loginState) {
         is LoginViewModel.GoogleState.Success -> {
@@ -65,6 +78,32 @@ fun LoginScreen(
         else -> {
 
         }
+    }
+
+    when (loginUser) {
+        is LoginViewModel.LoginAccountUIState.Success -> {
+            NavigateHome(navController)
+        }
+
+        is LoginViewModel.LoginAccountUIState.Error -> {
+            Toast.makeText(context, stringResource(R.string.fail_to_log_in), Toast.LENGTH_SHORT)
+                .show()
+        }
+
+        else -> {}
+    }
+
+    when (createUser) {
+        LoginViewModel.CreateAccountUIState.Error -> {
+            Toast.makeText(
+                context,
+                stringResource(R.string.fail_to_sign_in),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        LoginViewModel.CreateAccountUIState.Success -> NavigateHome(navController = navController)
+        else -> {}
     }
 
     // Check Firebase Authentication state
@@ -94,53 +133,120 @@ fun LoginScreen(
             .build()
 
         // If the user is not logged in, show the login button
-        Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp)
+                    .height(200.dp)
                     .clip(
                         shape = RoundedCornerShape(bottomStart = 120.dp)
                     )
                     .background(primary500),
                 contentAlignment = Alignment.Center // Align the content in the center
             ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(
-                        painter = painterResource(id = R.drawable.delivered_start_icon),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .height(150.dp)
-                            .width(150.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.app_name),
-                        color = Color.White,
-                        fontSize = 24.sp,
-                        style = MaterialTheme.typography.body1,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(top = 8.dp),
-                        fontFamily = FontFamily.SansSerif
-                    )
-                }
+                Image(
+                    painter = painterResource(id = R.drawable.delivered_start_icon),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .height(150.dp)
+                        .width(150.dp)
+                )
             }
-            Column(
-                verticalArrangement = Arrangement.Bottom,
+
+            OutlinedTextField(
+                value = email,
+                singleLine = true,
+                onValueChange = { newCode ->
+                    loginViewModel.onEmailChange(newCode)
+                },
                 modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .fillMaxSize()
-            ) {
-                PrimaryButton(
-                    title = stringResource(R.string.google_login),
-                    loading = (loginState as? LoginViewModel.GoogleState.Loading)?.isLoading
-                        ?: false,
-                    icon = R.drawable.logo_google
-                ) {
-                    val signInClient = GoogleSignIn.getClient(context, gson)
-                    launcher.launch(signInClient.signInIntent)
+                    .fillMaxWidth()
+                    .padding(
+                        start = 32.dp,
+                        end = 32.dp,
+                        top = 16.dp
+                    ),
+                label = { Text(text = stringResource(id = R.string.email_label)) },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = colorResource(id = R.color.text_field_border_color),
+                    cursorColor = colorResource(id = R.color.text_field_border_color),
+                    focusedLabelColor = colorResource(id = R.color.text_field_border_color),
+                    textColor = colorResource(id = R.color.text_field_editable_color)
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = password,
+                singleLine = true,
+                onValueChange = { newCode ->
+                    loginViewModel.onPasswordChanged(newCode)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp),
+                label = { Text(text = stringResource(id = R.string.password_label)) },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = colorResource(id = R.color.text_field_border_color),
+                    cursorColor = colorResource(id = R.color.text_field_border_color),
+                    focusedLabelColor = colorResource(id = R.color.text_field_border_color),
+                    textColor = colorResource(id = R.color.text_field_editable_color)
+                ),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    IconButton(
+                        onClick = { loginViewModel.changePasswordEyes(!passwordVisible) },
+                        modifier = Modifier.clickable { loginViewModel.changePasswordEyes(!passwordVisible) },
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.password_eyes),
+                            contentDescription = null,
+                            alignment = Alignment.Center
+                        )
+                    }
                 }
-                Spacer(modifier = Modifier.height(24.dp))
+            )
+            PrimaryButton(
+                title = stringResource(R.string.create_account),
+                modifier = Modifier
+                    .padding(
+                        top = 16.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    ),
+                loading = (createUser as? LoginViewModel.CreateAccountUIState.Loading)?.isLoading
+                    ?: false,
+                onCodeClick = loginViewModel::createAccount,
+                enabled = validationFields is LoginViewModel.EmailAndPasswordValidationUiState.AreValid
+            )
+            PrimaryButton(
+                title = stringResource(R.string.login),
+                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                enabled = validationFields is LoginViewModel.EmailAndPasswordValidationUiState.AreValid,
+                onCodeClick = loginViewModel::loginUser,
+                loading = (loginUser as? LoginViewModel.LoginAccountUIState.Loading)?.isLoading
+                    ?: false,
+            )
+        }
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            PrimaryButton(
+                title = stringResource(R.string.google_login),
+                loading = (loginState as? LoginViewModel.GoogleState.Loading)?.isLoading
+                    ?: false,
+                icon = R.drawable.logo_google,
+                primaryColor = primary500
+            ) {
+                val signInClient = GoogleSignIn.getClient(context, gson)
+                launcher.launch(signInClient.signInIntent)
             }
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
@@ -167,4 +273,10 @@ private fun NavigateHome(navController: NavController) {
             restoreState = true
         }
     }
+}
+
+@Preview
+@Composable
+private fun LoginPreview() {
+    LoginScreen(navController = rememberNavController())
 }

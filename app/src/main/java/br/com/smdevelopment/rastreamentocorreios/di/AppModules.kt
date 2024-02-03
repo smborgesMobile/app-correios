@@ -13,13 +13,17 @@ import br.com.smdevelopment.rastreamentocorreios.repositories.impl.AuthRepositor
 import br.com.smdevelopment.rastreamentocorreios.repositories.impl.LinkTrackRepositoryImpl
 import br.com.smdevelopment.rastreamentocorreios.room.DeliveryRoomDatabase
 import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
+import br.com.smdevelopment.rastreamentocorreios.usecase.CreateUserUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.DeliveredUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.InProgressUseCase
+import br.com.smdevelopment.rastreamentocorreios.usecase.LoginUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.TrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.UpdateCacheUseCase
+import br.com.smdevelopment.rastreamentocorreios.usecase.impl.CreateUserUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.DeliveredUserCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.InProgressUseCaseImpl
+import br.com.smdevelopment.rastreamentocorreios.usecase.impl.LoginUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.TrackingUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.UpdateCacheUseCaseImpl
 import com.google.firebase.auth.FirebaseAuth
@@ -74,7 +78,9 @@ val appModule = module {
     }
     viewModel {
         LoginViewModel(
-            authRepository = get()
+            authRepository = get(),
+            firebaseUserCase = get(),
+            firebaseLoginUseCase = get()
         )
     }
     viewModel {
@@ -88,4 +94,6 @@ val appModule = module {
     factory<DeliveredUseCase> { DeliveredUserCaseImpl(repository = get()) }
     factory<InProgressUseCase> { InProgressUseCaseImpl(repository = get()) }
     factory<UpdateCacheUseCase> { UpdateCacheUseCaseImpl(repository = get()) }
+    factory<CreateUserUseCase> { CreateUserUseCaseImpl(auth = FirebaseAuth.getInstance()) }
+    factory<LoginUseCase> { LoginUseCaseImpl(firebaseAuth = FirebaseAuth.getInstance()) }
 }
