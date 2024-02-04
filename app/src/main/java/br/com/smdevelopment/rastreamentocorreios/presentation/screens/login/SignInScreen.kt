@@ -164,7 +164,7 @@ fun LoginScreen(
                     focusedLabelColor = colorResource(id = R.color.text_field_border_color),
                     textColor = colorResource(id = R.color.text_field_editable_color)
                 ),
-                visualTransformation = if (true) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation = if (loginState.showPasswordEyes) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
                     IconButton(
@@ -220,25 +220,12 @@ fun LoginScreen(
 
 @Composable
 private fun NavigateHome(navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(primary500),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.delivered_start_icon),
-            contentDescription = null,
-            alignment = Alignment.Center
-        )
-        navController.navigate(MAIN_ROUTE) {
-            popUpTo(navController.graph.startDestinationRoute.orEmpty()) {
-                inclusive = true
-            }
-            launchSingleTop = true
-            restoreState = true
+    navController.navigate(MAIN_ROUTE) {
+        popUpTo(navController.graph.startDestinationRoute.orEmpty()) {
+            inclusive = true
         }
+        launchSingleTop = true
+        restoreState = true
     }
 }
 
