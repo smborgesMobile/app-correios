@@ -31,8 +31,8 @@ class LoginViewModel(
     fun googleSignIn(credential: AuthCredential) {
         _loginUiState.update { currentState ->
             currentState.copy(
-                showGoogleLoginSuccess = true,
-                showGoogleButtonLoading = false
+                showGoogleLoginSuccess = false,
+                showGoogleButtonLoading = true
             )
         }
         viewModelScope.launch(Dispatchers.Default) {
