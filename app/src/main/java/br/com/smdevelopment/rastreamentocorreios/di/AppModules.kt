@@ -39,7 +39,8 @@ val appModule = module {
     factory<LinkTrackRepository> {
         LinkTrackRepositoryImpl(
             api = get(),
-            linkTrackDao = get()
+            linkTrackDao = get(),
+            firebaseAuth = FirebaseAuth.getInstance()
         )
     }
     factory<AuthRepository> {

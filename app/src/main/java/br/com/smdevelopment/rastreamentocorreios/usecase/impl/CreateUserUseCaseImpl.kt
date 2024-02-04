@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.usecase.impl
 
+import android.util.Log
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
 import br.com.smdevelopment.rastreamentocorreios.usecase.CreateUserUseCase
 import com.google.android.gms.tasks.OnCompleteListener
@@ -21,6 +22,7 @@ class CreateUserUseCaseImpl(private val auth: FirebaseAuth) : CreateUserUseCase 
             if (task.isSuccessful) {
                 trySend(Resource.Success(true))
             } else {
+                Log.d(TAG, "Error: ${task.exception?.message}")
                 trySend(Resource.Error(message = "Failed to create user: ${task.exception?.message}"))
             }
             close()

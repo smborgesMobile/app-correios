@@ -8,6 +8,7 @@ import br.com.smdevelopment.rastreamentocorreios.entities.view.EventModel
 import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.repositories.LinkTrackRepository
 import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,8 @@ import retrofit2.Response
 
 class LinkTrackRepositoryImpl(
     private val api: LinkTrackApi,
-    private val linkTrackDao: DeliveryDao
+    private val linkTrackDao: DeliveryDao,
+    private val firebaseAuth: FirebaseAuth
 ) : LinkTrackRepository {
 
     private var isJobRunning = false
@@ -80,13 +82,15 @@ class LinkTrackRepositoryImpl(
     }
 
     private fun getListFromRoom(): List<TrackingModel> {
-        return linkTrackDao.getAllDeliveries()
+        Log.d("sm.borges", "user id: ${firebaseAuth.currentUser?.uid.orEmpty()}")
+        return linkTrackDao.getAllDeliveries(firebaseAuth.currentUser?.uid.orEmpty())
             ?.sortedWith(compareByDescending { it.events.firstOrNull()?.date })
             ?: emptyList()
     }
 
     private fun TrackingResponse.toDeliveryData(): TrackingModel {
         return TrackingModel(
+            userId = firebaseAuth.currentUser?.uid.orEmpty(),
             code = this.code,
             host = this.host,
             last = this.last.orEmpty(),

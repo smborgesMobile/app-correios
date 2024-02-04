@@ -11,6 +11,8 @@ import kotlinx.parcelize.Parcelize
 data class TrackingModel(
     @PrimaryKey
     val code: String,
+    @ColumnInfo(name = "userId")
+    val userId: String,
     @ColumnInfo(name = "link")
     val host: String,
     @ColumnInfo(name = "events")

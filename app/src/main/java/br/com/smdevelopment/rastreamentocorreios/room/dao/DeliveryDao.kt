@@ -12,6 +12,6 @@ interface DeliveryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNewDelivery(delivery: TrackingModel)
 
-    @Query("SELECT * FROM delivery")
-    fun getAllDeliveries(): List<TrackingModel>?
+    @Query("SELECT * FROM delivery WHERE userId = :userId")
+    fun getAllDeliveries(userId: String): List<TrackingModel>?
 }

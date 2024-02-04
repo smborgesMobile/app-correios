@@ -405,25 +405,6 @@ private fun DeliveryCard(deliveryItem: TrackingModel, onClick: ((TrackingModel) 
 
 @Composable
 @Preview
-fun CardPreview() {
-    DeliveryCard(
-        deliveryItem = TrackingModel(
-            "123456789",
-            "Correios",
-            emptyList(),
-            0.0,
-            1,
-            "2222",
-            "2222",
-            R.drawable.delivered_start_icon,
-            false
-        ),
-        onClick = {}
-    )
-}
-
-@Composable
-@Preview
 fun EmptyState() {
     Column(
         Modifier
