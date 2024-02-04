@@ -20,6 +20,7 @@ class CreateUserUseCaseImpl(private val auth: FirebaseAuth) : CreateUserUseCase 
     ): Flow<Resource<Boolean>> = callbackFlow {
         val onCompleteListener = OnCompleteListener<AuthResult> { task ->
             if (task.isSuccessful) {
+                Log.d(TAG, "Successo: ${task.exception?.message}")
                 trySend(Resource.Success(true))
             } else {
                 Log.d(TAG, "Error: ${task.exception?.message}")

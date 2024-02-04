@@ -86,7 +86,8 @@ class LoginViewModel(
                             _loginUiState.update { currentState ->
                                 currentState.copy(
                                     showCreateUserSuccess = true,
-                                    showCreateUserLoading = false
+                                    showCreateUserLoading = false,
+                                    showCreateUserError = false
                                 )
                             }
                         }
@@ -120,8 +121,7 @@ class LoginViewModel(
                 _loginUiState.update { currentState ->
                     currentState.copy(
                         showLoginError = true,
-                        showLoginLoading = false,
-                        showLoginSuccess = false
+                        showLoginLoading = false
                     )
                 }
             }.collect {
@@ -137,8 +137,7 @@ class LoginViewModel(
                     _loginUiState.update { currentState ->
                         currentState.copy(
                             showLoginError = true,
-                            showLoginLoading = false,
-                            showLoginSuccess = false
+                            showLoginLoading = false
                         )
                     }
                 }
