@@ -47,7 +47,6 @@ import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary500
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import org.koin.androidx.compose.koinViewModel
 
@@ -57,44 +56,14 @@ fun LoginScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
-    val loginState by loginViewModel.googleState.collectAsState()
-    val password by loginViewModel.password.collectAsState()
-    val email by loginViewModel.email.collectAsState()
-    val passwordVisible by loginViewModel.passwordEyes.collectAsState()
-    val createUser by loginViewModel.createPasswordResult.collectAsState()
-    val loginUser by loginViewModel.loginUiState.collectAsState()
-    val validationFields by loginViewModel.fieldValidation.collectAsState()
+    val loginState: LoginUiState by loginViewModel.loginUiState.collectAsState()
 
-    when (loginState) {
-        is LoginViewModel.GoogleState.Success -> {
+    when {
+        loginState.showLoginSuccess || loginState.showGoogleLoginSuccess || loginState.showCreateUserSuccess -> {
             NavigateHome(navController)
         }
 
-        is LoginViewModel.GoogleState.Error -> {
-            Toast.makeText(context, stringResource(R.string.fail_to_log_in), Toast.LENGTH_SHORT)
-                .show()
-        }
-
-        else -> {
-
-        }
-    }
-
-    when (loginUser) {
-        is LoginViewModel.LoginAccountUIState.Success -> {
-            NavigateHome(navController)
-        }
-
-        is LoginViewModel.LoginAccountUIState.Error -> {
-            Toast.makeText(context, stringResource(R.string.fail_to_log_in), Toast.LENGTH_SHORT)
-                .show()
-        }
-
-        else -> {}
-    }
-
-    when (createUser) {
-        LoginViewModel.CreateAccountUIState.Error -> {
+        loginState.showCreateUserError || loginState.showGoogleLoginError -> {
             Toast.makeText(
                 context,
                 stringResource(R.string.fail_to_sign_in),
@@ -102,16 +71,17 @@ fun LoginScreen(
             ).show()
         }
 
-        LoginViewModel.CreateAccountUIState.Success -> NavigateHome(navController = navController)
-        else -> {}
+        loginState.showLoginError -> {
+            Toast.makeText(
+                context,
+                stringResource(R.string.fail_to_log_in),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
-    // Check Firebase Authentication state
-    val firebaseAuth = FirebaseAuth.getInstance()
-    val currentUser = firebaseAuth.currentUser
-
     // If the user is already logged in, navigate to the main screen
-    if (currentUser != null) {
+    if (loginViewModel.currentUser != null) {
         NavigateHome(navController)
     } else {
         val launcher = rememberLauncherForActivityResult(
@@ -154,7 +124,7 @@ fun LoginScreen(
             }
 
             OutlinedTextField(
-                value = email,
+                value = loginState.userEmail,
                 singleLine = true,
                 onValueChange = { newCode ->
                     loginViewModel.onEmailChange(newCode)
@@ -178,7 +148,7 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
-                value = password,
+                value = loginState.userPassword,
                 singleLine = true,
                 onValueChange = { newCode ->
                     loginViewModel.onPasswordChanged(newCode)
@@ -194,12 +164,12 @@ fun LoginScreen(
                     focusedLabelColor = colorResource(id = R.color.text_field_border_color),
                     textColor = colorResource(id = R.color.text_field_editable_color)
                 ),
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation = if (true) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
                     IconButton(
-                        onClick = { loginViewModel.changePasswordEyes(!passwordVisible) },
-                        modifier = Modifier.clickable { loginViewModel.changePasswordEyes(!passwordVisible) },
+                        onClick = { loginViewModel.changePasswordEyes(!loginState.showPasswordEyes) },
+                        modifier = Modifier.clickable { loginViewModel.changePasswordEyes(!loginState.showPasswordEyes) },
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.password_eyes),
@@ -217,18 +187,16 @@ fun LoginScreen(
                         start = 16.dp,
                         end = 16.dp
                     ),
-                loading = (createUser as? LoginViewModel.CreateAccountUIState.Loading)?.isLoading
-                    ?: false,
+                loading = loginState.showCreateUserLoading,
                 onCodeClick = loginViewModel::createAccount,
-                enabled = validationFields is LoginViewModel.EmailAndPasswordValidationUiState.AreValid
+                enabled = loginState.enableCreateAccountButton
             )
             PrimaryButton(
                 title = stringResource(R.string.login),
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                enabled = validationFields is LoginViewModel.EmailAndPasswordValidationUiState.AreValid,
+                enabled = loginState.enableLoginButton,
                 onCodeClick = loginViewModel::loginUser,
-                loading = (loginUser as? LoginViewModel.LoginAccountUIState.Loading)?.isLoading
-                    ?: false,
+                loading = loginState.showLoginLoading,
             )
         }
         Column(
@@ -238,8 +206,7 @@ fun LoginScreen(
         ) {
             PrimaryButton(
                 title = stringResource(R.string.google_login),
-                loading = (loginState as? LoginViewModel.GoogleState.Loading)?.isLoading
-                    ?: false,
+                loading = loginState.showGoogleButtonLoading,
                 icon = R.drawable.logo_google,
                 primaryColor = primary500
             ) {

@@ -7,11 +7,13 @@ import br.com.smdevelopment.rastreamentocorreios.repositories.AuthRepository
 import br.com.smdevelopment.rastreamentocorreios.usecase.CreateUserUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.LoginUseCase
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -20,41 +22,38 @@ class LoginViewModel(
     private val firebaseLoginUseCase: LoginUseCase
 ) : ViewModel() {
 
-    private var _googleState = MutableStateFlow<GoogleState>(GoogleState.Loading(false))
-    val googleState: StateFlow<GoogleState> = _googleState
+    private var _loginUiState = MutableStateFlow(LoginUiState())
+    val loginUiState: StateFlow<LoginUiState> = _loginUiState.asStateFlow()
 
-    private var _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password
-
-    private var _email = MutableStateFlow("")
-    val email: StateFlow<String> = _email
-
-    private var _passwordEyes = MutableStateFlow(false)
-    val passwordEyes: StateFlow<Boolean> = _passwordEyes
-
-    private var _createPasswordResult =
-        MutableStateFlow<CreateAccountUIState>(CreateAccountUIState.Initial)
-    val createPasswordResult: StateFlow<CreateAccountUIState> = _createPasswordResult
-
-    private var _fieldValidation =
-        MutableStateFlow<EmailAndPasswordValidationUiState>(EmailAndPasswordValidationUiState.AreInvalid)
-    val fieldValidation: StateFlow<EmailAndPasswordValidationUiState> = _fieldValidation
-
-    private var _loginUiState =
-        MutableStateFlow<LoginAccountUIState>(LoginAccountUIState.Initial)
-    val loginUiState: StateFlow<LoginAccountUIState> = _loginUiState
+    val currentUser =
+        FirebaseAuth.getInstance().currentUser
 
     fun googleSignIn(credential: AuthCredential) {
-        _googleState.value = GoogleState.Loading(true)
+        _loginUiState.update { currentState ->
+            currentState.copy(
+                showGoogleLoginSuccess = true,
+                showGoogleButtonLoading = false
+            )
+        }
         viewModelScope.launch(Dispatchers.Default) {
             authRepository.googleSignIn(credential).collect {
                 when (it) {
                     is Resource.Success -> {
-                        _googleState.emit(GoogleState.Success)
+                        _loginUiState.update { currentState ->
+                            currentState.copy(
+                                showGoogleLoginSuccess = true,
+                                showGoogleButtonLoading = false
+                            )
+                        }
                     }
 
                     is Resource.Error -> {
-                        _googleState.emit(GoogleState.Error)
+                        _loginUiState.update { currentState ->
+                            currentState.copy(
+                                showGoogleLoginError = false,
+                                showGoogleButtonLoading = false
+                            )
+                        }
                     }
 
                     else -> {}
@@ -65,66 +64,119 @@ class LoginViewModel(
 
     fun createAccount() {
         viewModelScope.launch(Dispatchers.Default) {
-            _createPasswordResult.emit(CreateAccountUIState.Loading(true))
-            firebaseUserCase.createUserAndPassword(email.value, password.value)
+            _loginUiState.update { currentState ->
+                currentState.copy(showCreateUserLoading = true)
+            }
+
+            firebaseUserCase.createUserAndPassword(
+                _loginUiState.value.userEmail,
+                _loginUiState.value.userPassword
+            )
                 .catch {
-                    _createPasswordResult.emit(CreateAccountUIState.Error)
+                    _loginUiState.update { currentState ->
+                        currentState.copy(
+                            showCreateUserError = true,
+                            showCreateUserLoading = false
+                        )
+                    }
                 }
-                .collectLatest {
+                .collect {
                     when (it) {
                         is Resource.Success -> {
-                            _createPasswordResult.emit(CreateAccountUIState.Success)
+                            _loginUiState.update { currentState ->
+                                currentState.copy(
+                                    showCreateUserSuccess = true,
+                                    showCreateUserLoading = false
+                                )
+                            }
                         }
 
                         is Resource.Error -> {
-                            _createPasswordResult.emit(CreateAccountUIState.Error)
+                            _loginUiState.update { currentState ->
+                                currentState.copy(
+                                    showCreateUserError = true,
+                                    showCreateUserLoading = false
+                                )
+                            }
                         }
 
-                        else -> {}
-                    }
+                        else -> {
 
-                    _createPasswordResult.emit(CreateAccountUIState.Loading(false))
+                        }
+                    }
                 }
         }
     }
 
     fun loginUser() {
         viewModelScope.launch(Dispatchers.Default) {
-            _loginUiState.emit(LoginAccountUIState.Loading(true))
-            firebaseLoginUseCase.login(password.value, email.value)
-                .catch {
-                    _loginUiState.value = LoginAccountUIState.Error
+            _loginUiState.update { currentState ->
+                currentState.copy(showLoginLoading = true)
+            }
+            firebaseLoginUseCase.login(
+                _loginUiState.value.userPassword,
+                _loginUiState.value.userEmail
+            ).catch {
+                _loginUiState.update { currentState ->
+                    currentState.copy(
+                        showLoginError = true,
+                        showLoginLoading = false,
+                        showLoginSuccess = false
+                    )
                 }
-                .collectLatest {
-                    if (it) {
-                        _loginUiState.value = LoginAccountUIState.Success
-                    } else {
-                        _loginUiState.value = LoginAccountUIState.Error
+            }.collect {
+                if (it) {
+                    _loginUiState.update { currentState ->
+                        currentState.copy(
+                            showLoginSuccess = true,
+                            showLoginLoading = false,
+                            showLoginError = false
+                        )
                     }
-                    _createPasswordResult.emit(CreateAccountUIState.Loading(false))
+                } else {
+                    _loginUiState.update { currentState ->
+                        currentState.copy(
+                            showLoginError = true,
+                            showLoginLoading = false,
+                            showLoginSuccess = false
+                        )
+                    }
                 }
+            }
         }
     }
 
     fun changePasswordEyes(hide: Boolean) {
-        _passwordEyes.value = hide
+        _loginUiState.update { currentState ->
+            currentState.copy(showPasswordEyes = hide)
+        }
     }
 
     fun onEmailChange(email: String) {
-        validateFields(_email.value, _password.value)
-        _email.value = email
+        _loginUiState.update { currentState ->
+            currentState.copy(
+                userEmail = email,
+                showCreateUserError = false,
+                showLoginError = false,
+                enableCreateAccountButton = isValidEmail(currentState.userEmail)
+                        && isValidPassword(currentState.userPassword),
+                enableLoginButton = isValidEmail(currentState.userEmail)
+                        && isValidPassword(currentState.userPassword)
+            )
+        }
     }
 
     fun onPasswordChanged(password: String) {
-        validateFields(_email.value, _password.value)
-        _password.value = password
-    }
-
-    private fun validateFields(email: String, password: String) {
-        if (isValidEmail(email) && isValidPassword(password)) {
-            _fieldValidation.value = EmailAndPasswordValidationUiState.AreValid
-        } else {
-            _fieldValidation.value = EmailAndPasswordValidationUiState.AreInvalid
+        _loginUiState.update { currentState ->
+            currentState.copy(
+                userPassword = password,
+                showCreateUserError = false,
+                showLoginError = false,
+                enableCreateAccountButton = isValidEmail(currentState.userEmail)
+                        && isValidPassword(password),
+                enableLoginButton = isValidEmail(currentState.userEmail)
+                        && isValidPassword(password)
+            )
         }
     }
 
@@ -134,33 +186,6 @@ class LoginViewModel(
     }
 
     private fun isValidPassword(password: String): Boolean {
-        // Implement your password validation logic here
-        // Example: Return true if the password meets certain criteria
         return password.length >= 6
-    }
-
-    sealed interface GoogleState {
-        data class Loading(val isLoading: Boolean) : GoogleState
-        object Success : GoogleState
-        object Error : GoogleState
-    }
-
-    sealed interface CreateAccountUIState {
-        data class Loading(val isLoading: Boolean) : CreateAccountUIState
-        object Success : CreateAccountUIState
-        object Error : CreateAccountUIState
-        object Initial : CreateAccountUIState
-    }
-
-    sealed interface LoginAccountUIState {
-        data class Loading(val isLoading: Boolean) : LoginAccountUIState
-        object Success : LoginAccountUIState
-        object Error : LoginAccountUIState
-        object Initial : LoginAccountUIState
-    }
-
-    sealed interface EmailAndPasswordValidationUiState {
-        object AreValid : EmailAndPasswordValidationUiState
-        object AreInvalid : EmailAndPasswordValidationUiState
     }
 }

@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.usecase.impl
 
+import android.util.Log
 import br.com.smdevelopment.rastreamentocorreios.usecase.LoginUseCase
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
@@ -17,13 +18,18 @@ class LoginUseCaseImpl(private val firebaseAuth: FirebaseAuth) : LoginUseCase {
             if (task.isSuccessful) {
                 trySend(true)
             } else {
+                Log.d(TAG, "Error: ${task.exception?.message}")
                 trySend(false)
             }
             close()
         }
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(onCompleteListener).await()
     }.flowOn(Dispatchers.IO)
 
+
+    private companion object {
+        const val TAG = "LoginUseCaseImpl"
+    }
 }

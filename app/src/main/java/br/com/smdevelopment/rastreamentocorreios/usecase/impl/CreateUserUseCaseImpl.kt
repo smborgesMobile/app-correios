@@ -29,4 +29,8 @@ class CreateUserUseCaseImpl(private val auth: FirebaseAuth) : CreateUserUseCase 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(onCompleteListener).await()
     }.flowOn(Dispatchers.IO)
+
+    private companion object {
+        const val TAG = "CreateUserUseCaseImpl"
+    }
 }

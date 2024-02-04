@@ -57,6 +57,7 @@ class MainViewModel : ViewModel() {
         _showLogoutDialog.value = false
         _sideMenuUiState.value = SideMenuUiState.Login
         FirebaseAuth.getInstance().signOut()
+        FirebaseAuth.getInstance().currentUser?.delete()
     }
 
     fun onLogoutButtonClick() {
