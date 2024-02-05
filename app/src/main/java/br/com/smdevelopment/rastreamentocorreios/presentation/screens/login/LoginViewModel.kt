@@ -50,7 +50,7 @@ class LoginViewModel(
                     is Resource.Error -> {
                         _loginUiState.update { currentState ->
                             currentState.copy(
-                                showGoogleLoginError = false,
+                                showGoogleLoginError = true,
                                 showGoogleButtonLoading = false
                             )
                         }
