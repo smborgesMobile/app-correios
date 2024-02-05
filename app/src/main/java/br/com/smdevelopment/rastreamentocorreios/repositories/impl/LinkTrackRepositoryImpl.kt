@@ -36,6 +36,7 @@ class LinkTrackRepositoryImpl(
                             emit(getListFromRoom())
                         } catch (e: Exception) {
                             Log.d("LinkTrackRepository", "Error: ${e.message}")
+                            Log.d("LinkTrackRepository", "Error: $e")
                         }
                     } else {
                         handleBackendException(response)
@@ -69,6 +70,7 @@ class LinkTrackRepositoryImpl(
                             try {
                                 linkTrackDao.insertNewDelivery(deliveryResponse.toDeliveryData())
                             } catch (e: Exception) {
+                                Log.d("LinkTrackRepository", "Error: ${e}")
                                 Log.d("LinkTrackRepository", "Error: ${e.message}")
                             }
                         }

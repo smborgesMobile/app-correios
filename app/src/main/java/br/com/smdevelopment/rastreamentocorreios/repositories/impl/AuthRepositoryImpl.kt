@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.repositories.impl
 
+import android.util.Log
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
 import br.com.smdevelopment.rastreamentocorreios.repositories.AuthRepository
 import com.google.firebase.auth.AuthCredential
@@ -18,7 +19,12 @@ class AuthRepositoryImpl(private val firebaseAuth: FirebaseAuth) : AuthRepositor
             val result: AuthResult = firebaseAuth.signInWithCredential(credential).await()
             emit(Resource.Success(result))
         }.catch {
+            Log.d(TAG, "Error: ${it.message}")
             emit(Resource.Error(message = "Erro ao realizar login com o Google"))
         }
+    }
+
+    companion object {
+        const val TAG = "AuthRepositoryImpl"
     }
 }

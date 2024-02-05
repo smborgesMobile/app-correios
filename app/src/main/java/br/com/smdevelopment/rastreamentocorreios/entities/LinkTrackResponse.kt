@@ -1,7 +1,10 @@
 package br.com.smdevelopment.rastreamentocorreios.entities
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class TrackingResponse(
     @SerializedName("codigo")
     val code: String,
@@ -16,9 +19,10 @@ data class TrackingResponse(
     @SerializedName("servico")
     val service: String? = null,
     @SerializedName("ultimo")
-    val last: String?= null
-)
+    val last: String? = null
+) : Parcelable
 
+@Parcelize
 data class Event(
     @SerializedName("data")
     val date: String,
@@ -30,4 +34,4 @@ data class Event(
     val status: String,
     @SerializedName("subStatus")
     val subStatus: List<String>
-)
+) : Parcelable
