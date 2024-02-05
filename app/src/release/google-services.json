@@ -22,22 +22,6 @@
           }
         },
         {
-          "client_id": "246896357178-8qdnlotj3s29eia0nhqm0mtal0muafu4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "br.com.smdevelopment.rastreamentocorreios",
-            "certificate_hash": "b2de9532974fc882d985fa56b575ef49b56c327c"
-          }
-        },
-        {
-          "client_id": "246896357178-jr1ds6lboou046cvv11pqnnqni92fa1t.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "br.com.smdevelopment.rastreamentocorreios",
-            "certificate_hash": "9a7fb86fa2b84d449acd9909eb6e7b538f068b74"
-          }
-        },
-        {
           "client_id": "246896357178-mp30ql3pf0dc75c223254b0b32clqftl.apps.googleusercontent.com",
           "client_type": 3
         }
