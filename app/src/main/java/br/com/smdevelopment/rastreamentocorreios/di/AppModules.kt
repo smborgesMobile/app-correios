@@ -13,12 +13,14 @@ import br.com.smdevelopment.rastreamentocorreios.repositories.impl.AuthRepositor
 import br.com.smdevelopment.rastreamentocorreios.repositories.impl.LinkTrackRepositoryImpl
 import br.com.smdevelopment.rastreamentocorreios.room.DeliveryRoomDatabase
 import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
+import br.com.smdevelopment.rastreamentocorreios.usecase.ChangePasswordUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.CreateUserUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.DeliveredUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.InProgressUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.LoginUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.TrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.UpdateCacheUseCase
+import br.com.smdevelopment.rastreamentocorreios.usecase.impl.ChangePasswordUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.CreateUserUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.DeliveredUserCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseCase
@@ -81,7 +83,8 @@ val appModule = module {
         LoginViewModel(
             authRepository = get(),
             firebaseUserCase = get(),
-            firebaseLoginUseCase = get()
+            firebaseLoginUseCase = get(),
+            changePasswordUseCase = get(),
         )
     }
     viewModel {
@@ -97,4 +100,5 @@ val appModule = module {
     factory<UpdateCacheUseCase> { UpdateCacheUseCaseImpl(repository = get()) }
     factory<CreateUserUseCase> { CreateUserUseCaseImpl(auth = FirebaseAuth.getInstance()) }
     factory<LoginUseCase> { LoginUseCaseImpl(firebaseAuth = FirebaseAuth.getInstance()) }
+    factory<ChangePasswordUseCase> { ChangePasswordUseCaseImpl(firebaseAuth =  FirebaseAuth.getInstance()) }
 }

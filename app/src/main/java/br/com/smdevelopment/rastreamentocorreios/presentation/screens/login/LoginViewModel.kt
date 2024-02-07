@@ -1,9 +1,11 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.screens.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
 import br.com.smdevelopment.rastreamentocorreios.repositories.AuthRepository
+import br.com.smdevelopment.rastreamentocorreios.usecase.ChangePasswordUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.CreateUserUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.LoginUseCase
 import com.google.firebase.auth.AuthCredential
@@ -19,7 +21,8 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val authRepository: AuthRepository,
     private val firebaseUserCase: CreateUserUseCase,
-    private val firebaseLoginUseCase: LoginUseCase
+    private val firebaseLoginUseCase: LoginUseCase,
+    private val changePasswordUseCase: ChangePasswordUseCase
 ) : ViewModel() {
 
     private var _loginUiState = MutableStateFlow(LoginUiState())
@@ -59,6 +62,36 @@ class LoginViewModel(
                     else -> {}
                 }
             }
+        }
+    }
+
+    fun sendChangePasswordEmail() {
+        viewModelScope.launch(Dispatchers.Default) {
+            changePasswordUseCase.changePassword(_loginUiState.value.userEmail)
+                .catch {
+                    _loginUiState.update { currentState ->
+                        currentState.copy(
+                            showChangePasswordError = true
+                        )
+                    }
+                    Log.d("sm.borges", "exception: $it")
+                }
+                .collect { success ->
+                    if (success) {
+                        _loginUiState.update { currentState ->
+                            currentState.copy(
+                                showChangePasswordSuccess = true,
+                                showChangePasswordError = false // Reset error flag
+                            )
+                        }
+                    } else {
+                        _loginUiState.update { currentState ->
+                            currentState.copy(
+                                showChangePasswordError = true
+                            )
+                        }
+                    }
+                }
         }
     }
 
@@ -160,7 +193,9 @@ class LoginViewModel(
                 enableCreateAccountButton = isValidEmail(currentState.userEmail)
                         && isValidPassword(currentState.userPassword),
                 enableLoginButton = isValidEmail(currentState.userEmail)
-                        && isValidPassword(currentState.userPassword)
+                        && isValidPassword(currentState.userPassword),
+                showChangePasswordSuccess = false,
+                showChangePasswordError = false
             )
         }
     }
@@ -186,5 +221,11 @@ class LoginViewModel(
 
     private fun isValidPassword(password: String): Boolean {
         return password.length >= 6
+    }
+
+    fun onPasswordErrorDisplayed() {
+        _loginUiState.update {
+            it.copy(showChangePasswordError = false)
+        }
     }
 }

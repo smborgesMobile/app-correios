@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -37,6 +37,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import br.com.smdevelopment.rastreamentocorreios.R
@@ -75,6 +76,23 @@ fun LoginScreen(
             Toast.makeText(
                 context,
                 stringResource(R.string.fail_to_log_in),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        loginState.showChangePasswordError -> {
+            loginViewModel.onPasswordErrorDisplayed()
+            Toast.makeText(
+                context,
+                stringResource(R.string.fail_to_change_password),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        loginState.showChangePasswordSuccess -> {
+            Toast.makeText(
+                context,
+                stringResource(R.string.success_to_send_reset_password),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -198,22 +216,17 @@ fun LoginScreen(
                 onCodeClick = loginViewModel::loginUser,
                 loading = loginState.showLoginLoading,
             )
-        }
-        Column(
-            verticalArrangement = Arrangement.Bottom,
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            PrimaryButton(
-                title = stringResource(R.string.google_login),
-                loading = loginState.showGoogleButtonLoading,
-                icon = R.drawable.logo_google,
-                primaryColor = primary500
-            ) {
-                val signInClient = GoogleSignIn.getClient(context, gson)
-                launcher.launch(signInClient.signInIntent)
-            }
-            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = stringResource(R.string.forgot_password),
+                modifier = Modifier
+                    .padding(top = 16.dp, start = 32.dp, end = 16.dp)
+                    .clickable {
+                        loginViewModel.sendChangePasswordEmail()
+                    },
+                style = MaterialTheme.typography.body1,
+                fontSize = 14.sp,
+                color = Color.Black
+            )
         }
     }
 }

@@ -14,5 +14,7 @@ data class LoginUiState(
     val showCreateUserSuccess: Boolean = false,
     val enableCreateAccountButton: Boolean = false,
     val enableLoginButton: Boolean = false,
-    val showPasswordEyes: Boolean = false
+    val showPasswordEyes: Boolean = false,
+    val showChangePasswordError: Boolean = false,
+    val showChangePasswordSuccess: Boolean = false
 )
