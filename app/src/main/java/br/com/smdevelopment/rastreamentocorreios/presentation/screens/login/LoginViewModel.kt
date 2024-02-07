@@ -209,7 +209,9 @@ class LoginViewModel(
                 enableCreateAccountButton = isValidEmail(currentState.userEmail)
                         && isValidPassword(password),
                 enableLoginButton = isValidEmail(currentState.userEmail)
-                        && isValidPassword(password)
+                        && isValidPassword(password),
+                showChangePasswordSuccess = false,
+                showChangePasswordError = false
             )
         }
     }
