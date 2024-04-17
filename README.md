@@ -12,7 +12,7 @@ O App tem finalidade de fazer o rastreamento de encomendas dos correios sem um a
 5. Rest Retrofit
 6. Kotlin Flows
 7. Coroutines 
-8. Hilt for dependencie injection 
+8. Hilt for dependencie injection : Migrado pro Koin
 
 &nbsp; 
 &nbsp; 
