@@ -14,6 +14,8 @@ O App tem finalidade de fazer o rastreamento de encomendas dos correios sem um a
 7. Coroutines 
 8. Hilt for dependencie injection : Migrado pro Koin
 
+Link playstore: https://play.google.com/store/apps/details?id=br.com.smdevelopment.rastreamentocorreios&pli=1
+
 &nbsp; 
 &nbsp; 
 
