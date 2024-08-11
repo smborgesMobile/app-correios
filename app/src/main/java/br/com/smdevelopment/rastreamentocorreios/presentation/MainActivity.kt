@@ -58,6 +58,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             RastreamentoCorreiosTheme {
                 val systemUiController = rememberSystemUiController()
+
+
                 SideEffect {
                     systemUiController.setStatusBarColor(
                         color = primary700,

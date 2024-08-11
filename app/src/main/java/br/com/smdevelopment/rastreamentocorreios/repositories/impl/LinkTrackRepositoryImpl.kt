@@ -32,6 +32,7 @@ class LinkTrackRepositoryImpl(
                     val deliveryResponse = response.body()
                     if (deliveryResponse != null) {
                         try {
+                            Log.d("sm.borges", "deliveryResponse: $response")
                             linkTrackDao.insertNewDelivery(deliveryResponse.toDeliveryData())
                             emit(getListFromRoom())
                         } catch (e: Exception) {
@@ -161,6 +162,6 @@ class LinkTrackRepositoryImpl(
         const val POOLING_TIME = 2500L
         const val CODE_NOT_FOUND = 422
         const val OBJECT_DONE = "Objeto entregue ao destinatário"
-        const val FAILED_TO_LOCATE = "Dados não encontrados na base dos correios"
+        const val FAILED_TO_LOCATE = "Objeto encaminhado"
     }
 }
