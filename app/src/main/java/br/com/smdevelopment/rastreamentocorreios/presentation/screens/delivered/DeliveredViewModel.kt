@@ -2,7 +2,6 @@ package br.com.smdevelopment.rastreamentocorreios.presentation.screens.delivered
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.usecase.DeliveredUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,40 +13,53 @@ class DeliveredViewModel(
     private val deliveredUseCase: DeliveredUseCase
 ) : ViewModel() {
 
-    private val _deliveredList = MutableStateFlow<List<TrackingModel>>(emptyList())
-    val deliveredList: StateFlow<List<TrackingModel>> get() = _deliveredList
-
-    private val _emptyState = MutableStateFlow(false)
-    val emptyState: StateFlow<Boolean> get() = _emptyState
-
-    fun getDeliveredList() {
-        viewModelScope.launch(Dispatchers.Default) {
-            deliveredUseCase.fetchDelivered()
-                .catch {
-                    _emptyState.value = true
-                }
-                .collect {
-                    _deliveredList.value = it
-                    _emptyState.value = it.isEmpty()
-                }
-        }
-    }
+    // UI state holding all relevant properties
+    private val _uiState = MutableStateFlow(DeliveredUiState())
+    val uiState: StateFlow<DeliveredUiState> get() = _uiState
 
     fun onEvent(event: DeliveredEvent) {
         when (event) {
             is DeliveredEvent.OnDeleteClick -> {
                 deleteDelivery(event)
             }
+            is DeliveredEvent.FetchNewItems -> {
+                getDeliveredList()
+            }
+        }
+    }
+
+    private fun getDeliveredList() {
+        viewModelScope.launch(Dispatchers.Default) {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            deliveredUseCase.fetchDelivered()
+                .catch {
+                    _uiState.value = _uiState.value.copy(
+                        emptyState = true,
+                        isLoading = false
+                    )
+                }
+                .collect { result ->
+                    _uiState.value = _uiState.value.copy(
+                        deliveredList = result,
+                        emptyState = result.isEmpty(),
+                        isLoading = false
+                    )
+                }
         }
     }
 
     private fun deleteDelivery(event: DeliveredEvent.OnDeleteClick) {
         viewModelScope.launch {
-            val deliveryList = _deliveredList.value.toMutableList()
+            val deliveryList = _uiState.value.deliveredList.toMutableList()
             deliveryList.remove(event.item)
 
-            // update live data
-            _deliveredList.value = deliveryList
+            // Update UI state
+            _uiState.value = _uiState.value.copy(
+                deliveredList = deliveryList,
+                emptyState = deliveryList.isEmpty()
+            )
+
+            // Perform delete operation
             deliveredUseCase.deleteDelivery(event.item)
         }
     }

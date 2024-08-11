@@ -21,10 +21,19 @@ class LinkTrackViewModel(
     val uiState: StateFlow<LinkTrackUiState> get() = _uiState.asStateFlow()
 
     init {
-        fetchAllLinkTrackItems()
+        onEvent(LinkTrackEvent.FetchAllLinkTrackItems)
     }
 
-    fun onCodeChange(code: String) {
+    fun onEvent(event: LinkTrackEvent) {
+        when (event) {
+            is LinkTrackEvent.CodeChanged -> onCodeChange(event.code)
+            is LinkTrackEvent.DeleteItem -> deleteItem(event.trackingModel)
+            is LinkTrackEvent.FindForCode -> findForCode(event.code)
+            is LinkTrackEvent.FetchAllLinkTrackItems -> fetchAllLinkTrackItems()
+        }
+    }
+
+    private fun onCodeChange(code: String) {
         _uiState.value = _uiState.value.copy(
             errorState = false,
             deliveryCode = code,
@@ -32,7 +41,7 @@ class LinkTrackViewModel(
         )
     }
 
-    fun fetchAllLinkTrackItems() {
+    private fun fetchAllLinkTrackItems() {
         viewModelScope.launch(Dispatchers.Default) {
             getAllTrackingUseCase.getTrackingList()
                 .collect { result ->
@@ -44,7 +53,7 @@ class LinkTrackViewModel(
         }
     }
 
-    fun findForCode(code: String) {
+    private fun findForCode(code: String) {
         viewModelScope.launch(Dispatchers.Default) {
             _uiState.value = _uiState.value.copy(
                 errorState = false,
@@ -65,7 +74,7 @@ class LinkTrackViewModel(
         }
     }
 
-    fun deleteItem(trackingModel: TrackingModel) {
+    private fun deleteItem(trackingModel: TrackingModel) {
         viewModelScope.launch {
             val trackingList = _uiState.value.trackingInfo.toMutableList()
             trackingList.remove(trackingModel)

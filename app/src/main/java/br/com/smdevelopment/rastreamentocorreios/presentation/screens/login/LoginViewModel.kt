@@ -31,7 +31,19 @@ class LoginViewModel(
     val currentUser =
         FirebaseAuth.getInstance().currentUser
 
-    fun googleSignIn(credential: AuthCredential) {
+    fun onEvent(event: LoginEvent) {
+        when (event) {
+            is LoginEvent.EmailChanged -> onEmailChange(event.email)
+            is LoginEvent.PasswordChanged -> onPasswordChanged(event.password)
+            is LoginEvent.GoogleSignIn -> googleSignIn(event.credential)
+            is LoginEvent.CreateAccount -> createAccount()
+            is LoginEvent.LoginUser -> loginUser()
+            is LoginEvent.SendChangePasswordEmail -> sendChangePasswordEmail()
+            is LoginEvent.ChangePasswordEyes -> changePasswordEyes(event.hide)
+        }
+    }
+
+    private fun googleSignIn(credential: AuthCredential) {
         _loginUiState.update { currentState ->
             currentState.copy(
                 showGoogleLoginSuccess = false,
@@ -65,7 +77,7 @@ class LoginViewModel(
         }
     }
 
-    fun sendChangePasswordEmail() {
+    private fun sendChangePasswordEmail() {
         viewModelScope.launch(Dispatchers.Default) {
             changePasswordUseCase.changePassword(_loginUiState.value.userEmail)
                 .catch {
@@ -95,7 +107,7 @@ class LoginViewModel(
         }
     }
 
-    fun createAccount() {
+    private fun createAccount() {
         viewModelScope.launch(Dispatchers.Default) {
             _loginUiState.update { currentState ->
                 currentState.copy(showCreateUserLoading = true)
@@ -134,15 +146,13 @@ class LoginViewModel(
                             }
                         }
 
-                        else -> {
-
-                        }
+                        else -> {}
                     }
                 }
         }
     }
 
-    fun loginUser() {
+    private fun loginUser() {
         viewModelScope.launch(Dispatchers.Default) {
             _loginUiState.update { currentState ->
                 currentState.copy(showLoginLoading = true)
@@ -178,38 +188,38 @@ class LoginViewModel(
         }
     }
 
-    fun changePasswordEyes(hide: Boolean) {
+    private fun changePasswordEyes(hide: Boolean) {
         _loginUiState.update { currentState ->
             currentState.copy(showPasswordEyes = hide)
         }
     }
 
-    fun onEmailChange(email: String) {
+    private fun onEmailChange(email: String) {
         _loginUiState.update { currentState ->
             currentState.copy(
                 userEmail = email,
                 showCreateUserError = false,
                 showLoginError = false,
                 enableCreateAccountButton = isValidEmail(currentState.userEmail)
-                        && isValidPassword(currentState.userPassword),
+                    && isValidPassword(currentState.userPassword),
                 enableLoginButton = isValidEmail(currentState.userEmail)
-                        && isValidPassword(currentState.userPassword),
+                    && isValidPassword(currentState.userPassword),
                 showChangePasswordSuccess = false,
                 showChangePasswordError = false
             )
         }
     }
 
-    fun onPasswordChanged(password: String) {
+    private fun onPasswordChanged(password: String) {
         _loginUiState.update { currentState ->
             currentState.copy(
                 userPassword = password,
                 showCreateUserError = false,
                 showLoginError = false,
                 enableCreateAccountButton = isValidEmail(currentState.userEmail)
-                        && isValidPassword(password),
+                    && isValidPassword(password),
                 enableLoginButton = isValidEmail(currentState.userEmail)
-                        && isValidPassword(password),
+                    && isValidPassword(password),
                 showChangePasswordSuccess = false,
                 showChangePasswordError = false
             )
@@ -223,11 +233,5 @@ class LoginViewModel(
 
     private fun isValidPassword(password: String): Boolean {
         return password.length >= 6
-    }
-
-    fun onPasswordErrorDisplayed() {
-        _loginUiState.update {
-            it.copy(showChangePasswordError = false)
-        }
     }
 }

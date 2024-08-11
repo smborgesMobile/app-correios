@@ -32,16 +32,19 @@ fun DeliveredScreen() {
             .background(colorResource(id = R.color.white))
             .wrapContentSize(Alignment.Center)
     ) {
-
+        // Get the ViewModel using Koin
         val viewModel: DeliveredViewModel = koinViewModel()
-        val deliveryList by viewModel.deliveredList.collectAsState()
-        val emptyState by viewModel.emptyState.collectAsState()
 
-        LaunchedEffect(Unit, block = {
-            viewModel.getDeliveredList()
-        })
+        // Observe the UI state as a whole
+        val uiState by viewModel.uiState.collectAsState()
 
-        if (emptyState) {
+        // Fetch the delivered list when the screen is launched
+        LaunchedEffect(Unit) {
+            viewModel.onEvent(DeliveredEvent.FetchNewItems)
+        }
+
+        // Render the UI based on the current state
+        if (uiState.emptyState) {
             EmptyState()
         } else {
             Text(
@@ -54,8 +57,8 @@ fun DeliveredScreen() {
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
-            AllDeliveries(deliveryList = deliveryList) {
-                viewModel.onEvent(DeliveredEvent.OnDeleteClick(it))
+            AllDeliveries(deliveryList = uiState.deliveredList) { deliveryItem ->
+                viewModel.onEvent(DeliveredEvent.OnDeleteClick(deliveryItem))
             }
         }
     }

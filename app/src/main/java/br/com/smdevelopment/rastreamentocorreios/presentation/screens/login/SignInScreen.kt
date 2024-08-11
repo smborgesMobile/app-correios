@@ -81,7 +81,6 @@ fun LoginScreen(
         }
 
         loginState.showChangePasswordError -> {
-            loginViewModel.onPasswordErrorDisplayed()
             Toast.makeText(
                 context,
                 stringResource(R.string.fail_to_change_password),
@@ -98,39 +97,38 @@ fun LoginScreen(
         }
     }
 
-    // If the user is already logged in, navigate to the main screen
     if (loginViewModel.currentUser != null) {
         NavigateHome(navController)
     } else {
-        val launcher = rememberLauncherForActivityResult(
+        rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult()
         ) {
             val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
             try {
                 val result = account.getResult(ApiException::class.java)
                 val credentials = GoogleAuthProvider.getCredential(result.idToken, null)
-                loginViewModel.googleSignIn(credentials)
+                loginViewModel.onEvent(LoginEvent.GoogleSignIn(credentials))
             } catch (ex: Exception) {
                 print(ex)
             }
         }
 
-        val gson = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .requestIdToken(FIREBASE_KEYS)
             .build()
 
-        // If the user is not logged in, show the login button
+        val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
+        val signInIntent = googleSignInClient.signInIntent
+
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
-                    .clip(
-                        shape = RoundedCornerShape(bottomStart = 120.dp)
-                    )
+                    .clip(RoundedCornerShape(bottomStart = 120.dp))
                     .background(primary500),
-                contentAlignment = Alignment.Center // Align the content in the center
+                contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.delivered_start_icon),
@@ -145,15 +143,11 @@ fun LoginScreen(
                 value = loginState.userEmail,
                 singleLine = true,
                 onValueChange = { newCode ->
-                    loginViewModel.onEmailChange(newCode)
+                    loginViewModel.onEvent(LoginEvent.EmailChanged(newCode))
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        start = 32.dp,
-                        end = 32.dp,
-                        top = 16.dp
-                    ),
+                    .padding(start = 32.dp, end = 32.dp, top = 16.dp),
                 label = { Text(text = stringResource(id = R.string.email_label)) },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.White,
@@ -169,7 +163,7 @@ fun LoginScreen(
                 value = loginState.userPassword,
                 singleLine = true,
                 onValueChange = { newCode ->
-                    loginViewModel.onPasswordChanged(newCode)
+                    loginViewModel.onEvent(LoginEvent.PasswordChanged(newCode))
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -186,8 +180,14 @@ fun LoginScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
                     IconButton(
-                        onClick = { loginViewModel.changePasswordEyes(!loginState.showPasswordEyes) },
-                        modifier = Modifier.clickable { loginViewModel.changePasswordEyes(!loginState.showPasswordEyes) },
+                        onClick = { loginViewModel.onEvent(LoginEvent.ChangePasswordEyes(!loginState.showPasswordEyes)) },
+                        modifier = Modifier.clickable {
+                            loginViewModel.onEvent(
+                                LoginEvent.ChangePasswordEyes(
+                                    !loginState.showPasswordEyes
+                                )
+                            )
+                        },
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.password_eyes),
@@ -200,20 +200,16 @@ fun LoginScreen(
             PrimaryButton(
                 title = stringResource(R.string.create_account),
                 modifier = Modifier
-                    .padding(
-                        top = 16.dp,
-                        start = 16.dp,
-                        end = 16.dp
-                    ),
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 loading = loginState.showCreateUserLoading,
-                onCodeClick = loginViewModel::createAccount,
+                onCodeClick = { loginViewModel.onEvent(LoginEvent.CreateAccount) },
                 enabled = loginState.enableCreateAccountButton
             )
             PrimaryButton(
                 title = stringResource(R.string.login),
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 enabled = loginState.enableLoginButton,
-                onCodeClick = loginViewModel::loginUser,
+                onCodeClick = { loginViewModel.onEvent(LoginEvent.LoginUser) },
                 loading = loginState.showLoginLoading,
             )
             Text(
@@ -221,7 +217,7 @@ fun LoginScreen(
                 modifier = Modifier
                     .padding(top = 16.dp, start = 32.dp, end = 16.dp)
                     .clickable {
-                        loginViewModel.sendChangePasswordEmail()
+                        loginViewModel.onEvent(LoginEvent.SendChangePasswordEmail)
                     },
                 style = MaterialTheme.typography.body1,
                 fontSize = 14.sp,

@@ -56,7 +56,7 @@ fun HomeScreen() {
 
     // objects to be remembered
     val pullRefreshState = rememberPullRefreshState(uiState.isRefreshing, {
-        linkTrackViewModel.fetchAllLinkTrackItems()
+        linkTrackViewModel.onEvent(LinkTrackEvent.FetchAllLinkTrackItems)
     })
 
     Box(
@@ -81,7 +81,7 @@ fun HomeScreen() {
                 errorMessage = stringResource(id = R.string.error_message),
                 clearState = uiState.deliveryCode.isEmpty()
             ) { value ->
-                linkTrackViewModel.onCodeChange(value)
+                linkTrackViewModel.onEvent(LinkTrackEvent.CodeChanged(value))
             }
 
             // code button
@@ -90,7 +90,7 @@ fun HomeScreen() {
                 enabled = uiState.buttonEnabled,
                 loading = uiState.loadingState
             ) {
-                linkTrackViewModel.findForCode(uiState.deliveryCode)
+                linkTrackViewModel.onEvent(LinkTrackEvent.FindForCode(uiState.deliveryCode))
             }
 
             // session header
@@ -99,8 +99,8 @@ fun HomeScreen() {
             )
 
             // delivery list
-            AllDeliveries(deliveryList = uiState.trackingInfo){
-                linkTrackViewModel.deleteItem(it)
+            AllDeliveries(deliveryList = uiState.trackingInfo) {
+                linkTrackViewModel.onEvent(LinkTrackEvent.DeleteItem(it))
             }
         }
 
@@ -114,14 +114,13 @@ fun HomeScreen() {
     }
 }
 
-
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun FeatureThatRequiresNotificationPermission() {
     var showDialog by remember { mutableStateOf(true) }
 
-    // Camera permission state
+    // Notification permission state
     val notificationPermission = rememberPermissionState(
         Manifest.permission.POST_NOTIFICATIONS
     )
@@ -152,12 +151,11 @@ fun CustomAlertDialog(
             )
         ) {
             Card(
-                //shape = MaterialTheme.shapes.medium,
                 shape = RoundedCornerShape(10.dp),
-                // modifier = modifier.size(280.dp, 240.dp)
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp), elevation = 8.dp
+                    .padding(16.dp),
+                elevation = 8.dp
             ) {
                 Column(
                     Modifier
@@ -186,7 +184,6 @@ fun CustomAlertDialog(
                             Text(text = stringResource(id = R.string.permission_leave_button))
                         }
 
-
                         Button(
                             onClick = { onExit() },
                             Modifier
@@ -197,7 +194,6 @@ fun CustomAlertDialog(
                             Text(text = stringResource(id = R.string.permission_enable_button))
                         }
                     }
-
                 }
             }
         }
