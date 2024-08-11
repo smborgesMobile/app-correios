@@ -1,6 +1,7 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ fun Toolbar(
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .padding(start = 16.dp)
+                .clickable { onBackButtonClick() }
         )
 
     }

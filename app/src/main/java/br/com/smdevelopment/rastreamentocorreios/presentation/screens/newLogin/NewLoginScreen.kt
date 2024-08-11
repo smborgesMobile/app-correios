@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.screens.newLogin
 
+import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -112,7 +113,7 @@ fun NewLoginScreen(
                 .background(Color.White)
         ) {
             Toolbar {
-
+                (context as Activity).finish()
             }
             Spacer(modifier = Modifier.height(8.dp))
             Box(
@@ -120,7 +121,7 @@ fun NewLoginScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Sign in",
+                    text = stringResource(R.string.sign_in),
                     fontStyle = MaterialTheme.typography.h1.fontStyle,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
@@ -128,7 +129,7 @@ fun NewLoginScreen(
             }
             Spacer(modifier = Modifier.height(16.dp))
             TextFieldComponent(
-                hint = "Email",
+                hint = stringResource(R.string.email_label),
                 modifier = Modifier.padding(horizontal = 16.dp),
                 type = TextFieldType.EMAIL,
                 onValueChange = {
