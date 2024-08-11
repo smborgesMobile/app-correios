@@ -1,7 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.usecase.impl
 
 import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
-import br.com.smdevelopment.rastreamentocorreios.presentation.screens.home.LinkTrackViewModel
 import br.com.smdevelopment.rastreamentocorreios.repositories.LinkTrackRepository
 import br.com.smdevelopment.rastreamentocorreios.usecase.InProgressUseCase
 import kotlinx.coroutines.flow.Flow

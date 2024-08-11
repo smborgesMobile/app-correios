@@ -71,7 +71,7 @@ class LinkTrackRepositoryImpl(
                             try {
                                 linkTrackDao.insertNewDelivery(deliveryResponse.toDeliveryData())
                             } catch (e: Exception) {
-                                Log.d("LinkTrackRepository", "Error: ${e}")
+                                Log.d("LinkTrackRepository", "Error: $e")
                             }
                         }
                     }
