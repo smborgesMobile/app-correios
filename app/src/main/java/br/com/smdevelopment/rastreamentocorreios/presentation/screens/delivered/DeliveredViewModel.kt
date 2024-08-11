@@ -32,4 +32,23 @@ class DeliveredViewModel(
                 }
         }
     }
+
+    fun onEvent(event: DeliveredEvent) {
+        when (event) {
+            is DeliveredEvent.OnDeleteClick -> {
+                deleteDelivery(event)
+            }
+        }
+    }
+
+    private fun deleteDelivery(event: DeliveredEvent.OnDeleteClick) {
+        viewModelScope.launch {
+            val deliveryList = _deliveredList.value.toMutableList()
+            deliveryList.remove(event.item)
+
+            // update live data
+            _deliveredList.value = deliveryList
+            deliveredUseCase.deleteDelivery(event.item)
+        }
+    }
 }

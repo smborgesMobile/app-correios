@@ -30,4 +30,14 @@ class PendingScreenViewModel(private val useCase: InProgressUseCase) : ViewModel
                 }
         }
     }
+
+    fun deleteItem(item: TrackingModel) {
+        val newItemList = _inProgressList.value.toMutableList()
+        newItemList.remove(item)
+
+        viewModelScope.launch {
+            _inProgressList.value = newItemList
+            useCase.deleteItem(item)
+        }
+    }
 }

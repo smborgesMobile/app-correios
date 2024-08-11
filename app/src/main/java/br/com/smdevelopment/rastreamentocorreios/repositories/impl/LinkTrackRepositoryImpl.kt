@@ -83,8 +83,13 @@ class LinkTrackRepositoryImpl(
         }
     }
 
+    override suspend fun deleteDelivery(delivered: TrackingModel) {
+        withContext(Dispatchers.IO) {
+            linkTrackDao.deleteDelivery(delivered)
+        }
+    }
+
     private fun getListFromRoom(): List<TrackingModel> {
-        Log.d("sm.borges", "user id: ${firebaseAuth.currentUser?.uid.orEmpty()}")
         return linkTrackDao.getAllDeliveries(firebaseAuth.currentUser?.uid.orEmpty())
             ?.sortedWith(compareByDescending { it.events.firstOrNull()?.date })
             ?: emptyList()

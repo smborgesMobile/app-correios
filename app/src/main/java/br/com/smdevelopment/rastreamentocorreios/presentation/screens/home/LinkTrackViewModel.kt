@@ -17,59 +17,62 @@ class LinkTrackViewModel(
     private val getAllTrackingUseCase: GetAllTrackingUseCase
 ) : ViewModel() {
 
-    private val _trackingInfo = MutableStateFlow<List<TrackingModel>>(emptyList())
-    val trackingInfo: StateFlow<List<TrackingModel>> get() = _trackingInfo
-
-    private val _errorState = MutableStateFlow(false)
-    val errorState: StateFlow<Boolean> get() = _errorState
-
-    private val _loadingState = MutableStateFlow(false)
-    val loadingState: StateFlow<Boolean> get() = _loadingState
-
-    private val _deliveryCode = MutableStateFlow(String())
-    val deliveryCode: StateFlow<String> get() = _deliveryCode
-
-    private val _buttonEnabled = MutableStateFlow(false)
-    val buttonEnabled: StateFlow<Boolean> get() = _buttonEnabled
-
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing: StateFlow<Boolean>
-        get() = _isRefreshing.asStateFlow()
+    private val _uiState = MutableStateFlow(LinkTrackUiState())
+    val uiState: StateFlow<LinkTrackUiState> get() = _uiState.asStateFlow()
 
     init {
         fetchAllLinkTrackItems()
     }
 
     fun onCodeChange(code: String) {
-        _errorState.value = false
-        _deliveryCode.value = code
-        _buttonEnabled.value = code.length == CODE_LENGTH
+        _uiState.value = _uiState.value.copy(
+            errorState = false,
+            deliveryCode = code,
+            buttonEnabled = code.length == CODE_LENGTH
+        )
     }
 
     fun fetchAllLinkTrackItems() {
         viewModelScope.launch(Dispatchers.Default) {
             getAllTrackingUseCase.getTrackingList()
                 .collect { result ->
-                    _trackingInfo.value = result
-                    _isRefreshing.emit(false)
+                    _uiState.value = _uiState.value.copy(
+                        trackingInfo = result,
+                        isRefreshing = false
+                    )
                 }
         }
     }
 
     fun findForCode(code: String) {
         viewModelScope.launch(Dispatchers.Default) {
-            _errorState.value = false
-            _loadingState.value = true
+            _uiState.value = _uiState.value.copy(
+                errorState = false,
+                loadingState = true
+            )
             trackingUseCase.getTrackingInfo(code)
                 .catch {
-                    _errorState.value = true
+                    _uiState.value = _uiState.value.copy(errorState = true)
                 }
                 .collect { result ->
                     onCodeChange(String())
-                    _trackingInfo.value = result
-                    _errorState.value = false
+                    _uiState.value = _uiState.value.copy(
+                        trackingInfo = result,
+                        errorState = false,
+                        loadingState = false
+                    )
                 }
-            _loadingState.value = false
+        }
+    }
+
+    fun deleteItem(trackingModel: TrackingModel) {
+        viewModelScope.launch {
+            val trackingList = _uiState.value.trackingInfo.toMutableList()
+            trackingList.remove(trackingModel)
+            _uiState.value = _uiState.value.copy(
+                trackingInfo = trackingList
+            )
+            trackingUseCase.deleteTracking(trackingModel)
         }
     }
 

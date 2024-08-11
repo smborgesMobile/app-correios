@@ -12,4 +12,8 @@ class TrackingUseCaseImpl(
     override suspend fun getTrackingInfo(code: String): Flow<List<TrackingModel>> {
         return linkTrackRepository.fetchTrackByCode(code)
     }
+
+    override suspend fun deleteTracking(trackingModel: TrackingModel) {
+        linkTrackRepository.deleteDelivery(trackingModel)
+    }
 }

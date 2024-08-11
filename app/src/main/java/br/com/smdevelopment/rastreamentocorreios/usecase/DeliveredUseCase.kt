@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface DeliveredUseCase {
 
     suspend fun fetchDelivered(): Flow<List<TrackingModel>>
+
+    suspend fun deleteDelivery(model: TrackingModel)
 }

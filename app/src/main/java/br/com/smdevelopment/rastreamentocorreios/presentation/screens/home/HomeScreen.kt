@@ -51,15 +51,11 @@ fun HomeScreen() {
     // Create view model and init it.
     val linkTrackViewModel: LinkTrackViewModel = koinViewModel()
 
-    val deliveryList by linkTrackViewModel.trackingInfo.collectAsState()
-    val errorState by linkTrackViewModel.errorState.collectAsState()
-    val loading by linkTrackViewModel.loadingState.collectAsState()
-    val deliveryCode by linkTrackViewModel.deliveryCode.collectAsState()
-    val buttonEnabled by linkTrackViewModel.buttonEnabled.collectAsState()
-    val isRefreshing by linkTrackViewModel.isRefreshing.collectAsState()
+    // Observe the UI state
+    val uiState by linkTrackViewModel.uiState.collectAsState()
 
     // objects to be remembered
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, {
+    val pullRefreshState = rememberPullRefreshState(uiState.isRefreshing, {
         linkTrackViewModel.fetchAllLinkTrackItems()
     })
 
@@ -81,9 +77,9 @@ fun HomeScreen() {
 
             // text field
             DeliveryTextField(
-                hasError = errorState,
+                hasError = uiState.errorState,
                 errorMessage = stringResource(id = R.string.error_message),
-                clearState = deliveryCode.isEmpty()
+                clearState = uiState.deliveryCode.isEmpty()
             ) { value ->
                 linkTrackViewModel.onCodeChange(value)
             }
@@ -91,10 +87,10 @@ fun HomeScreen() {
             // code button
             PrimaryButton(
                 title = stringResource(id = R.string.home_title),
-                enabled = buttonEnabled,
-                loading = loading
+                enabled = uiState.buttonEnabled,
+                loading = uiState.loadingState
             ) {
-                linkTrackViewModel.findForCode(deliveryCode)
+                linkTrackViewModel.findForCode(uiState.deliveryCode)
             }
 
             // session header
@@ -103,18 +99,21 @@ fun HomeScreen() {
             )
 
             // delivery list
-            AllDeliveries(deliveryList = deliveryList)
+            AllDeliveries(deliveryList = uiState.trackingInfo){
+                linkTrackViewModel.deleteItem(it)
+            }
         }
 
         // Pull to refresh indicator
         PullRefreshIndicator(
-            refreshing = isRefreshing,
+            refreshing = uiState.isRefreshing,
             state = pullRefreshState,
             modifier = Modifier
                 .align(Alignment.TopCenter)
         )
     }
 }
+
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalPermissionsApi::class)

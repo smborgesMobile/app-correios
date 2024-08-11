@@ -54,7 +54,9 @@ fun DeliveredScreen() {
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
-            AllDeliveries(deliveryList = deliveryList)
+            AllDeliveries(deliveryList = deliveryList) {
+                viewModel.onEvent(DeliveredEvent.OnDeleteClick(it))
+            }
         }
     }
 }

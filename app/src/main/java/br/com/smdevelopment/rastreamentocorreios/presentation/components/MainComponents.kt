@@ -332,68 +332,21 @@ private fun chooseButtonBackground(enabled: Boolean, primaryColor: Color) =
 //#region -- delivery list
 
 @Composable
-fun AllDeliveries(deliveryList: List<TrackingModel>) {
+fun AllDeliveries(
+    deliveryList: List<TrackingModel>,
+    onDeleteClick: ((TrackingModel) -> Unit)
+) {
     val context = LocalContext.current
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp)
     ) {
         items(deliveryList) { delivery ->
-            DeliveryCard(deliveryItem = delivery) {
-                context.startActivity(DetailActivity.getLaunchIntent(context, delivery.events))
-            }
-        }
-    }
-}
-
-@Composable
-private fun DeliveryCard(deliveryItem: TrackingModel, onClick: ((TrackingModel) -> Unit)) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(top = 8.dp)
-            .clickable {
-                onClick(deliveryItem)
-            },
-        shape = MaterialTheme.shapes.medium,
-        elevation = 5.dp,
-        backgroundColor = MaterialTheme.colors.surface
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                painter = painterResource(id = deliveryItem.icon),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(87.dp)
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.Fit,
-            )
-            Column(
-                modifier = Modifier
-                    .align(Alignment.Top)
-                    .padding(8.dp)
+            DeliveryCard(
+                deliveryItem = delivery,
+                onDeleteClick = onDeleteClick
             ) {
-                Text(
-                    text = deliveryItem.code,
-                    style = MaterialTheme.typography.h6,
-                    color = MaterialTheme.colors.onSurface,
-                    fontSize = 16.sp
-                )
-                Text(
-                    text = deliveryItem.events.firstOrNull()?.status.orEmpty(),
-                    style = MaterialTheme.typography.body2,
-                    fontSize = 13.sp,
-                    modifier = Modifier.padding(top = 4.dp),
-                    fontFamily = FontFamily.SansSerif,
-                )
-                Text(
-                    text = deliveryItem.events.firstOrNull()?.date ?: deliveryItem.service,
-                    style = MaterialTheme.typography.body2,
-                    modifier = Modifier.padding(top = 8.dp),
-                    fontSize = 13.sp
-                )
+                context.startActivity(DetailActivity.getLaunchIntent(context, delivery.events))
             }
         }
     }

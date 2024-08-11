@@ -13,4 +13,8 @@ class DeliveredUserCaseImpl(private val repository: LinkTrackRepository) : Deliv
             it.filter { it.isDelivered }
         }
     }
+
+    override suspend fun deleteDelivery(model: TrackingModel) {
+        repository.deleteDelivery(model)
+    }
 }

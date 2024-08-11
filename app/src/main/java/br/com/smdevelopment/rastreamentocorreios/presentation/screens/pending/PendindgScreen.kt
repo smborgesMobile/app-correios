@@ -53,7 +53,9 @@ fun PendingScreen() {
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
-            AllDeliveries(deliveryList = pendingList)
+            AllDeliveries(deliveryList = pendingList) {
+                viewModel.deleteItem(it)
+            }
         }
     }
 }
