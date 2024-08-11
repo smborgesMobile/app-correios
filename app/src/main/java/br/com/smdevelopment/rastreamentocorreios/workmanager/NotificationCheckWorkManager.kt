@@ -22,25 +22,52 @@ class NotificationCheckWorkManager(
 
     override suspend fun doWork(): Result {
         return try {
+            // Use Flow's terminal operator to handle the flows in a more controlled manner.
             getAllTrackingUseCase.getTrackingList().collectLatest { allList ->
-                allList.firstOrNull()?.code?.let { trackingCode ->
-                    getCodeUseCase.getTrackingInfo(trackingCode).collectLatest { trackingInfo ->
-                        val shouldShowNotification =
-                            allList.firstOrNull()?.events?.firstOrNull()?.status !=
-                                    trackingInfo.firstOrNull()?.events?.firstOrNull()?.status
+                if (allList.isNotEmpty()) {
+                    // Create a map of tracking codes to cached statuses
+                    val cachedStatuses = allList.associate {
+                        it.code to it.events.firstOrNull()?.status
+                    }
 
-                        if (shouldShowNotification) {
-                            deliveryNotificationChannel.showBasicNotification(
-                                title = trackingCode,
-                                description = applicationContext.getString(R.string.delivered_moving)
-                            )
+                    var notificationSent = false
+
+                    // Process each tracking code
+                    cachedStatuses.forEach { (trackingCode, cachedStatus) ->
+                        if (!notificationSent) {
+                            // Get tracking info for the tracking code
+                            getCodeUseCase.getTrackingInfo(trackingCode)
+                                .collectLatest { trackingInfo ->
+                                    if (trackingInfo.isNotEmpty()) {
+                                        // Get the latest status for this tracking code
+                                        val latestStatus =
+                                            trackingInfo.firstOrNull()?.events?.firstOrNull()?.status
+
+                                        // Compare the cached and latest statuses
+                                        if (cachedStatus != latestStatus) {
+                                            // Show notification if status has changed
+                                            deliveryNotificationChannel.showBasicNotification(
+                                                title = trackingCode,
+                                                description = applicationContext.getString(R.string.delivered_moving)
+                                            )
+                                            notificationSent = true
+                                        }
+                                    }
+                                }
                         }
+
+                        // Exit the loop if a notification has been sent
+                        if (notificationSent) return@forEach
                     }
                 }
             }
             Result.success()
         } catch (e: Exception) {
+            // Log the exception for debugging purposes
+            e.printStackTrace()
             Result.failure()
         }
     }
+
+
 }

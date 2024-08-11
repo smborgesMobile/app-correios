@@ -4,9 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -21,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,6 +62,7 @@ fun DeliveryCard(
                     .clip(RoundedCornerShape(10.dp)),
                 contentScale = ContentScale.Fit,
             )
+            Spacer(modifier = Modifier.width(8.dp))
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -68,7 +72,9 @@ fun DeliveryCard(
                     text = deliveryItem.code,
                     style = MaterialTheme.typography.h6,
                     color = MaterialTheme.colors.onSurface,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    maxLines = 1, // Prevents overflow with ellipsis
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = deliveryItem.events.firstOrNull()?.status.orEmpty(),
@@ -76,19 +82,24 @@ fun DeliveryCard(
                     fontSize = 13.sp,
                     modifier = Modifier.padding(top = 4.dp),
                     fontFamily = FontFamily.SansSerif,
+                    maxLines = 1, // Prevents overflow with ellipsis
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = deliveryItem.events.firstOrNull()?.date ?: deliveryItem.service,
                     style = MaterialTheme.typography.body2,
                     modifier = Modifier.padding(top = 8.dp),
-                    fontSize = 13.sp
+                    fontSize = 13.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
             Icon(
                 painter = painterResource(id = R.drawable.ic_delete_account),
-                contentDescription = "",
+                contentDescription = null,
                 tint = Color.Gray,
                 modifier = Modifier
+
                     .padding(end = 16.dp)
                     .clickable { onDeleteClick(deliveryItem) }
                     .align(Alignment.CenterVertically)

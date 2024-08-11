@@ -15,7 +15,7 @@ object MockData {
             time = System.currentTimeMillis().toDouble(),
             quantity = 3,
             service = "SEDEX",
-            last = "Delivered",
+            last = "Delivered - Delivered - Delivered - Delivered - Delivered",
             icon = R.drawable.delivered_start_icon,
             isDelivered = true
         )
@@ -27,7 +27,7 @@ object MockData {
                 date = "2024-08-01",
                 time = "10:30 AM",
                 location = "São Paulo, SP",
-                status = "Delivered",
+                status = "Delivered - Delivered - Delivered - Delivered - Delivered",
                 subStatus = listOf("Left at the recipient's address"),
                 icon = 0x1F4E6, // Example Unicode for a package icon 📦
                 isDelivered = true

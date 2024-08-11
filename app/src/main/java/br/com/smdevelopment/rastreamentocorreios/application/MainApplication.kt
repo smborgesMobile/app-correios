@@ -74,7 +74,7 @@ class MainApplication : Application(), Configuration.Provider {
 
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "app_notification_chanel"
-        const val UPDATE_WORKER = 3L
+        const val UPDATE_WORKER = 1L
         const val WORKER_NAME = "notification_check_worker"
     }
 }
