@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +33,7 @@ import br.com.smdevelopment.rastreamentocorreios.R
 fun TextFieldComponent(
     modifier: Modifier = Modifier,
     hint: String = "",
-    isPasswordField: Boolean = false,
+    type: TextFieldType = TextFieldType.NORMAL,
     onValueChange: (String) -> Unit
 ) {
     var textState by remember { mutableStateOf("") }
@@ -53,7 +55,6 @@ fun TextFieldComponent(
                 color = Color(0xFF637587)
             )
         },
-
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color.Gray,
             disabledTextColor = Color.Transparent,
@@ -63,12 +64,19 @@ fun TextFieldComponent(
             disabledIndicatorColor = Color.Transparent
         ),
         shape = RoundedCornerShape(8.dp),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = when (type) {
+                TextFieldType.PASSWORD -> KeyboardType.Password
+                else -> KeyboardType.Email
+            }
+        ),
         singleLine = true,
-        visualTransformation = if (isPasswordField && !passwordVisible)
-            PasswordVisualTransformation()
-        else VisualTransformation.None,
+        visualTransformation = when (type) {
+            TextFieldType.PASSWORD -> if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
+            else -> VisualTransformation.None
+        },
         trailingIcon = {
-            if (isPasswordField) {
+            if (type == TextFieldType.PASSWORD) {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(
                         painter = painterResource(id = R.drawable.eyes_icon),
@@ -85,8 +93,8 @@ fun TextFieldComponent(
 @Preview
 private fun TextFieldPreview() {
     Column {
-        TextFieldComponent(hint = "Digite sua senha", isPasswordField = true) {}
+        TextFieldComponent(hint = "Digite sua senha", type = TextFieldType.EMAIL) {}
         Spacer(modifier = Modifier.size(24.dp))
-        TextFieldComponent(hint = "Digite sua senha", isPasswordField = false) {}
+        TextFieldComponent(hint = "Digite sua senha", type = TextFieldType.PASSWORD) {}
     }
 }

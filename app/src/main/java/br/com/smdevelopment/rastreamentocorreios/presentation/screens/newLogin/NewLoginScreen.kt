@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.LoginButton
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.TextFieldComponent
+import br.com.smdevelopment.rastreamentocorreios.presentation.components.TextFieldType
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.Toolbar
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.tabbar.MAIN_ROUTE
 import br.com.smdevelopment.rastreamentocorreios.presentation.screens.login.LoginEvent
@@ -129,7 +130,7 @@ fun NewLoginScreen(
             TextFieldComponent(
                 hint = "Email",
                 modifier = Modifier.padding(horizontal = 16.dp),
-                isPasswordField = false,
+                type = TextFieldType.EMAIL,
                 onValueChange = {
                     loginViewModel.onEvent(LoginEvent.EmailChanged(it))
                 }
@@ -139,7 +140,7 @@ fun NewLoginScreen(
             TextFieldComponent(
                 hint = "Password",
                 modifier = Modifier.padding(horizontal = 16.dp),
-                isPasswordField = true,
+                type = TextFieldType.PASSWORD,
                 onValueChange = {
                     loginViewModel.onEvent(LoginEvent.PasswordChanged(it))
                 }
