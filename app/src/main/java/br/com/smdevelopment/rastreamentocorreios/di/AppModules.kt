@@ -2,6 +2,7 @@ package br.com.smdevelopment.rastreamentocorreios.di
 
 import androidx.room.Room
 import br.com.smdevelopment.rastreamentocorreios.api.LinkTrackApi
+import br.com.smdevelopment.rastreamentocorreios.notification.DeliveryNotificationChannel
 import br.com.smdevelopment.rastreamentocorreios.presentation.MainViewModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.screens.delivered.DeliveredViewModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.screens.home.LinkTrackViewModel
@@ -101,4 +102,7 @@ val appModule = module {
     factory<CreateUserUseCase> { CreateUserUseCaseImpl(auth = FirebaseAuth.getInstance()) }
     factory<LoginUseCase> { LoginUseCaseImpl(firebaseAuth = FirebaseAuth.getInstance()) }
     factory<ChangePasswordUseCase> { ChangePasswordUseCaseImpl(firebaseAuth =  FirebaseAuth.getInstance()) }
+
+    //Helps
+    factory<DeliveryNotificationChannel> { DeliveryNotificationChannel(androidContext()) }
 }
