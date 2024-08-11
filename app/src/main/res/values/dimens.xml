@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="forgot_password_text_size">12sp</dimen>
+    <dimen name="sign_in_text_size">22sp</dimen>
+</resources>

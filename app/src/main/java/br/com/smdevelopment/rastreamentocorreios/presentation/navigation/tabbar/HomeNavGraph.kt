@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.smdevelopment.rastreamentocorreios.presentation.MainScreenView
-import br.com.smdevelopment.rastreamentocorreios.presentation.screens.login.LoginScreen
+import br.com.smdevelopment.rastreamentocorreios.presentation.screens.newLogin.NewLoginScreen
 
 const val LOGIN_ROUTE = "login"
 const val MAIN_ROUTE = "main_screen"
@@ -25,7 +25,7 @@ fun HomeNavGraph(navController: NavHostController) {
     ) {
 
         composable(LOGIN_ROUTE) {
-            LoginScreen(navController = navController)
+            NewLoginScreen(navController = navController)
         }
         composable("main_screen") {
             MainScreenView(homeNavController = navController)

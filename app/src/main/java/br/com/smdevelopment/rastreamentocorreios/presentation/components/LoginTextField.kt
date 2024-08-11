@@ -8,8 +8,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,7 +37,7 @@ fun TextFieldComponent(
     var textState by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
-    OutlinedTextField(
+    TextField(
         value = textState,
         onValueChange = {
             textState = it
@@ -52,6 +53,15 @@ fun TextFieldComponent(
                 color = Color(0xFF637587)
             )
         },
+
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color.Gray,
+            disabledTextColor = Color.Transparent,
+            backgroundColor = Color(0xFFF0F2F5),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
+        ),
         shape = RoundedCornerShape(8.dp),
         singleLine = true,
         visualTransformation = if (isPasswordField && !passwordVisible)

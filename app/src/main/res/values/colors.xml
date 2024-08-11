@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary_color">#3D85C6</color>
     <color name="gray_color_75">#EEEEE4</color>
+    <color name="forgot_password_color">#637587</color>
 
     <!-- Text colors !-->
     <color name="text_field_editable_color">#384048</color>
