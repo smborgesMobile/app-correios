@@ -71,7 +71,6 @@ class LinkTrackRepositoryImpl(
                                 linkTrackDao.insertNewDelivery(deliveryResponse.toDeliveryData())
                             } catch (e: Exception) {
                                 Log.d("LinkTrackRepository", "Error: ${e}")
-                                Log.d("LinkTrackRepository", "Error: ${e.message}")
                             }
                         }
                     }
@@ -109,7 +108,7 @@ class LinkTrackRepositoryImpl(
                     date = "${event.date} - ${event.time}",
                     time = event.time,
                     location = event.location,
-                    status = event.status,
+                    status = event.status.ifBlank { FAILED_TO_LOCATE },
                     subStatus = event.subStatus,
                     icon = when {
                         event.status == OBJECT_DONE -> {
@@ -162,5 +161,6 @@ class LinkTrackRepositoryImpl(
         const val POOLING_TIME = 2500L
         const val CODE_NOT_FOUND = 422
         const val OBJECT_DONE = "Objeto entregue ao destinatário"
+        const val FAILED_TO_LOCATE = "Dados não encontrados na base dos correios"
     }
 }

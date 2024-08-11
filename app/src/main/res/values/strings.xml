@@ -56,4 +56,6 @@ Sábado, das 8h às 14h.</string>
     <string name="fail_to_change_password">Falha ao enviar email de recuperacão de senha.</string>
     <string name="success_to_send_reset_password">Verifique seu email!\n</string>
     <string name="forgot_password">Forgot Password</string>
+
+    <string name="no_data_found_message">Dados não encontrados na base dos correios</string>
 </resources>

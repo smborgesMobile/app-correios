@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,7 +78,8 @@ fun DeliveryCard(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = deliveryItem.events.firstOrNull()?.status.orEmpty(),
+                    text = deliveryItem.events.firstOrNull()?.status
+                        ?: stringResource(id = R.string.no_data_found_message),
                     style = MaterialTheme.typography.body2,
                     fontSize = 13.sp,
                     modifier = Modifier.padding(top = 4.dp),
@@ -99,7 +101,6 @@ fun DeliveryCard(
                 contentDescription = null,
                 tint = Color.Gray,
                 modifier = Modifier
-
                     .padding(end = 16.dp)
                     .clickable { onDeleteClick(deliveryItem) }
                     .align(Alignment.CenterVertically)
@@ -114,5 +115,6 @@ private fun DeliveryCardPreview() {
     DeliveryCard(
         deliveryItem = getMockTrackingModel(),
         onDeleteClick = {},
-        onClick = {})
+        onClick = {}
+    )
 }
