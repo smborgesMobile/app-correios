@@ -27,13 +27,13 @@ class NotificationCheckWorkManager(
                 if (allList.isNotEmpty()) {
                     // Create a map of tracking codes to cached statuses
                     val cachedStatuses = allList.associate {
-                        it.code to it.events.firstOrNull()?.status
+                        it.code to it.events
                     }
 
                     var notificationSent = false
 
                     // Process each tracking code
-                    cachedStatuses.forEach { (trackingCode, cachedStatus) ->
+                    cachedStatuses.forEach { (trackingCode, events) ->
                         if (!notificationSent) {
                             // Get tracking info for the tracking code
                             getCodeUseCase.getTrackingInfo(trackingCode)
@@ -41,10 +41,10 @@ class NotificationCheckWorkManager(
                                     if (trackingInfo.isNotEmpty()) {
                                         // Get the latest status for this tracking code
                                         val latestStatus =
-                                            trackingInfo.firstOrNull()?.events?.firstOrNull()?.status
+                                            trackingInfo.firstOrNull()?.events
 
                                         // Compare the cached and latest statuses
-                                        if (cachedStatus != latestStatus) {
+                                        if (events != latestStatus) {
                                             // Show notification if status has changed
                                             deliveryNotificationChannel.showBasicNotification(
                                                 title = trackingCode,
