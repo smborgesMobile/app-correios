@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import br.com.smdevelopment.rastreamentocorreios.R
+import br.com.smdevelopment.rastreamentocorreios.entities.view.EventModel
 import br.com.smdevelopment.rastreamentocorreios.notification.DeliveryNotificationChannel
 import br.com.smdevelopment.rastreamentocorreios.usecase.TrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseCase
@@ -39,8 +40,10 @@ class NotificationCheckWorkManager(
                             getCodeUseCase.getTrackingInfo(trackingCode)
                                 .collectLatest { trackingInfo ->
                                     if (trackingInfo.isNotEmpty()) {
+                                        val trackingList: List<EventModel> =
+                                            trackingInfo.firstOrNull()?.events ?: emptyList()
                                         // Compare the cached and latest statuses
-                                        if (events != trackingInfo) {
+                                        if (events != trackingList) {
                                             // Show notification if status has changed
                                             deliveryNotificationChannel.showBasicNotification(
                                                 title = trackingCode,
