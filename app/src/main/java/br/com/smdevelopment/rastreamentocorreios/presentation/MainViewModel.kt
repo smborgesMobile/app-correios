@@ -64,12 +64,16 @@ class MainViewModel : ViewModel() {
         _showLogoutDialog.value = true
     }
 
+    fun resetSideMenuUiState() {
+        _sideMenuUiState.value = SideMenuUiState.Nothing
+    }
+
     //#endregion --- logout
 
     sealed interface SideMenuUiState {
-        object Login : SideMenuUiState
-        object DeleteAccount : SideMenuUiState
-        object DeleteAccountError : SideMenuUiState
-        object Nothing : SideMenuUiState
+        data object Login : SideMenuUiState
+        data object DeleteAccount : SideMenuUiState
+        data object DeleteAccountError : SideMenuUiState
+        data object Nothing : SideMenuUiState
     }
 }

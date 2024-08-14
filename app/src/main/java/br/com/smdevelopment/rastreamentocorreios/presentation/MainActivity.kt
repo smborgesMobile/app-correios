@@ -102,6 +102,7 @@ fun MainScreenView(
         }
 
         is MainViewModel.SideMenuUiState.DeleteAccountError -> {
+            mainViewModel.resetSideMenuUiState()
             Toast.makeText(
                 context,
                 stringResource(R.string.fail_to_delete_account),
