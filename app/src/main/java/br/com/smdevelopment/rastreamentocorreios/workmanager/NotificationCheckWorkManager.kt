@@ -43,7 +43,7 @@ class NotificationCheckWorkManager(
                                         val trackingList: List<EventModel> =
                                             trackingInfo.firstOrNull()?.events ?: emptyList()
                                         // Compare the cached and latest statuses
-                                        if (events != trackingList) {
+                                        if (events != trackingList && trackingList.isNotEmpty()) {
                                             // Show notification if status has changed
                                             deliveryNotificationChannel.showBasicNotification(
                                                 title = trackingCode,
