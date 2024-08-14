@@ -56,6 +56,10 @@ class LinkTrackRepositoryImpl(
         }
     }
 
+    override suspend fun getAllCacheDeliveries(): Flow<List<TrackingModel>> {
+        return flow { getListFromRoom() }
+    }
+
     override suspend fun updateCache() {
         if (isJobRunning)
             return

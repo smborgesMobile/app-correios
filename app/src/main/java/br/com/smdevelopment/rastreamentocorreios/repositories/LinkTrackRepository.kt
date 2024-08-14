@@ -9,6 +9,8 @@ interface LinkTrackRepository {
 
     suspend fun getAllDeliveries(): Flow<List<TrackingModel>>
 
+    suspend fun getAllCacheDeliveries(): Flow<List<TrackingModel>>
+
     suspend fun updateCache()
 
     suspend fun deleteDelivery(delivered: TrackingModel)

@@ -8,7 +8,12 @@ import kotlinx.coroutines.flow.Flow
 class GetAllTrackingUseCase(
     private val repository: LinkTrackRepository
 ) : GetTrackingListUseCase {
+
     override suspend fun getTrackingList(): Flow<List<TrackingModel>> {
         return repository.getAllDeliveries()
+    }
+
+    override suspend fun getCacheList(): Flow<List<TrackingModel>> {
+        return repository.getAllCacheDeliveries()
     }
 }

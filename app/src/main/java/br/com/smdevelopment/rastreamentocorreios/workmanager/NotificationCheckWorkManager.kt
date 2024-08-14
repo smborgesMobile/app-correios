@@ -5,6 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.entities.view.EventModel
+import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.notification.DeliveryNotificationChannel
 import br.com.smdevelopment.rastreamentocorreios.usecase.TrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseCase
@@ -23,50 +24,55 @@ class NotificationCheckWorkManager(
 
     override suspend fun doWork(): Result {
         return try {
-            // Use Flow's terminal operator to handle the flows in a more controlled manner.
-            getAllTrackingUseCase.getTrackingList().collectLatest { allList ->
+            getAllTrackingUseCase.getCacheList().collectLatest { allList ->
                 if (allList.isNotEmpty()) {
-                    // Create a map of tracking codes to cached statuses
-                    val cachedStatuses = allList.associate {
-                        it.code to it.events
-                    }
-
-                    var notificationSent = false
-
-                    // Process each tracking code
-                    cachedStatuses.forEach { (trackingCode, events) ->
-                        if (!notificationSent) {
-                            // Get tracking info for the tracking code
-                            getCodeUseCase.getTrackingInfo(trackingCode)
-                                .collectLatest { trackingInfo ->
-                                    if (trackingInfo.isNotEmpty()) {
-                                        val trackingList: List<EventModel> =
-                                            trackingInfo.firstOrNull()?.events ?: emptyList()
-                                        // Compare the cached and latest statuses
-                                        if (events != trackingList && trackingList.isNotEmpty()) {
-                                            // Show notification if status has changed
-                                            deliveryNotificationChannel.showBasicNotification(
-                                                title = trackingCode,
-                                                description = applicationContext.getString(R.string.delivered_moving)
-                                            )
-                                            notificationSent = true
-                                        }
-                                    }
-                                }
-                        }
-
-                        // Exit the loop if a notification has been sent
-                        if (notificationSent) return@forEach
-                    }
+                    processTrackingCodes(allList)
                 }
             }
             Result.success()
         } catch (e: Exception) {
-            // Log the exception for debugging purposes
-            e.printStackTrace()
+            e.printStackTrace() // Consider using a logging framework
             Result.failure()
         }
     }
 
+    private suspend fun processTrackingCodes(allList: List<TrackingModel>) {
+        // Create a map of tracking codes to cached statuses
+        val cachedStatuses = allList.associate { it.code to it.events }
 
+        // Process each tracking code
+        for ((trackingCode, events) in cachedStatuses) {
+            if (checkForStatusChange(trackingCode, events)) {
+                break // Exit the loop if a notification has been sent
+            }
+        }
+    }
+
+    private suspend fun checkForStatusChange(
+        trackingCode: String,
+        events: List<EventModel>
+    ): Boolean {
+        var notificationSent = false
+
+        getCodeUseCase.getTrackingInfo(trackingCode).collectLatest { trackingInfo ->
+            if (trackingInfo.isNotEmpty()) {
+                val trackingList: List<EventModel> =
+                    trackingInfo.firstOrNull()?.events ?: emptyList()
+                val remoteItemStatus = trackingList.firstOrNull()?.status.orEmpty()
+                val cacheStatus = events.firstOrNull()?.status.orEmpty()
+
+                // Compare the cached and latest statuses
+                if (remoteItemStatus != cacheStatus) {
+                    // Show notification if status has changed
+                    deliveryNotificationChannel.showBasicNotification(
+                        title = trackingCode,
+                        description = applicationContext.getString(R.string.delivered_moving)
+                    )
+                    notificationSent = true
+                }
+            }
+        }
+
+        return notificationSent
+    }
 }
