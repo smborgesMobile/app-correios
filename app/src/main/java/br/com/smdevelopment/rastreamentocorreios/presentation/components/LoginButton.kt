@@ -7,40 +7,53 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.smdevelopment.rastreamentocorreios.R
 
 @Composable
-fun LoginButton(
+fun NewButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isPrimary: Boolean = true // Configuração para diferenciar o estilo
+    isPrimary: Boolean = true,
+    icon: Painter? = null
 ) {
     val buttonColors = if (isPrimary) {
-        ButtonDefaults.buttonColors(containerColor = Color(0xFF1A80E5)) // Azul primário
+        ButtonDefaults.buttonColors(containerColor = Color(0xFF1A80E5)) // Primary blue
     } else {
-        ButtonDefaults.buttonColors(containerColor = Color(0xFFF0F2F5)) // Cinza secundário
+        ButtonDefaults.buttonColors(containerColor = Color(0xFFF0F2F5)) // Secondary gray
     }
 
     val textColor = if (isPrimary) {
-        Color.White // Texto branco para o botão primário
+        Color.White // White text for primary button
     } else {
-        Color.Black // Texto preto para o botão secundário
+        Color.Black // Black text for secondary button
     }
 
     Button(
         onClick = onClick,
-        modifier = modifier
-            .padding(8.dp),
+        modifier = modifier.padding(8.dp),
         colors = buttonColors,
-        shape = RoundedCornerShape(8.dp) // Cantos arredondados
+        shape = RoundedCornerShape(8.dp) // Rounded corners
     ) {
+        if (icon != null) {
+            Icon(
+                painter = icon,
+                contentDescription = null,
+                tint = textColor, // Use the same color as the text
+                modifier = Modifier
+                    .padding(end = 8.dp) // Icon size and spacing
+            )
+        }
         Text(
             text = text,
             color = textColor,
@@ -48,6 +61,7 @@ fun LoginButton(
         )
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -58,17 +72,19 @@ fun PreviewSideBySide() {
             .padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp) // Espaço entre os botões
     ) {
-        LoginButton(
+        NewButton(
             text = "Sign In",
             onClick = { /* TODO: Implement click action */ },
             modifier = Modifier.weight(1f), // Faz o botão preencher metade do espaço disponível
-            isPrimary = true
+            isPrimary = true,
+            painterResource(id = R.drawable.eyes_icon)
         )
-        LoginButton(
+        NewButton(
             text = "Sign Up",
             onClick = { /* TODO: Implement click action */ },
             modifier = Modifier.weight(1f), // Faz o botão preencher metade do espaço disponível
-            isPrimary = false
+            isPrimary = false,
+            painterResource(id = R.drawable.eyes_icon)
         )
     }
 }

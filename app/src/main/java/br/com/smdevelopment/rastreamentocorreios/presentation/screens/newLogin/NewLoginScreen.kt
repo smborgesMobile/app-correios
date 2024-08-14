@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.presentation.components.LoginButton
+import br.com.smdevelopment.rastreamentocorreios.presentation.components.NewButton
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.TextFieldComponent
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.TextFieldType
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.Toolbar
@@ -163,13 +163,13 @@ fun NewLoginScreen(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                LoginButton(
+                NewButton(
                     text = "Sign In",
                     onClick = { loginViewModel.onEvent(LoginEvent.LoginUser) },
                     modifier = Modifier.weight(1f),
                     isPrimary = true
                 )
-                LoginButton(
+                NewButton(
                     text = "Sign Up",
                     onClick = { loginViewModel.onEvent(LoginEvent.CreateAccount) },
                     modifier = Modifier.weight(1f),
