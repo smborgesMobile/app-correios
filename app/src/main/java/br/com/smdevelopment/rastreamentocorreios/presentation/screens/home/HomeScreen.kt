@@ -95,7 +95,8 @@ fun HomeScreen() {
 
             // session header
             SessionHeader(
-                title = stringResource(id = R.string.home_my_products), fontSize = 16.sp
+                title = stringResource(id = R.string.home_my_products),
+                fontSize = 16.sp
             )
 
             // delivery list

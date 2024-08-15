@@ -184,7 +184,7 @@ fun MainScreenView(
                     scope.launch {
                         scaffoldState.drawerState.open()
                     }
-                }, endMargin = 16.dp
+                }, endMargin = 42.dp
             )
         },
         bottomBar = {
