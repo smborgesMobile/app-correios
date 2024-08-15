@@ -33,7 +33,7 @@ class DeliveryNotificationChannel(private val context: Context) {
         val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(description)
-            .setSmallIcon(R.drawable.delivered_icon)
+            .setSmallIcon(R.drawable.delivered_start_icon)
             .setPriority(NotificationManager.IMPORTANCE_HIGH)
             .setAutoCancel(true)
             .setContentIntent(resultPendingIntent)
