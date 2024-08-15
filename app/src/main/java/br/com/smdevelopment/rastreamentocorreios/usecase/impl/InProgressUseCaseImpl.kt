@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 
 class InProgressUseCaseImpl(private val repository: LinkTrackRepository) : InProgressUseCase {
     override suspend fun fetchDelivered(): Flow<List<TrackingModel>> {
-        return repository.getAllDeliveries().map { it ->
+        return repository.getAllCacheDeliveries().map { it ->
             it.filter { it.isDelivered.not() }
         }
     }

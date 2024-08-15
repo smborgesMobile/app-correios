@@ -1,6 +1,5 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.screens.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
@@ -86,7 +85,6 @@ class LoginViewModel(
                             showChangePasswordError = true
                         )
                     }
-                    Log.d("sm.borges", "exception: $it")
                 }
                 .collect { success ->
                     if (success) {

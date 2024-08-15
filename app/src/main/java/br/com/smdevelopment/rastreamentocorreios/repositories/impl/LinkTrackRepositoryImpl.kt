@@ -32,7 +32,6 @@ class LinkTrackRepositoryImpl(
                     val deliveryResponse = response.body()
                     if (deliveryResponse != null) {
                         try {
-                            Log.d("sm.borges", "deliveryResponse: $response")
                             linkTrackDao.insertNewDelivery(deliveryResponse.toDeliveryData())
                             emit(getListFromRoom())
                         } catch (e: Exception) {
@@ -57,7 +56,10 @@ class LinkTrackRepositoryImpl(
     }
 
     override suspend fun getAllCacheDeliveries(): Flow<List<TrackingModel>> {
-        return flow { getListFromRoom() }
+        return flow {
+            val cachedList = getListFromRoom()
+            emit(cachedList)
+        }
     }
 
     override suspend fun updateCache() {
