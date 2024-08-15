@@ -14,6 +14,8 @@
     <string name="title_activity_detail">DetailActivity</string>
     <string name="empty_state_message">Sem encomendas ainda!</string>
     <string name="empty_state_description">Adicione novos itens de rastreamento para começar a acompanhar suas encomendas com facilidade.</string>
+    <string name="tracking_not_found_title">Detalhes do rastreamento não encontrados</string>
+    <string name="tracking_not_found_description">Não conseguimos localizar os detalhes deste rastreamento. Verifique o código e tente novamente.</string>
 
 
     <string name="delivered_moving">Seu pedido movimentou</string>

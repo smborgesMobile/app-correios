@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +24,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,11 +38,6 @@ import br.com.smdevelopment.rastreamentocorreios.entities.view.EventModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.CustomTopAppBar
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class DetailActivity : ComponentActivity() {
@@ -151,34 +146,39 @@ fun DetailScreen(eventList: List<EventModel>, closeActivityListener: (() -> Unit
 
 @Composable
 fun AnimatedPreloader(modifier: Modifier = Modifier) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        val preloaderLottieComposition by rememberLottieComposition(
-            LottieCompositionSpec.RawRes(
-                R.raw.empty_animation
-            )
-        )
-
-        val preloaderProgress by animateLottieCompositionAsState(
-            preloaderLottieComposition,
-            iterations = LottieConstants.IterateForever,
-            isPlaying = true
-        )
-
-        LottieAnimation(
-            composition = preloaderLottieComposition,
-            progress = preloaderProgress,
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(R.drawable.not_found),
+            contentDescription = null,
             modifier = modifier
-                .size(400.dp)
+                .size(150.dp)
+                .padding(8.dp, top = 16.dp)
+                .align(Alignment.CenterHorizontally)
+                .clip(RoundedCornerShape(10.dp)),
+            contentScale = ContentScale.Fit
         )
 
         Text(
-            text = stringResource(R.string.detalhes_ainda_n_o_dispon_veis),
+            text = stringResource(R.string.tracking_not_found_title),
             style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(horizontal = 16.dp),
-            maxLines = 1
+            maxLines = 2
+        )
+
+        androidx.compose.material3.Text(
+            style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .padding(horizontal = 36.dp)
+                .align(Alignment.CenterHorizontally),
+            textAlign = TextAlign.Center,
+            text = stringResource(id = R.string.tracking_not_found_description)
         )
     }
 }
