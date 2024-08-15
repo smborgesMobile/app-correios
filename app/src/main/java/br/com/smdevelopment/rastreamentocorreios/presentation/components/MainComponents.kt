@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -45,7 +44,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -54,10 +52,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -351,41 +347,6 @@ fun AllDeliveries(
 }
 
 //#endregion
-
-//#region --- empty state
-
-@Composable
-@Preview
-fun EmptyState() {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(top = 36.dp)
-    ) {
-        Text(
-            style = MaterialTheme.typography.h6,
-            modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            text = stringResource(id = R.string.empty_state_message),
-            fontWeight = FontWeight.Bold
-        )
-
-        Image(
-            painter = painterResource(R.drawable.empty_state_image),
-            contentDescription = null,
-            modifier = Modifier
-                .size(150.dp)
-                .padding(8.dp, top = 16.dp)
-                .align(Alignment.CenterHorizontally)
-                .clip(RoundedCornerShape(10.dp)),
-            contentScale = ContentScale.Fit
-        )
-    }
-}
-
-//#endregion --- empty state
 
 //#region --- navigation drawer
 
