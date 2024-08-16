@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.entities.view.EventModel
 import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.notification.DeliveryNotificationChannel
 import br.com.smdevelopment.rastreamentocorreios.usecase.TrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -37,42 +37,33 @@ class NotificationCheckWorkManager(
     }
 
     private suspend fun processTrackingCodes(allList: List<TrackingModel>) {
-        // Create a map of tracking codes to cached statuses
-        val cachedStatuses = allList.associate { it.code to it.events }
-
-        // Process each tracking code
-        for ((trackingCode, events) in cachedStatuses) {
-            if (checkForStatusChange(trackingCode, events)) {
-                break // Exit the loop if a notification has been sent
-            }
+        allList.forEach { cachedData ->
+            checkForStatusChange(cachedData)
         }
     }
 
-    private suspend fun checkForStatusChange(
-        trackingCode: String,
-        events: List<EventModel>
-    ): Boolean {
+    private suspend fun checkForStatusChange(trackingModel: TrackingModel): Boolean {
         var notificationSent = false
 
-        getCodeUseCase.getTrackingInfo(trackingCode).collectLatest { trackingInfo ->
+        getCodeUseCase.getTrackingInfo(trackingModel.code).collectLatest { trackingInfo ->
             if (trackingInfo.isNotEmpty()) {
-                val trackingList: List<EventModel> =
-                    trackingInfo.firstOrNull()?.events ?: emptyList()
-                val remoteItemStatus = trackingList.firstOrNull()?.status.orEmpty()
-                val cacheStatus = events.firstOrNull()?.status.orEmpty()
-
+                val filteredList = trackingInfo.firstOrNull { it.code == trackingModel.code }
                 // Compare the cached and latest statuses
-                if (remoteItemStatus != cacheStatus) {
+                if (filteredList?.last != trackingModel.last) {
                     // Show notification if status has changed
                     deliveryNotificationChannel.showBasicNotification(
-                        title = trackingCode,
+                        title = trackingModel.code,
                         description = applicationContext.getString(R.string.delivered_moving)
                     )
                     notificationSent = true
+                    delay(QUERY_DELAY)
                 }
             }
         }
-
         return notificationSent
+    }
+
+    private companion object {
+        const val QUERY_DELAY = 500L
     }
 }
