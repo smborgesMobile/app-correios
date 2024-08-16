@@ -37,6 +37,7 @@ class PendingScreenViewModel(private val useCase: InProgressUseCase) : ViewModel
 
         viewModelScope.launch {
             _inProgressList.value = newItemList
+            _emptyState.value = newItemList.isEmpty()
             useCase.deleteItem(item)
         }
     }
