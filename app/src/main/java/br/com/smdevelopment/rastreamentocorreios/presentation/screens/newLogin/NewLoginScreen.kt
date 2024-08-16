@@ -121,7 +121,7 @@ fun NewLoginScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(R.string.sign_in),
+                    text = stringResource(R.string.sign_in_title),
                     fontStyle = MaterialTheme.typography.h1.fontStyle,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
@@ -148,7 +148,7 @@ fun NewLoginScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Forgot Password",
+                text = stringResource(R.string.forgot_password_message),
                 fontStyle = MaterialTheme.typography.body1.fontStyle,
                 color = Color(0xFF637587),
                 modifier = Modifier
@@ -164,13 +164,13 @@ fun NewLoginScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 NewButton(
-                    text = "Sign In",
+                    text = stringResource(id = R.string.sign_in_button),
                     onClick = { loginViewModel.onEvent(LoginEvent.LoginUser) },
                     modifier = Modifier.weight(1f),
                     isPrimary = true
                 )
                 NewButton(
-                    text = "Sign Up",
+                    text = stringResource(id = R.string.sign_up_button),
                     onClick = { loginViewModel.onEvent(LoginEvent.CreateAccount) },
                     modifier = Modifier.weight(1f),
                     isPrimary = false

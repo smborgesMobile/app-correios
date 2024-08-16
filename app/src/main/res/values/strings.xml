@@ -64,7 +64,11 @@ Sábado, das 8h às 14h.</string>
 
     <string name="no_data_found_message">Objeto encaminhado</string>
 
-    <string name="sign_in">Sign In</string>
+    <string name="sign_in_title">Correios Tracking</string>
     <string name="email">Email</string>
     <string name="add_delivery_button">Adicionar Rastreamento</string>
+    <string name="sign_in_button">Entrar</string>
+    <string name="sign_up_button">Cadastrar</string>
+    <string name="forgot_password_message">Esqueceu a Senha</string>
+
 </resources>
