@@ -12,6 +12,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import br.com.smdevelopment.rastreamentocorreios.di.appModule
 import br.com.smdevelopment.rastreamentocorreios.workmanager.NotificationCheckWorkManager
+import br.com.smdevelopment.rastreamentocorreios.workmanager.UpdateCacheWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import java.util.concurrent.TimeUnit
@@ -48,7 +49,7 @@ class MainApplication : Application(), Configuration.Provider {
 
     private fun setupUpdateCache() {
         val uploadWorkRequest: WorkRequest =
-            OneTimeWorkRequestBuilder<NotificationCheckWorkManager>()
+            OneTimeWorkRequestBuilder<UpdateCacheWorker>()
                 .build()
 
         WorkManager
