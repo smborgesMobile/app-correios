@@ -44,6 +44,12 @@ class LinkTrackViewModel(
     private fun fetchAllLinkTrackItems() {
         viewModelScope.launch(Dispatchers.Default) {
             getAllTrackingUseCase.getTrackingList()
+                .catch {
+                    _uiState.value = _uiState.value.copy(
+                        trackingInfo = emptyList(),
+                        isRefreshing = false
+                    )
+                }
                 .collect { result ->
                     _uiState.value = _uiState.value.copy(
                         trackingInfo = result,
@@ -61,7 +67,10 @@ class LinkTrackViewModel(
             )
             trackingUseCase.getTrackingInfo(code)
                 .catch {
-                    _uiState.value = _uiState.value.copy(errorState = true)
+                    _uiState.value = _uiState.value.copy(
+                        errorState = true,
+                        loadingState = false
+                    )
                 }
                 .collect { result ->
                     onCodeChange(String())
