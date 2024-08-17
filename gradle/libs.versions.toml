@@ -21,6 +21,11 @@ systemuicontroller = "0.23.1"
 coreKtx = "1.13.1"
 firebaseBom = "33.1.2"
 
+androidGradlePlugin = "8.5.2"
+kotlin = "2.0.0"
+googleServices = "4.4.2"
+ksp = "2.0.10-1.0.24"
+
 [libraries]
 androidx-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
@@ -72,3 +77,11 @@ accompanist-systemuicontroller = { group = "com.google.accompanist", name = "acc
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
