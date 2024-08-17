@@ -16,8 +16,8 @@ android {
         minSdk 26
         targetSdk 34
         minSdkVersion 26
-        versionCode 27
-        versionName "22.0"
+        versionCode 30
+        versionName "24.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -43,7 +43,7 @@ android {
             buildConfigField "String", "USER", "\"sergioborgesmendes12@gmail.com\""
             buildConfigField "String", "TOKEN", "\"0ecd0f0da1454597e2bbc9cca3126c56937f8cb2eb424fdc10134c8dc43de3a5\""
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
