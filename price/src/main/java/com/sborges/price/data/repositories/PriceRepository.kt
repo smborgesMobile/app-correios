@@ -6,9 +6,6 @@ import com.sborges.price.data.retrofit.ResponseWrapper
 import com.sborges.price.domain.abstraction.PriceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 
 class PriceRepositoryImpl(private val api: PriceApi) : PriceRepository {
@@ -45,19 +42,5 @@ class PriceRepositoryImpl(private val api: PriceApi) : PriceRepository {
                 ResponseWrapper.Error(e.message ?: "Unknown error")
             }
         }
-    }
-
-    private fun createPartFromString(stringData: String): RequestBody {
-        return stringData.toRequestBody("text/plain".toMediaTypeOrNull())
-    }
-
-
-    private companion object {
-        const val ORIGIN_ZIP_CODE = "originZipCode"
-        const val DESTINATION_ZIP_CODE = "destinationZipCode"
-        const val WEIGHT = "weight"
-        const val HEIGHT = "height"
-        const val WIDTH = "width"
-        const val LENGTH = "length"
     }
 }
