@@ -12,7 +12,7 @@ class GetPriceUseCase(private val priceRepository: PriceRepository) {
     suspend operator fun invoke(
         originZipCode: String,
         destinationZipCode: String,
-        weight: String,
+        weight: Double,
         height: String,
         width: String,
         length: String

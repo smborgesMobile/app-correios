@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DropdownMenu(
     modifier: Modifier = Modifier,
-    options: List<String>,
-    onOptionSelected: (String) -> Unit
+    options: List<DropDownModel>,
+    onOptionSelected: (DropDownModel) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf(options[0]) }
@@ -39,7 +39,7 @@ fun DropdownMenu(
     ) {
         TextField(
             readOnly = true,
-            value = text,
+            value = text.label,
             singleLine = true,
             onValueChange = {},
             trailingIcon = {
@@ -67,7 +67,7 @@ fun DropdownMenu(
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = option,
+                            text = option.label,
                             style = TextStyle(color = Color.Gray)
                         )
                     },
@@ -85,10 +85,9 @@ fun DropdownMenu(
 @Preview(showBackground = true)
 @Composable
 private fun DropdownMenuPreview() {
-    val options = listOf("Option 1", "Option 2", "Option 3")
     Surface(modifier = Modifier.padding(16.dp)) {
         DropdownMenu(
-            options = options,
+            options = emptyList(),
             onOptionSelected = { selectedOption ->
                 // Handle option selection
             }

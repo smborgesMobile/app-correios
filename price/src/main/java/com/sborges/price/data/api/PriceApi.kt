@@ -13,7 +13,7 @@ interface PriceApi {
     suspend fun getPrices(
         @Field("cepOrigem") originZipCode: String,
         @Field("cepDestino") destinationZipCode: String,
-        @Field("peso") weight: String,
+        @Field("peso") weight: Double,
         @Field("altura") height: String,
         @Field("largura") width: String,
         @Field("comprimento") length: String

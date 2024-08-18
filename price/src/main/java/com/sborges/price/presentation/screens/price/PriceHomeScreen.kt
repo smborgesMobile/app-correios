@@ -21,11 +21,15 @@ import com.sborges.price.presentation.components.dropdown.DropdownMenu
 import com.sborges.price.presentation.components.textfield.TextFieldComponent
 import com.sborges.price.presentation.components.textfield.TextType
 import com.sborges.price.presentation.screens.price.utils.CreateWeightList
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PriceHomeScreen(
     modifier: Modifier = Modifier
 ) {
+
+    val viewModel: PriceViewModel = koinViewModel()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -45,16 +49,17 @@ fun PriceHomeScreen(
                 .padding(horizontal = 16.dp, vertical = 16.dp),
             hint = stringResource(R.string.cep_start_label),
             type = TextType.NUMBER,
-            maxFieldLength = 8
-        ) {
-
-        }
+            maxFieldLength = 8,
+            onValueChange = {
+                viewModel.onEvent(PriceEvent.OnChangeStartCep(it))
+            }
+        )
 
         DropdownMenu(
             modifier = Modifier.padding(horizontal = 16.dp),
             options = CreateWeightList.weightList
         ) {
-
+            viewModel.onEvent(PriceEvent.OnWeightChange(it.value))
         }
 
         Row(
@@ -76,7 +81,7 @@ fun PriceHomeScreen(
                     hint = "3",
                     maxFieldLength = 8
                 ) {
-
+                    viewModel.onEvent(PriceEvent.OnWidthChange(it))
                 }
             }
             Column(
@@ -92,7 +97,7 @@ fun PriceHomeScreen(
                     hint = "11",
                     maxFieldLength = 8
                 ) {
-
+                    viewModel.onEvent(PriceEvent.OnHeightChange(it))
                 }
             }
             Column(
@@ -108,7 +113,7 @@ fun PriceHomeScreen(
                     hint = "3",
                     maxFieldLength = 8
                 ) {
-
+                    viewModel.onEvent(PriceEvent.OnDeepChange(it))
                 }
             }
         }
@@ -131,7 +136,7 @@ fun PriceHomeScreen(
             type = TextType.NUMBER,
             maxFieldLength = 8
         ) {
-
+            viewModel.onEvent(PriceEvent.OnChangeEndCep(it))
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -141,17 +146,8 @@ fun PriceHomeScreen(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-
+            viewModel.onEvent(PriceEvent.OnPriceButtonClick)
         }
-
-//        viewModel.getPrices(
-//            originZipCode = "13098426",
-//            destinationZipCode = "37560000",
-//            weight = "0.3",
-//            height = "2cm",
-//            width = "11cm",
-//            length = "11cm"
-//        )
     }
 }
 

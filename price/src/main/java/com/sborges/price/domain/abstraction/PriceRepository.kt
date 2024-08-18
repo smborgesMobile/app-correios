@@ -8,7 +8,7 @@ interface PriceRepository {
     suspend fun getPrices(
         originZipCode: String,
         destinationZipCode: String,
-        weight: String,
+        weight: Double,
         height: String,
         width: String,
         length: String

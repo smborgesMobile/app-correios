@@ -16,7 +16,7 @@ class PriceRepositoryImpl(private val api: PriceApi) : PriceRepository {
     override suspend fun getPrices(
         originZipCode: String,
         destinationZipCode: String,
-        weight: String,
+        weight: Double,
         height: String,
         width: String,
         length: String
