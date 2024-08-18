@@ -29,30 +29,30 @@ fun NewButton(
     icon: Painter? = null
 ) {
     val buttonColors = if (isPrimary) {
-        ButtonDefaults.buttonColors(containerColor = Color(0xFF1A80E5)) // Primary blue
+        ButtonDefaults.buttonColors(containerColor = Color(0xFF1A80E5))
     } else {
-        ButtonDefaults.buttonColors(containerColor = Color(0xFFF0F2F5)) // Secondary gray
+        ButtonDefaults.buttonColors(containerColor = Color(0xFFF0F2F5))
     }
 
     val textColor = if (isPrimary) {
-        Color.White // White text for primary button
+        Color.White
     } else {
-        Color.Black // Black text for secondary button
+        Color.Black
     }
 
     Button(
         onClick = onClick,
         modifier = modifier.padding(8.dp),
         colors = buttonColors,
-        shape = RoundedCornerShape(8.dp) // Rounded corners
+        shape = RoundedCornerShape(8.dp)
     ) {
         if (icon != null) {
             Icon(
                 painter = icon,
                 contentDescription = null,
-                tint = textColor, // Use the same color as the text
+                tint = textColor,
                 modifier = Modifier
-                    .padding(end = 8.dp) // Icon size and spacing
+                    .padding(end = 8.dp)
             )
         }
         Text(
@@ -71,19 +71,19 @@ fun PreviewSideBySide() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp) // Espaço entre os botões
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         NewButton(
             text = stringResource(R.string.sign_in_button),
-            onClick = { /* TODO: Implement click action */ },
-            modifier = Modifier.weight(1f), // Faz o botão preencher metade do espaço disponível
+            onClick = { },
+            modifier = Modifier.weight(1f),
             isPrimary = true,
             painterResource(id = R.drawable.eyes_icon)
         )
         NewButton(
             text = stringResource(R.string.sign_up_button),
-            onClick = { /* TODO: Implement click action */ },
-            modifier = Modifier.weight(1f), // Faz o botão preencher metade do espaço disponível
+            onClick = { },
+            modifier = Modifier.weight(1f),
             isPrimary = false,
             painterResource(id = R.drawable.eyes_icon)
         )
