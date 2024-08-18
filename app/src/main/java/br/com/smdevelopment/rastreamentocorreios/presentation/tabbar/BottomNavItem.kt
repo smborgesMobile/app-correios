@@ -12,6 +12,6 @@ sealed class BottomNavItem(val title: String, val icon: Int, val route: String) 
         const val HOME = "Home"
         const val DELIVERED = "Entregue"
         const val IN_PROGRESS = "Pendentes"
-        const val PRICE = "Price"
+        const val PRICE = "Calc. Frete"
     }
 }
