@@ -8,4 +8,5 @@ sealed class PriceEvent {
     data class OnDeepChange(val value: String) : PriceEvent()
     data class OnWeightChange(val value: Double) : PriceEvent()
     data object OnPriceButtonClick : PriceEvent()
+    data object OnResultModelDismissed : PriceEvent()
 }

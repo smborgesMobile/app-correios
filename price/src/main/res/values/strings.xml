@@ -9,4 +9,8 @@
     <string name="package_width_label">Largura(cm)*</string>
     <string name="package_deep_label">Profundidade(cm)*</string>
     <string name="price_invalid_fields_error">Os códigos postais de origem e destino são inválidos. Por favor, verifique e tente novamente.</string>
+    <string name="price_result_title">Sua cotação está pronta:</string>
+    <string name="shipping_type">Tipo de Envio: %1$s</string>
+    <string name="shipping_value">Valor do Frete: %1$s</string>
+    <string name="delivery_time">Prazo de Entrega: %1$s</string>
 </resources>

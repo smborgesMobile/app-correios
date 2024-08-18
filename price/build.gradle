@@ -57,4 +57,7 @@ dependencies {
     // Preview
     debugImplementation libs.ui.tooling
     debugImplementation libs.ui.test.manifest
+
+    // Coil
+    implementation libs.coil.compose
 }

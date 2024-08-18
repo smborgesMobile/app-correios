@@ -44,6 +44,7 @@ class GetPriceUseCase(private val priceRepository: PriceRepository) {
                 type = it.name,
                 price = formatPriceToReal(it.price, it.currency),
                 deliveryTime = formatDeliveryTime(it.deliveryTime),
+                imageUrl = it.company.picture
             )
         }
 

@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sborges.price.R
+import com.sborges.price.presentation.components.bottomsheet.PriceResultBottomSheet
 import com.sborges.price.presentation.components.buttons.PriceButton
 import com.sborges.price.presentation.components.dropdown.DropdownMenu
 import com.sborges.price.presentation.components.textfield.TextFieldComponent
@@ -154,6 +155,14 @@ fun PriceHomeScreen(
                 textAlign = TextAlign.Center,
                 color = Color.Red
             )
+        }
+
+        if (state.priceEntity.isNullOrEmpty().not()) {
+            PriceResultBottomSheet(
+                items = state.priceEntity.orEmpty()
+            ) {
+                viewModel.onEvent(PriceEvent.OnResultModelDismissed)
+            }
         }
 
         Spacer(modifier = Modifier.weight(1f))

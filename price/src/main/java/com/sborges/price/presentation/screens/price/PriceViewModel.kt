@@ -22,6 +22,7 @@ class PriceViewModel(
             is PriceEvent.OnWidthChange -> _uiState.value.copy(widthValue = event.value)
             is PriceEvent.OnHeightChange -> _uiState.value.copy(heightValue = event.value)
             is PriceEvent.OnWeightChange -> _uiState.value.copy(weightValue = event.value)
+            is PriceEvent.OnResultModelDismissed -> _uiState.value.copy(priceEntity = emptyList())
             is PriceEvent.OnPriceButtonClick -> {
                 fetchPrices()
                 return
