@@ -55,8 +55,8 @@ dependencies {
     implementation libs.koin.compose
 
     // Preview
-    debugImplementation libs.ui.tooling
-    debugImplementation libs.ui.test.manifest
+    implementation libs.ui.tooling
+    implementation libs.ui.test.manifest
 
     // Coil
     implementation libs.coil.compose
