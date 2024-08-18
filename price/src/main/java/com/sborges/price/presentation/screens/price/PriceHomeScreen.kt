@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +31,7 @@ fun PriceHomeScreen(
 ) {
 
     val viewModel: PriceViewModel = koinViewModel()
+    val state: PriceUIState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = modifier
@@ -50,6 +53,7 @@ fun PriceHomeScreen(
             hint = stringResource(R.string.cep_start_label),
             type = TextType.NUMBER,
             maxFieldLength = 8,
+            initialText = state.endCepValue,
             onValueChange = {
                 viewModel.onEvent(PriceEvent.OnChangeStartCep(it))
             }
@@ -57,7 +61,7 @@ fun PriceHomeScreen(
 
         DropdownMenu(
             modifier = Modifier.padding(horizontal = 16.dp),
-            options = CreateWeightList.weightList
+            options = CreateWeightList.weightList,
         ) {
             viewModel.onEvent(PriceEvent.OnWeightChange(it.value))
         }
@@ -78,8 +82,9 @@ fun PriceHomeScreen(
                     modifier = Modifier.padding(start = 4.dp)
                 )
                 TextFieldComponent(
-                    hint = "3",
-                    maxFieldLength = 8
+                    maxFieldLength = 8,
+                    initialText = state.heightValue,
+                    type = TextType.NUMBER
                 ) {
                     viewModel.onEvent(PriceEvent.OnWidthChange(it))
                 }
@@ -94,8 +99,9 @@ fun PriceHomeScreen(
                     modifier = Modifier.padding(start = 4.dp)
                 )
                 TextFieldComponent(
-                    hint = "11",
-                    maxFieldLength = 8
+                    maxFieldLength = 8,
+                    initialText = state.widthValue,
+                    type = TextType.NUMBER
                 ) {
                     viewModel.onEvent(PriceEvent.OnHeightChange(it))
                 }
@@ -110,8 +116,9 @@ fun PriceHomeScreen(
                     modifier = Modifier.padding(start = 4.dp)
                 )
                 TextFieldComponent(
-                    hint = "3",
-                    maxFieldLength = 8
+                    maxFieldLength = 8,
+                    initialText = state.deepValue,
+                    type = TextType.NUMBER
                 ) {
                     viewModel.onEvent(PriceEvent.OnDeepChange(it))
                 }
@@ -134,17 +141,20 @@ fun PriceHomeScreen(
                 .padding(horizontal = 16.dp),
             hint = stringResource(R.string.cep_end_label),
             type = TextType.NUMBER,
-            maxFieldLength = 8
+            maxFieldLength = 8,
+            initialText = state.endCepValue
         ) {
             viewModel.onEvent(PriceEvent.OnChangeEndCep(it))
         }
 
         Spacer(modifier = Modifier.weight(1f))
         PriceButton(
+            isButtonEnabled = state.isButtonEnabled,
             text = stringResource(R.string.calculate_value_label),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
+            isLoading = state.loading
         ) {
             viewModel.onEvent(PriceEvent.OnPriceButtonClick)
         }

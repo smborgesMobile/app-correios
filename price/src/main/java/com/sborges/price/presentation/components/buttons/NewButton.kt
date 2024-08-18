@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,12 +25,18 @@ fun PriceButton(
     text: String,
     isPrimary: Boolean = true,
     icon: Painter? = null,
+    isButtonEnabled: Boolean = false,
+    isLoading: Boolean = false,
     onClick: () -> Unit
 ) {
     val buttonColors = if (isPrimary) {
-        ButtonDefaults.buttonColors(containerColor = Color(0xFF1A80E5)) // Primary blue
+        ButtonDefaults.buttonColors(
+            containerColor = if (isButtonEnabled) Color(0xFF1A80E5) else Color(0xFFB0C4DE)
+        )
     } else {
-        ButtonDefaults.buttonColors(containerColor = Color(0xFFF0F2F5)) // Secondary gray
+        ButtonDefaults.buttonColors(
+            containerColor = if (isButtonEnabled) Color(0xFFF0F2F5) else Color(0xFFD3D3D3)
+        )
     }
 
     val textColor = if (isPrimary) {
@@ -39,27 +47,34 @@ fun PriceButton(
 
     Button(
         onClick = onClick,
+        enabled = isButtonEnabled && !isLoading,
         modifier = modifier.padding(8.dp),
         colors = buttonColors,
         shape = RoundedCornerShape(8.dp)
     ) {
-        if (icon != null) {
-            Icon(
-                painter = icon,
-                contentDescription = null,
-                tint = textColor,
-                modifier = Modifier
-                    .padding(end = 8.dp)
+        if (isLoading) {
+            CircularProgressIndicator(
+                color = textColor,
+                strokeWidth = 2.dp,
+                modifier = Modifier.size(20.dp)
+            )
+        } else {
+            if (icon != null) {
+                Icon(
+                    painter = icon,
+                    contentDescription = null,
+                    tint = textColor,
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+            }
+            Text(
+                text = text,
+                color = if (isButtonEnabled) textColor else Color.Gray,
+                fontSize = 16.sp
             )
         }
-        Text(
-            text = text,
-            color = textColor,
-            fontSize = 16.sp
-        )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -71,16 +86,19 @@ fun PreviewSideBySide() {
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         PriceButton(
-            text = "Button",
+            text = "Enabled",
             onClick = { },
             modifier = Modifier.weight(1f),
-            isPrimary = true
+            isPrimary = true,
+            isButtonEnabled = true
         )
         PriceButton(
-            text = "Button One",
+            text = "Loading",
             onClick = { },
             modifier = Modifier.weight(1f),
-            isPrimary = false
+            isPrimary = true,
+            isButtonEnabled = true,
+            isLoading = true
         )
     }
 }

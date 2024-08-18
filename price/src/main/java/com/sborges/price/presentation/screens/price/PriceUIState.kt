@@ -8,8 +8,9 @@ data class PriceUIState(
     val priceEntity: PriceDomainEntity? = null,
     val startCepValue: String = "",
     val endCepValue: String = "",
-    val weightValue: Double = 0.0,
+    val weightValue: Double = 0.3,
     val heightValue: String = "",
     val widthValue: String = "",
-    val deepValue: String = ""
+    val deepValue: String = "",
+    val isButtonEnabled: Boolean = false
 )

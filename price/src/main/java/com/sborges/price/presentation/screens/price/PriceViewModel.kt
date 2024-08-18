@@ -29,6 +29,21 @@ class PriceViewModel(
             }
         }
         _uiState.value = updatedState
+
+        checkForEnabledButton()
+    }
+
+    private fun checkForEnabledButton() {
+        _uiState.value = _uiState.value.copy(
+            isButtonEnabled = _uiState.value.run {
+                startCepValue.isNotEmpty() &&
+                    endCepValue.isNotEmpty() &&
+                    weightValue > 0.0 &&
+                    heightValue.isNotEmpty() &&
+                    widthValue.isNotEmpty() &&
+                    deepValue.isNotEmpty()
+            }
+        )
     }
 
     private fun fetchPrices() {
