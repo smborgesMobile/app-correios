@@ -8,4 +8,5 @@
     <string name="package_height_label">Altura(cm)*</string>
     <string name="package_width_label">Largura(cm)*</string>
     <string name="package_deep_label">Profundidade(cm)*</string>
+    <string name="price_invalid_fields_error">Os códigos postais de origem e destino são inválidos. Por favor, verifique e tente novamente.</string>
 </resources>

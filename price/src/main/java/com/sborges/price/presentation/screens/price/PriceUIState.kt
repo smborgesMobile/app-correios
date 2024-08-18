@@ -4,7 +4,7 @@ import com.sborges.price.domain.entity.PriceDomainEntity
 
 data class PriceUIState(
     val loading: Boolean = false,
-    val error: Boolean = false,
+    val error: Int? = null,
     val priceEntity: PriceDomainEntity? = null,
     val startCepValue: String = "",
     val endCepValue: String = "",

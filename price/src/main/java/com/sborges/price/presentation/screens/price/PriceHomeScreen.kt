@@ -13,9 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sborges.price.R
 import com.sborges.price.presentation.components.buttons.PriceButton
@@ -34,8 +35,7 @@ fun PriceHomeScreen(
     val state: PriceUIState by viewModel.uiState.collectAsState()
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = stringResource(R.string.extract_origin_title),
@@ -53,7 +53,7 @@ fun PriceHomeScreen(
             hint = stringResource(R.string.cep_start_label),
             type = TextType.NUMBER,
             maxFieldLength = 8,
-            initialText = state.endCepValue,
+            initialText = state.startCepValue,
             onValueChange = {
                 viewModel.onEvent(PriceEvent.OnChangeStartCep(it))
             }
@@ -82,11 +82,11 @@ fun PriceHomeScreen(
                     modifier = Modifier.padding(start = 4.dp)
                 )
                 TextFieldComponent(
-                    maxFieldLength = 8,
+                    maxFieldLength = 3,
                     initialText = state.heightValue,
                     type = TextType.NUMBER
                 ) {
-                    viewModel.onEvent(PriceEvent.OnWidthChange(it))
+                    viewModel.onEvent(PriceEvent.OnHeightChange(it))
                 }
             }
             Column(
@@ -99,11 +99,11 @@ fun PriceHomeScreen(
                     modifier = Modifier.padding(start = 4.dp)
                 )
                 TextFieldComponent(
-                    maxFieldLength = 8,
+                    maxFieldLength = 3,
                     initialText = state.widthValue,
                     type = TextType.NUMBER
                 ) {
-                    viewModel.onEvent(PriceEvent.OnHeightChange(it))
+                    viewModel.onEvent(PriceEvent.OnWidthChange(it))
                 }
             }
             Column(
@@ -116,7 +116,7 @@ fun PriceHomeScreen(
                     modifier = Modifier.padding(start = 4.dp)
                 )
                 TextFieldComponent(
-                    maxFieldLength = 8,
+                    maxFieldLength = 3,
                     initialText = state.deepValue,
                     type = TextType.NUMBER
                 ) {
@@ -147,7 +147,20 @@ fun PriceHomeScreen(
             viewModel.onEvent(PriceEvent.OnChangeEndCep(it))
         }
 
+        val errorState = state.error
+        if (errorState != null) {
+            Text(
+                text = stringResource(id = errorState),
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(20.dp),
+                textAlign = TextAlign.Center,
+                color = Color.Red
+            )
+        }
+
         Spacer(modifier = Modifier.weight(1f))
+
+        // The button will move above the keyboard
         PriceButton(
             isButtonEnabled = state.isButtonEnabled,
             text = stringResource(R.string.calculate_value_label),
@@ -159,10 +172,4 @@ fun PriceHomeScreen(
             viewModel.onEvent(PriceEvent.OnPriceButtonClick)
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PriceHomeScreenPreview() {
-    PriceHomeScreen()
 }

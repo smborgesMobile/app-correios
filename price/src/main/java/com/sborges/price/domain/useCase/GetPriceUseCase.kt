@@ -1,5 +1,6 @@
 package com.sborges.price.domain.useCase
 
+import com.sborges.price.R
 import com.sborges.price.data.entities.PriceResponseItem
 import com.sborges.price.data.retrofit.ResponseWrapper
 import com.sborges.price.domain.abstraction.PriceRepository
@@ -15,7 +16,7 @@ class GetPriceUseCase(private val priceRepository: PriceRepository) {
         weight: Double,
         height: String,
         width: String,
-        length: String
+        deep: String
     ): PriceDomainEntity? {
         return try {
             val response = priceRepository.getPrices(
@@ -24,13 +25,17 @@ class GetPriceUseCase(private val priceRepository: PriceRepository) {
                 weight,
                 height,
                 width,
-                length
+                deep
             )
 
             when (response) {
                 is ResponseWrapper.Success -> response.data.toDomain()
-                is ResponseWrapper.Error -> null
-                else -> null
+                is ResponseWrapper.Error -> {
+                    PriceDomainEntity(
+                        errorMessage =
+                        R.string.price_invalid_fields_error
+                    )
+                }
             }
         } catch (e: Exception) {
             null

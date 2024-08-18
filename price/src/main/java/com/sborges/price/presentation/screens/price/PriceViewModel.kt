@@ -21,7 +21,6 @@ class PriceViewModel(
             is PriceEvent.OnDeepChange -> _uiState.value.copy(deepValue = event.value)
             is PriceEvent.OnWidthChange -> _uiState.value.copy(widthValue = event.value)
             is PriceEvent.OnHeightChange -> _uiState.value.copy(heightValue = event.value)
-            is PriceEvent.OnLengthChange -> _uiState.value.copy(deepValue = event.value)
             is PriceEvent.OnWeightChange -> _uiState.value.copy(weightValue = event.value)
             is PriceEvent.OnPriceButtonClick -> {
                 fetchPrices()
@@ -42,7 +41,8 @@ class PriceViewModel(
                     heightValue.isNotEmpty() &&
                     widthValue.isNotEmpty() &&
                     deepValue.isNotEmpty()
-            }
+            },
+            error = null
         )
     }
 
@@ -51,7 +51,7 @@ class PriceViewModel(
             _uiState.value = _uiState.value.copy(
                 loading = true,
                 priceEntity = null,
-                error = false
+                error = null
             )
             try {
                 val response = getPricesUseCase(
@@ -60,18 +60,21 @@ class PriceViewModel(
                     weight = _uiState.value.weightValue,
                     height = _uiState.value.heightValue,
                     width = _uiState.value.widthValue,
-                    length = _uiState.value.deepValue
+                    deep = _uiState.value.deepValue
                 )
-                _uiState.value = _uiState.value.copy(
-                    loading = false,
-                    priceEntity = response,
-                    error = response == null
-                )
+
+                if (response != null) {
+                    _uiState.value = _uiState.value.copy(
+                        loading = false,
+                        priceEntity = response,
+                        error = response.errorMessage
+                    )
+                }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     loading = false,
                     priceEntity = null,
-                    error = true
+                    error = null
                 )
             }
         }
