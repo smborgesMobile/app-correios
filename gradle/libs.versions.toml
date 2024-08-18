@@ -25,6 +25,10 @@ androidGradlePlugin = "8.5.2"
 kotlin = "2.0.0"
 googleServices = "4.4.2"
 ksp = "2.0.10-1.0.24"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
 
 [libraries]
 androidx-foundation = { module = "androidx.compose.foundation:foundation" }
@@ -77,6 +81,10 @@ accompanist-systemuicontroller = { group = "com.google.accompanist", name = "acc
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }

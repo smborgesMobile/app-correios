@@ -130,4 +130,5 @@ dependencies {
     implementation platform(libs.firebase.bom)
     implementation libs.google.firebase.auth.ktx
 
+    implementation(project(":price"))
 }

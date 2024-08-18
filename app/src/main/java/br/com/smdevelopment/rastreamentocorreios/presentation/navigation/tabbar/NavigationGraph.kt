@@ -13,6 +13,7 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.screens.delivered.
 import br.com.smdevelopment.rastreamentocorreios.presentation.screens.home.HomeScreen
 import br.com.smdevelopment.rastreamentocorreios.presentation.screens.pending.PendingScreen
 import br.com.smdevelopment.rastreamentocorreios.presentation.tabbar.BottomNavItem
+import com.sborges.price.presentation.screens.PriceHomeScreen
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
@@ -33,6 +34,9 @@ fun NavigationGraph(navController: NavHostController) {
         }
         composable(NavDrawerItem.About.route) {
             AboutScreen()
+        }
+        composable(BottomNavItem.Price.route) {
+            PriceHomeScreen()
         }
     }
 }
