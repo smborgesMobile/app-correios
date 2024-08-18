@@ -1,6 +1,5 @@
 package com.sborges.price.domain.useCase
 
-import com.sborges.price.R
 import com.sborges.price.data.entities.PriceResponseItem
 import com.sborges.price.data.retrofit.ResponseWrapper
 import com.sborges.price.domain.abstraction.PriceRepository
@@ -17,7 +16,7 @@ class GetPriceUseCase(private val priceRepository: PriceRepository) {
         height: String,
         width: String,
         deep: String
-    ): PriceDomainEntity? {
+    ): List<PriceDomainEntity>? {
         return try {
             val response = priceRepository.getPrices(
                 originZipCode,
@@ -31,10 +30,7 @@ class GetPriceUseCase(private val priceRepository: PriceRepository) {
             when (response) {
                 is ResponseWrapper.Success -> response.data.toDomain()
                 is ResponseWrapper.Error -> {
-                    PriceDomainEntity(
-                        errorMessage =
-                        R.string.price_invalid_fields_error
-                    )
+                    null
                 }
             }
         } catch (e: Exception) {
@@ -42,14 +38,14 @@ class GetPriceUseCase(private val priceRepository: PriceRepository) {
         }
     }
 
-    private fun List<PriceResponseItem>.toDomain(): PriceDomainEntity {
-        val firstItem = this.first()
-        return PriceDomainEntity(
-            type = firstItem.name,
-            price = formatPriceToReal(firstItem.price, firstItem.currency),
-            deliveryTime = formatDeliveryTime(firstItem.deliveryTime),
-        )
-    }
+    private fun List<PriceResponseItem>.toDomain(): List<PriceDomainEntity> =
+        this.map {
+            PriceDomainEntity(
+                type = it.name,
+                price = formatPriceToReal(it.price, it.currency),
+                deliveryTime = formatDeliveryTime(it.deliveryTime),
+            )
+        }
 
     private fun formatPriceToReal(price: Double, currencySymbol: String): String {
         val numberFormat = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))

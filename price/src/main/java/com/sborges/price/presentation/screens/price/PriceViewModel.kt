@@ -42,7 +42,7 @@ class PriceViewModel(
                     widthValue.isNotEmpty() &&
                     deepValue.isNotEmpty()
             },
-            error = null
+            error = false
         )
     }
 
@@ -50,8 +50,8 @@ class PriceViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
                 loading = true,
-                priceEntity = null,
-                error = null
+                priceEntity = emptyList(),
+                error = false
             )
             try {
                 val response = getPricesUseCase(
@@ -63,18 +63,16 @@ class PriceViewModel(
                     deep = _uiState.value.deepValue
                 )
 
-                if (response != null) {
-                    _uiState.value = _uiState.value.copy(
-                        loading = false,
-                        priceEntity = response,
-                        error = response.errorMessage
-                    )
-                }
+                _uiState.value = _uiState.value.copy(
+                    loading = false,
+                    priceEntity = response,
+                    error = response == null
+                )
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     loading = false,
-                    priceEntity = null,
-                    error = null
+                    priceEntity = emptyList(),
+                    error = true
                 )
             }
         }

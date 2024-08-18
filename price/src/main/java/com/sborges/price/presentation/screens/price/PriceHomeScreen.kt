@@ -146,11 +146,9 @@ fun PriceHomeScreen(
         ) {
             viewModel.onEvent(PriceEvent.OnChangeEndCep(it))
         }
-
-        val errorState = state.error
-        if (errorState != null) {
+        if (state.error) {
             Text(
-                text = stringResource(id = errorState),
+                text = stringResource(id = R.string.price_invalid_fields_error),
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.padding(20.dp),
                 textAlign = TextAlign.Center,
