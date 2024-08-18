@@ -72,13 +72,13 @@ fun PreviewSideBySide() {
     ) {
         PriceButton(
             text = "Button",
-            onClick = { /* TODO: Implement click action */ },
+            onClick = { },
             modifier = Modifier.weight(1f),
             isPrimary = true
         )
         PriceButton(
             text = "Button One",
-            onClick = { /* TODO: Implement click action */ },
+            onClick = { },
             modifier = Modifier.weight(1f),
             isPrimary = false
         )
