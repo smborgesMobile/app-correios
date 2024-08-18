@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="extract_origin_title">Informe Origem</string>
+    <string name="extract_origin_target">Informe Destino</string>
+    <string name="calculate_value_label">Calcular Preço</string>
+    <string name="cep_start_label">CEP de origem *</string>
+    <string name="cep_end_label">CEP de destino *</string>
+    <string name="package_height_label">Altura(cm)*</string>
+    <string name="package_width_label">Largura(cm)*</string>
+    <string name="package_deep_label">Profundidade(cm)*</string>
+</resources>
