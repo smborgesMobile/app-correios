@@ -24,6 +24,7 @@ import com.sborges.price.presentation.components.buttons.PriceButton
 import com.sborges.price.presentation.components.dropdown.DropdownMenu
 import com.sborges.price.presentation.components.textfield.TextFieldComponent
 import com.sborges.price.presentation.components.textfield.TextType
+import com.sborges.price.presentation.screens.price.utils.CepVisualTransformation
 import com.sborges.price.presentation.screens.price.utils.CreateWeightList
 import org.koin.androidx.compose.koinViewModel
 
@@ -57,7 +58,8 @@ fun PriceHomeScreen(
             initialText = state.startCepValue,
             onValueChange = {
                 viewModel.onEvent(PriceEvent.OnChangeStartCep(it))
-            }
+            },
+            transformation = CepVisualTransformation()
         )
 
         DropdownMenu(
@@ -143,7 +145,8 @@ fun PriceHomeScreen(
             hint = stringResource(R.string.cep_end_label),
             type = TextType.NUMBER,
             maxFieldLength = 8,
-            initialText = state.endCepValue
+            initialText = state.endCepValue,
+            transformation = CepVisualTransformation()
         ) {
             viewModel.onEvent(PriceEvent.OnChangeEndCep(it))
         }
