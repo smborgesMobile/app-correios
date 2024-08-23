@@ -13,12 +13,16 @@ import androidx.work.WorkRequest
 import br.com.smdevelopment.rastreamentocorreios.di.appModule
 import br.com.smdevelopment.rastreamentocorreios.workmanager.NotificationCheckWorkManager
 import br.com.smdevelopment.rastreamentocorreios.workmanager.UpdateCacheWorker
+import com.sborges.core.push.data.FirebaseMessageInitializer
+import com.sborges.core.push.di.CoreModulesDI
 import com.sborges.price.di.priceModules
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.context.startKoin
 import java.util.concurrent.TimeUnit
 
-class MainApplication : Application(), Configuration.Provider {
+class MainApplication : Application(), Configuration.Provider, KoinComponent {
 
     override fun onCreate() {
         super.onCreate()
@@ -26,12 +30,18 @@ class MainApplication : Application(), Configuration.Provider {
         configureNotification()
         setupNotificationWork()
         setupUpdateCache()
+        setupFirebaseMessage()
+    }
+
+    private fun setupFirebaseMessage() {
+        val firebaseInitializer: FirebaseMessageInitializer = get()
+        firebaseInitializer.initFirebaseMessage()
     }
 
     private fun setupKoin() {
         startKoin {
             androidContext(this@MainApplication)
-            modules(appModule + priceModules)
+            modules(appModule + priceModules + CoreModulesDI().loadModules())
         }
     }
 

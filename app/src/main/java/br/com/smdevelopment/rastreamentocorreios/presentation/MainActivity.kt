@@ -55,11 +55,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
         setContent {
             RastreamentoCorreiosTheme {
                 val systemUiController = rememberSystemUiController()
-
-
                 SideEffect {
                     systemUiController.setStatusBarColor(
                         color = primary700,

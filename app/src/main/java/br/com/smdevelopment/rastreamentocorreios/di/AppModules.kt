@@ -14,6 +14,7 @@ import br.com.smdevelopment.rastreamentocorreios.repositories.impl.AuthRepositor
 import br.com.smdevelopment.rastreamentocorreios.repositories.impl.LinkTrackRepositoryImpl
 import br.com.smdevelopment.rastreamentocorreios.room.DeliveryRoomDatabase
 import br.com.smdevelopment.rastreamentocorreios.room.dao.DeliveryDao
+import br.com.smdevelopment.rastreamentocorreios.routers.NotificationRouterImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.ChangePasswordUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.CreateUserUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.DeliveredUseCase
@@ -30,6 +31,7 @@ import br.com.smdevelopment.rastreamentocorreios.usecase.impl.LoginUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.TrackingUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.UpdateCacheUseCaseImpl
 import com.google.firebase.auth.FirebaseAuth
+import com.sborges.core.push.router.NotificationHandler
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -101,8 +103,11 @@ val appModule = module {
     factory<UpdateCacheUseCase> { UpdateCacheUseCaseImpl(repository = get()) }
     factory<CreateUserUseCase> { CreateUserUseCaseImpl(auth = FirebaseAuth.getInstance()) }
     factory<LoginUseCase> { LoginUseCaseImpl(firebaseAuth = FirebaseAuth.getInstance()) }
-    factory<ChangePasswordUseCase> { ChangePasswordUseCaseImpl(firebaseAuth =  FirebaseAuth.getInstance()) }
+    factory<ChangePasswordUseCase> { ChangePasswordUseCaseImpl(firebaseAuth = FirebaseAuth.getInstance()) }
 
     //Helps
     factory<DeliveryNotificationChannel> { DeliveryNotificationChannel(androidContext()) }
+
+    // Routers
+    factory<NotificationHandler> { NotificationRouterImpl() }
 }
