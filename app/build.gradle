@@ -101,6 +101,7 @@ dependencies {
     implementation libs.androidx.runtime.livedata
     implementation libs.androidx.ui.tooling.preview
     implementation libs.play.services.auth
+    implementation libs.firebase.messaging.ktx
     debugImplementation libs.androidx.ui.tooling
 
     // Room
@@ -130,5 +131,8 @@ dependencies {
     implementation platform(libs.firebase.bom)
     implementation libs.google.firebase.auth.ktx
 
+    implementation libs.google.services
+
     implementation(project(":price"))
+    implementation(project(":core"))
 }
