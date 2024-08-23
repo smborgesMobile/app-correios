@@ -19,17 +19,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(LOG_TAG, "From: ${remoteMessage.from}")
         remoteMessage.notification?.let {
-            sendNotification(it.body)
+            sendNotification(
+                messageBody = it.body,
+                title = it.title
+            )
         }
     }
 
 
-    private fun sendNotification(messageBody: String?) {
+    private fun sendNotification(
+        messageBody: String?,
+        title: String?
+    ) {
         val intent = Intent(this, activityResult.navigateToActivity(PUSH_ACTIVITY)).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
         val pendingIntent = PendingIntent.getActivity(
-            this, 0, intent,
+            this,
+            0,
+            intent,
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
 
@@ -37,7 +45,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             this,
             DEFAULT
         )
-            .setContentTitle("FCM Message")
+            .setContentTitle(title)
             .setContentText(messageBody)
             .setAutoCancel(true)
             .setSmallIcon(R.drawable.ic_notification)
