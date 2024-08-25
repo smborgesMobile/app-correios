@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.usecase.TrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseCase
+import com.sborges.core.review.manager.domain.usecase.LaunchCounterUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class LinkTrackViewModel(
     private val trackingUseCase: TrackingUseCase,
-    private val getAllTrackingUseCase: GetAllTrackingUseCase
+    private val getAllTrackingUseCase: GetAllTrackingUseCase,
+    private val appLaunchCounterUseCase: LaunchCounterUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LinkTrackUiState())
@@ -30,7 +32,12 @@ class LinkTrackViewModel(
             is LinkTrackEvent.DeleteItem -> deleteItem(event.trackingModel)
             is LinkTrackEvent.FindForCode -> findForCode(event.code)
             is LinkTrackEvent.FetchAllLinkTrackItems -> fetchAllLinkTrackItems()
+            is LinkTrackEvent.InAppReviewCheck -> fetchLaunchCounter()
         }
+    }
+
+    private fun fetchLaunchCounter() {
+        appLaunchCounterUseCase.incrementLaunchCounter()
     }
 
     private fun onCodeChange(code: String) {

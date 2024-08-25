@@ -21,6 +21,7 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,6 +59,10 @@ fun HomeScreen() {
     val pullRefreshState = rememberPullRefreshState(uiState.isRefreshing, {
         linkTrackViewModel.onEvent(LinkTrackEvent.FetchAllLinkTrackItems)
     })
+
+    SideEffect {
+        linkTrackViewModel.onEvent(LinkTrackEvent.InAppReviewCheck)
+    }
 
     Box(
         modifier = Modifier

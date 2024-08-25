@@ -69,7 +69,8 @@ val appModule = module {
     viewModel {
         LinkTrackViewModel(
             trackingUseCase = get(),
-            getAllTrackingUseCase = get()
+            getAllTrackingUseCase = get(),
+            appLaunchCounterUseCase = get()
         )
     }
     viewModel {

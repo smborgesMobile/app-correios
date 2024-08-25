@@ -13,8 +13,8 @@ import androidx.work.WorkRequest
 import br.com.smdevelopment.rastreamentocorreios.di.appModule
 import br.com.smdevelopment.rastreamentocorreios.workmanager.NotificationCheckWorkManager
 import br.com.smdevelopment.rastreamentocorreios.workmanager.UpdateCacheWorker
+import com.sborges.core.di.CoreModulesDI
 import com.sborges.core.push.data.FirebaseMessageInitializer
-import com.sborges.core.push.di.CoreModulesDI
 import com.sborges.price.di.priceModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent

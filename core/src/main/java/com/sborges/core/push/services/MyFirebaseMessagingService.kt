@@ -70,7 +70,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private companion object {
-        private const val LOG_TAG = "sm.borges"
+        private const val LOG_TAG = "AppCorreiosTag"
         private const val PUSH_ACTIVITY = "MainActivity"
         private const val DEFAULT = "default"
         private const val CHANEL_TITLE = "Channel human readable title"

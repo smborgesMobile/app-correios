@@ -47,4 +47,7 @@ dependencies {
 
     implementation libs.google.services
     implementation libs.firebase.messaging.ktx
+
+    // In App Review
+    implementation libs.play.review.ktx
 }

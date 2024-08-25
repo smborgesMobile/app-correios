@@ -48,15 +48,19 @@ import br.com.smdevelopment.rastreamentocorreios.presentation.sidemenu.AboutActi
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.RastreamentoCorreiosTheme
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.sborges.core.review.manager.ReviewManagerLauncher
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
 
+    private val inAppReviewLauncher: ReviewManagerLauncher by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+        inAppReviewLauncher.launchInAppReview(this)
 
         setContent {
             RastreamentoCorreiosTheme {
