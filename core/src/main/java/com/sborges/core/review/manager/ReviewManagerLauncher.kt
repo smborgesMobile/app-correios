@@ -22,7 +22,7 @@ class ReviewManagerLauncher(
         coroutineScope.launch {
             try {
                 val reviewInfo = requestReviewFlow()
-                val reviewCounter = launchCounterUse.getLaunchCounter()
+                val reviewCounter = launchCounterUse.getReviewCount()
 
                 if (launchCounterUse.getLaunchCounter() >= (MIN_LAUNCH_COUNT + reviewCounter)) {
                     val reviewLaunched = launchReviewFlow(activity, reviewInfo)
