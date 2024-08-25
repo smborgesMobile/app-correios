@@ -6,8 +6,8 @@ import com.sborges.core.push.data.FirebaseMessageInitializer
 import com.sborges.core.push.data.FirebaseMessageLocalRepositoryImpl
 import com.sborges.core.push.domain.abstraction.FirebaseMessageLocalRepository
 import com.sborges.core.review.manager.ReviewManagerLauncher
-import com.sborges.core.review.manager.data.repository.AppLaunchCounterRepositoryImpl
-import com.sborges.core.review.manager.domain.abstraction.AppLaunchCounterRepository
+import com.sborges.core.review.manager.data.repository.InAppReviewRepositoryImpl
+import com.sborges.core.review.manager.domain.abstraction.InAppReviewRepository
 import com.sborges.core.review.manager.domain.usecase.LaunchCounterUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -35,8 +35,8 @@ class CoreModulesDI {
         }
 
         // Launch Counter
-        single<AppLaunchCounterRepository> {
-            AppLaunchCounterRepositoryImpl(
+        single<InAppReviewRepository> {
+            InAppReviewRepositoryImpl(
                 sharedPreferences = androidContext().getSharedPreferences(
                     /* name = */ APP_LAUNCH_COUNTER_PREFERENCES,
                     /* mode = */ Context.MODE_PRIVATE

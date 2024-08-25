@@ -1,9 +1,9 @@
 package com.sborges.core.review.manager.domain.usecase
 
-import com.sborges.core.review.manager.domain.abstraction.AppLaunchCounterRepository
+import com.sborges.core.review.manager.domain.abstraction.InAppReviewRepository
 
 class LaunchCounterUseCase(
-    private val launchCounterRepository: AppLaunchCounterRepository
+    private val launchCounterRepository: InAppReviewRepository
 ) {
 
     fun incrementLaunchCounter() {
@@ -13,5 +13,13 @@ class LaunchCounterUseCase(
 
     fun getLaunchCounter(): Int =
         launchCounterRepository.getLaunchCount()
+
+    fun incrementReviewCount() {
+        val currentReviewCount = launchCounterRepository.getCounterWhenReviewIsShown()
+        launchCounterRepository.saveCounterWhenReviewIsShown(currentReviewCount + 20)
+    }
+
+    fun getReviewCount(): Int =
+        launchCounterRepository.getCounterWhenReviewIsShown()
 
 }

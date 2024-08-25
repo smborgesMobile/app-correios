@@ -22,9 +22,16 @@ class ReviewManagerLauncher(
         coroutineScope.launch {
             try {
                 val reviewInfo = requestReviewFlow()
+                val reviewCounter = launchCounterUse.getLaunchCounter()
 
-                if (launchCounterUse.getLaunchCounter() >= MIN_LAUNCH_COUNT)
-                    launchReviewFlow(activity, reviewInfo)
+                if (launchCounterUse.getLaunchCounter() >= (MIN_LAUNCH_COUNT + reviewCounter)) {
+                    val reviewLaunched = launchReviewFlow(activity, reviewInfo)
+                    if (reviewLaunched) {
+                        launchCounterUse.incrementReviewCount()
+                        Log.d("AppCorreiosTag", "In-app review launched successfully")
+                        // You can save this event to SharedPreferences or a database
+                    }
+                }
             } catch (e: Exception) {
                 Log.e("AppCorreiosTag", "Failed to launch in-app review", e)
             }
@@ -34,17 +41,19 @@ class ReviewManagerLauncher(
     private suspend fun requestReviewFlow(): ReviewInfo =
         withContext(Dispatchers.IO) {
             val task: Task<ReviewInfo> = reviewManager.requestReviewFlow()
-            task.await() // Converts the Task into a suspendable operation
+            task.await()
         }
 
-    private suspend fun launchReviewFlow(activity: Activity, reviewInfo: ReviewInfo) =
+    private suspend fun launchReviewFlow(activity: Activity, reviewInfo: ReviewInfo): Boolean =
         withContext(Dispatchers.Main) {
             val flowTask = reviewManager.launchReviewFlow(activity, reviewInfo)
             flowTask.await()
-            Log.d("AppCorreiosTag", "In-app review completed")
+            Log.d("AppCorreiosTag", "In-app review flow completed")
+            return@withContext flowTask.isSuccessful
         }
 
     private companion object {
         const val MIN_LAUNCH_COUNT = 3
     }
 }
+
