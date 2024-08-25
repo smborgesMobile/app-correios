@@ -21,6 +21,7 @@ permissions = "0.28.0"
 systemuicontroller = "0.23.1"
 coreKtx = "1.13.1"
 firebaseBom = "33.2.0"
+firebaseCrashLytics = "3.0.2"
 
 androidGradlePlugin = "8.5.2"
 kotlin = "2.0.0"
@@ -35,6 +36,8 @@ firebaseMessagingKtxVersion = "24.0.1"
 reviewKtx = "2.0.1"
 
 [libraries]
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 play-review-ktx = { module = "com.google.android.play:review", version.ref = "reviewKtx" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
@@ -101,3 +104,4 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+firebase_crashlytics_plugin = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashLytics" }

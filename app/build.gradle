@@ -5,6 +5,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'org.jetbrains.kotlin.plugin.compose'
     id 'com.google.devtools.ksp'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -135,4 +136,7 @@ dependencies {
 
     implementation(project(":price"))
     implementation(project(":core"))
+
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 }
