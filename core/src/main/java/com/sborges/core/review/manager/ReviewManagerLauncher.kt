@@ -25,12 +25,8 @@ class ReviewManagerLauncher(
                 val reviewCounter = launchCounterUse.getReviewCount()
 
                 if (launchCounterUse.getLaunchCounter() >= (MIN_LAUNCH_COUNT + reviewCounter)) {
-                    val reviewLaunched = launchReviewFlow(activity, reviewInfo)
-                    if (reviewLaunched) {
-                        launchCounterUse.incrementReviewCount()
-                        Log.d("AppCorreiosTag", "In-app review launched successfully")
-                        // You can save this event to SharedPreferences or a database
-                    }
+                    launchReviewFlow(activity, reviewInfo)
+                    launchCounterUse.incrementReviewCount()
                 }
             } catch (e: Exception) {
                 Log.e("AppCorreiosTag", "Failed to launch in-app review", e)
@@ -44,12 +40,10 @@ class ReviewManagerLauncher(
             task.await()
         }
 
-    private suspend fun launchReviewFlow(activity: Activity, reviewInfo: ReviewInfo): Boolean =
+    private suspend fun launchReviewFlow(activity: Activity, reviewInfo: ReviewInfo) =
         withContext(Dispatchers.Main) {
             val flowTask = reviewManager.launchReviewFlow(activity, reviewInfo)
             flowTask.await()
-            Log.d("AppCorreiosTag", "In-app review flow completed")
-            return@withContext flowTask.isSuccessful
         }
 
     private companion object {
