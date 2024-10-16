@@ -13,216 +13,112 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val authRepository: AuthRepository,
-    private val firebaseUserCase: CreateUserUseCase,
-    private val firebaseLoginUseCase: LoginUseCase,
+    private val createUserUseCase: CreateUserUseCase,
+    private val loginUseCase: LoginUseCase,
     private val changePasswordUseCase: ChangePasswordUseCase
 ) : ViewModel() {
 
-    private var _loginUiState = MutableStateFlow(LoginUiState())
+    private val _loginUiState = MutableStateFlow(LoginUiState())
     val loginUiState: StateFlow<LoginUiState> = _loginUiState.asStateFlow()
 
-    val currentUser =
-        FirebaseAuth.getInstance().currentUser
+    val currentUser = FirebaseAuth.getInstance().currentUser
 
     fun onEvent(event: LoginEvent) {
         when (event) {
-            is LoginEvent.EmailChanged -> onEmailChange(event.email)
-            is LoginEvent.PasswordChanged -> onPasswordChanged(event.password)
-            is LoginEvent.GoogleSignIn -> googleSignIn(event.credential)
+            is LoginEvent.EmailChanged -> updateEmail(event.email)
+            is LoginEvent.PasswordChanged -> updatePassword(event.password)
+            is LoginEvent.GoogleSignIn -> handleGoogleSignIn(event.credential)
             is LoginEvent.CreateAccount -> createAccount()
             is LoginEvent.LoginUser -> loginUser()
             is LoginEvent.SendChangePasswordEmail -> sendChangePasswordEmail()
-            is LoginEvent.ChangePasswordEyes -> changePasswordEyes(event.hide)
+            is LoginEvent.ChangePasswordEyes -> togglePasswordVisibility(event.hide)
         }
     }
 
-    private fun googleSignIn(credential: AuthCredential) {
-        _loginUiState.update { currentState ->
-            currentState.copy(
-                showGoogleLoginSuccess = false,
-                showGoogleButtonLoading = true
-            )
-        }
-        viewModelScope.launch(Dispatchers.Default) {
-            authRepository.googleSignIn(credential).collect {
-                when (it) {
-                    is Resource.Success -> {
-                        _loginUiState.update { currentState ->
-                            currentState.copy(
-                                showGoogleLoginSuccess = true,
-                                showGoogleButtonLoading = false
-                            )
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        _loginUiState.update { currentState ->
-                            currentState.copy(
-                                showGoogleLoginError = true,
-                                showGoogleButtonLoading = false
-                            )
-                        }
-                    }
-
-                    else -> {}
+    private fun handleGoogleSignIn(credential: AuthCredential) {
+        updateLoginState(isGoogleButtonLoading = true)
+        executeAction {
+            authRepository.googleSignIn(credential).collect { result ->
+                when (result) {
+                    is Resource.Success -> updateLoginState(isGoogleLoginSuccess = true)
+                    is Resource.Error -> updateLoginState(isGoogleLoginError = true)
+                    else -> Unit
                 }
             }
         }
     }
 
     private fun sendChangePasswordEmail() {
-        viewModelScope.launch(Dispatchers.Default) {
+        executeAction {
             changePasswordUseCase.changePassword(_loginUiState.value.userEmail)
-                .catch {
-                    _loginUiState.update { currentState ->
-                        currentState.copy(
-                            showChangePasswordError = true
-                        )
-                    }
-                }
                 .collect { success ->
-                    if (success) {
-                        _loginUiState.update { currentState ->
-                            currentState.copy(
-                                showChangePasswordSuccess = true,
-                                showChangePasswordError = false // Reset error flag
-                            )
-                        }
-                    } else {
-                        _loginUiState.update { currentState ->
-                            currentState.copy(
-                                showChangePasswordError = true
-                            )
-                        }
-                    }
+                    updateLoginState(
+                        isChangePasswordSuccess = success,
+                        isChangePasswordError = !success
+                    )
                 }
         }
     }
 
     private fun createAccount() {
-        viewModelScope.launch(Dispatchers.Default) {
-            _loginUiState.update { currentState ->
-                currentState.copy(showCreateUserLoading = true)
-            }
-
-            firebaseUserCase.createUserAndPassword(
+        updateLoginState(isCreateUserLoading = true)
+        executeAction {
+            createUserUseCase.createUserAndPassword(
                 _loginUiState.value.userEmail,
                 _loginUiState.value.userPassword
-            )
-                .catch {
-                    _loginUiState.update { currentState ->
-                        currentState.copy(
-                            showCreateUserError = true,
-                            showCreateUserLoading = false
-                        )
-                    }
+            ).collect { result ->
+                when (result) {
+                    is Resource.Success -> updateLoginState(isCreateUserSuccess = true)
+                    is Resource.Error -> updateLoginState(isCreateUserError = true)
+                    else -> Unit
                 }
-                .collect {
-                    when (it) {
-                        is Resource.Success -> {
-                            _loginUiState.update { currentState ->
-                                currentState.copy(
-                                    showCreateUserSuccess = true,
-                                    showCreateUserLoading = false,
-                                    showCreateUserError = false
-                                )
-                            }
-                        }
-
-                        is Resource.Error -> {
-                            _loginUiState.update { currentState ->
-                                currentState.copy(
-                                    showCreateUserError = true,
-                                    showCreateUserLoading = false
-                                )
-                            }
-                        }
-
-                        else -> {}
-                    }
-                }
+            }
         }
     }
 
     private fun loginUser() {
-        viewModelScope.launch(Dispatchers.Default) {
-            _loginUiState.update { currentState ->
-                currentState.copy(showLoginLoading = true)
-            }
-            firebaseLoginUseCase.login(
+        updateLoginState(isLoginLoading = true)
+        executeAction {
+            loginUseCase.login(
                 _loginUiState.value.userPassword,
                 _loginUiState.value.userEmail
-            ).catch {
-                _loginUiState.update { currentState ->
-                    currentState.copy(
-                        showLoginError = true,
-                        showLoginLoading = false
-                    )
-                }
-            }.collect {
-                if (it) {
-                    _loginUiState.update { currentState ->
-                        currentState.copy(
-                            showLoginSuccess = true,
-                            showLoginLoading = false,
-                            showLoginError = false
-                        )
-                    }
-                } else {
-                    _loginUiState.update { currentState ->
-                        currentState.copy(
-                            showLoginError = true,
-                            showLoginLoading = false
-                        )
-                    }
-                }
+            ).collect { success ->
+                updateLoginState(isLoginSuccess = success, isLoginError = !success)
             }
         }
     }
 
-    private fun changePasswordEyes(hide: Boolean) {
-        _loginUiState.update { currentState ->
-            currentState.copy(showPasswordEyes = hide)
-        }
+    private fun togglePasswordVisibility(hide: Boolean) {
+        _loginUiState.update { it.copy(showPasswordEyes = hide) }
     }
 
-    private fun onEmailChange(email: String) {
+    private fun updateEmail(email: String) {
         _loginUiState.update { currentState ->
             currentState.copy(
                 userEmail = email,
-                showCreateUserError = false,
-                showLoginError = false,
-                enableCreateAccountButton = isValidEmail(currentState.userEmail)
-                    && isValidPassword(currentState.userPassword),
-                enableLoginButton = isValidEmail(currentState.userEmail)
-                    && isValidPassword(currentState.userPassword),
-                showChangePasswordSuccess = false,
-                showChangePasswordError = false
+                enableCreateAccountButton = isValidInput(email, currentState.userPassword),
+                enableLoginButton = isValidInput(email, currentState.userPassword)
             )
         }
     }
 
-    private fun onPasswordChanged(password: String) {
+    private fun updatePassword(password: String) {
         _loginUiState.update { currentState ->
             currentState.copy(
                 userPassword = password,
-                showCreateUserError = false,
-                showLoginError = false,
-                enableCreateAccountButton = isValidEmail(currentState.userEmail)
-                    && isValidPassword(password),
-                enableLoginButton = isValidEmail(currentState.userEmail)
-                    && isValidPassword(password),
-                showChangePasswordSuccess = false,
-                showChangePasswordError = false
+                enableCreateAccountButton = isValidInput(currentState.userEmail, password),
+                enableLoginButton = isValidInput(currentState.userEmail, password)
             )
         }
     }
+
+    private fun isValidInput(email: String, password: String) =
+        isValidEmail(email) && isValidPassword(password)
 
     private fun isValidEmail(email: String): Boolean {
         val emailRegex = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
@@ -231,5 +127,45 @@ class LoginViewModel(
 
     private fun isValidPassword(password: String): Boolean {
         return password.length >= 6
+    }
+
+    private fun updateLoginState(
+        isLoginLoading: Boolean = false,
+        isLoginSuccess: Boolean = false,
+        isLoginError: Boolean = false,
+        isCreateUserLoading: Boolean = false,
+        isCreateUserSuccess: Boolean = false,
+        isCreateUserError: Boolean = false,
+        isGoogleButtonLoading: Boolean = false,
+        isGoogleLoginSuccess: Boolean = false,
+        isGoogleLoginError: Boolean = false,
+        isChangePasswordSuccess: Boolean = false,
+        isChangePasswordError: Boolean = false
+    ) {
+        _loginUiState.update { currentState ->
+            currentState.copy(
+                showLoginLoading = isLoginLoading,
+                showLoginSuccess = isLoginSuccess,
+                showLoginError = isLoginError,
+                showCreateUserLoading = isCreateUserLoading,
+                showCreateUserSuccess = isCreateUserSuccess,
+                showCreateUserError = isCreateUserError,
+                showGoogleButtonLoading = isGoogleButtonLoading,
+                showGoogleLoginSuccess = isGoogleLoginSuccess,
+                showGoogleLoginError = isGoogleLoginError,
+                showChangePasswordSuccess = isChangePasswordSuccess,
+                showChangePasswordError = isChangePasswordError
+            )
+        }
+    }
+
+    private fun executeAction(action: suspend () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                action()
+            } catch (e: Exception) {
+                updateLoginState(isLoginError = true)
+            }
+        }
     }
 }

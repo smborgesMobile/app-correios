@@ -86,9 +86,9 @@ val appModule = module {
     viewModel {
         LoginViewModel(
             authRepository = get(),
-            firebaseUserCase = get(),
-            firebaseLoginUseCase = get(),
-            changePasswordUseCase = get(),
+            createUserUseCase = get(),
+            loginUseCase = get(),
+            changePasswordUseCase = get()
         )
     }
     viewModel {

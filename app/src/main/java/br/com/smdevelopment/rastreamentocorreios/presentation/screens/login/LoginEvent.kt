@@ -6,8 +6,8 @@ sealed class LoginEvent {
     data class EmailChanged(val email: String) : LoginEvent()
     data class PasswordChanged(val password: String) : LoginEvent()
     data class GoogleSignIn(val credential: AuthCredential) : LoginEvent()
-    object CreateAccount : LoginEvent()
-    object LoginUser : LoginEvent()
-    object SendChangePasswordEmail : LoginEvent()
+    data object CreateAccount : LoginEvent()
+    data object LoginUser : LoginEvent()
+    data object SendChangePasswordEmail : LoginEvent()
     data class ChangePasswordEyes(val hide: Boolean) : LoginEvent()
 }
