@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
+import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.TrackingUseCase
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.GetAllTrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.notification.DeliveryNotificationChannel
-import br.com.smdevelopment.rastreamentocorreios.usecase.TrackingUseCase
-import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.component.KoinComponent
@@ -31,7 +31,7 @@ class NotificationCheckWorkManager(
             }
             Result.success()
         } catch (e: Exception) {
-            e.printStackTrace() // Consider using a logging framework
+            e.printStackTrace()
             Result.failure()
         }
     }

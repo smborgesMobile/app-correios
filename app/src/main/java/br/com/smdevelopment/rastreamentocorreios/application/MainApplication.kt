@@ -10,8 +10,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
-import br.com.smdevelopment.rastreamentocorreios.di.appModule
-import br.com.smdevelopment.rastreamentocorreios.di.networkModule
+import br.com.smdevelopment.rastreamentocorreios.domain.di.appModule
+import br.com.smdevelopment.rastreamentocorreios.domain.di.networkModule
 import br.com.smdevelopment.rastreamentocorreios.workmanager.NotificationCheckWorkManager
 import br.com.smdevelopment.rastreamentocorreios.workmanager.UpdateCacheWorker
 import com.sborges.core.di.CoreModulesDI
@@ -43,7 +43,8 @@ class MainApplication : Application(), Configuration.Provider, KoinComponent {
         startKoin {
             androidContext(this@MainApplication)
             modules(
-                appModule + priceModules + CoreModulesDI().loadModules() + networkModule)
+                appModule + priceModules + CoreModulesDI().loadModules() + networkModule
+            )
         }
     }
 

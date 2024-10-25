@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
+import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.components.MockData.getMockTrackingModel
 
 @Composable

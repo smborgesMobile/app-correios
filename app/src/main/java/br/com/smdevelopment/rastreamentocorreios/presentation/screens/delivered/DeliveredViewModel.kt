@@ -2,7 +2,7 @@ package br.com.smdevelopment.rastreamentocorreios.presentation.screens.delivered
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.smdevelopment.rastreamentocorreios.usecase.DeliveredUseCase
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.DeliveredUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

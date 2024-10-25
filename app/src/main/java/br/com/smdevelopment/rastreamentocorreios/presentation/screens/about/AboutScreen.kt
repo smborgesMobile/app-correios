@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.extensions.sendMail
+import br.com.smdevelopment.rastreamentocorreios.presentation.extensions.sendMail
 
 @Composable
 fun AboutScreen() {

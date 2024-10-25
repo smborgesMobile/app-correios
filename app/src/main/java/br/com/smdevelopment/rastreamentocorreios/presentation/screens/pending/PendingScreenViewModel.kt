@@ -2,8 +2,8 @@ package br.com.smdevelopment.rastreamentocorreios.presentation.screens.pending
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
-import br.com.smdevelopment.rastreamentocorreios.usecase.InProgressUseCase
+import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.InProgressUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
