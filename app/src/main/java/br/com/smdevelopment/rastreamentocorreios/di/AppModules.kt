@@ -1,7 +1,7 @@
 package br.com.smdevelopment.rastreamentocorreios.di
 
 import androidx.room.Room
-import br.com.smdevelopment.rastreamentocorreios.api.LinkTrackApi
+import br.com.smdevelopment.rastreamentocorreios.mappers.LinkTrackDomainMapper
 import br.com.smdevelopment.rastreamentocorreios.notification.DeliveryNotificationChannel
 import br.com.smdevelopment.rastreamentocorreios.presentation.MainViewModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.screens.delivered.DeliveredViewModel
@@ -37,15 +37,14 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-    // apis
-    single<LinkTrackApi> { RetrofitFactory.getClient().create(LinkTrackApi::class.java) }
 
     // repositories
     factory<LinkTrackRepository> {
         LinkTrackRepositoryImpl(
             api = get(),
             linkTrackDao = get(),
-            firebaseAuth = FirebaseAuth.getInstance()
+            firebaseAuth = FirebaseAuth.getInstance(),
+            linkTrackMapper = get()
         )
     }
     factory<AuthRepository> {
@@ -111,4 +110,8 @@ val appModule = module {
 
     // Routers
     factory<NotificationHandler> { NotificationRouterImpl() }
+
+    // Mappers
+    factory { LinkTrackDomainMapper(firebaseAuth = FirebaseAuth.getInstance()) }
+
 }

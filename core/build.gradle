@@ -30,7 +30,6 @@ android {
 }
 
 dependencies {
-
     implementation libs.core.ktx
     implementation libs.koin.compose
     implementation libs.koin.android

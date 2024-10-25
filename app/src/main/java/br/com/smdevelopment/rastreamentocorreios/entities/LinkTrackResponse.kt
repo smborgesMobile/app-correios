@@ -1,37 +1,36 @@
 package br.com.smdevelopment.rastreamentocorreios.entities
 
-import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class TrackingResponse(
-    @SerializedName("codigo")
+    @SerialName("codigo")
     val code: String,
-    @SerializedName("host")
+    @SerialName("host")
     val host: String,
-    @SerializedName("eventos")
+    @SerialName("eventos")
     val events: List<Event>,
-    @SerializedName("time")
+    @SerialName("time")
     val time: Double,
-    @SerializedName("quantity")
+    @SerialName("quantidade")
     val quantity: Int,
-    @SerializedName("servico")
+    @SerialName("servico")
     val service: String? = null,
-    @SerializedName("ultimo")
+    @SerialName("ultimo")
     val last: String? = null
-) : Parcelable
+)
 
-@Parcelize
+@Serializable
 data class Event(
-    @SerializedName("data")
+    @SerialName("data")
     val date: String,
-    @SerializedName("hora")
+    @SerialName("hora")
     val time: String,
-    @SerializedName("local")
+    @SerialName("local")
     val location: String,
-    @SerializedName("status")
+    @SerialName("status")
     val status: String,
-    @SerializedName("subStatus")
+    @SerialName("subStatus")
     val subStatus: List<String>
-) : Parcelable
+)

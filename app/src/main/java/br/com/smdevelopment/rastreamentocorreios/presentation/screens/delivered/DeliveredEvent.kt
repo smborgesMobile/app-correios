@@ -4,5 +4,5 @@ import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
 
 sealed class DeliveredEvent {
     data class OnDeleteClick(val item: TrackingModel) : DeliveredEvent()
-    object FetchNewItems : DeliveredEvent()
+    data object FetchNewItems : DeliveredEvent()
 }
