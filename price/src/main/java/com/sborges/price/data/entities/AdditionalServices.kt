@@ -1,10 +1,13 @@
 package com.sborges.price.data.entities
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AdditionalServices(
-    @SerializedName("own_hand")
+    @SerialName("own_hand")
     val ownHand: Boolean,
-    @SerializedName("receipt")
+
+    @SerialName("receipt")
     val receipt: Boolean
 )

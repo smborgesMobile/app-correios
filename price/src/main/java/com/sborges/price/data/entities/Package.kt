@@ -1,18 +1,25 @@
 package com.sborges.price.data.entities
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Package(
-    @SerializedName("dimensions")
+    @SerialName("dimensions")
     val dimensions: Dimensions,
-    @SerializedName("discount")
+
+    @SerialName("discount")
     val discount: String,
-    @SerializedName("format")
+
+    @SerialName("format")
     val format: String,
-    @SerializedName("insurance_value")
-    val insuranceValue: Int,
-    @SerializedName("price")
+
+    @SerialName("insurance_value")
+    val insuranceValue: Double,
+
+    @SerialName("price")
     val price: Double,
-    @SerializedName("weight")
+
+    @SerialName("weight")
     val weight: String
 )

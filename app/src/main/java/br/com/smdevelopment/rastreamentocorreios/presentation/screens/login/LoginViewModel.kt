@@ -2,11 +2,11 @@ package br.com.smdevelopment.rastreamentocorreios.presentation.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.smdevelopment.rastreamentocorreios.entities.retrofit.Resource
-import br.com.smdevelopment.rastreamentocorreios.repositories.AuthRepository
-import br.com.smdevelopment.rastreamentocorreios.usecase.ChangePasswordUseCase
-import br.com.smdevelopment.rastreamentocorreios.usecase.CreateUserUseCase
-import br.com.smdevelopment.rastreamentocorreios.usecase.LoginUseCase
+import br.com.smdevelopment.rastreamentocorreios.data.entities.resource.Resource
+import br.com.smdevelopment.rastreamentocorreios.data.repositories.AuthRepository
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.ChangePasswordUseCase
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.CreateUserUseCase
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.LoginUseCase
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers

@@ -3,7 +3,7 @@ package br.com.smdevelopment.rastreamentocorreios.workmanager
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import br.com.smdevelopment.rastreamentocorreios.usecase.UpdateCacheUseCase
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.UpdateCacheUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent

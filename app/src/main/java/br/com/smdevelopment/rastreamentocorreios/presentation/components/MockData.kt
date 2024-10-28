@@ -1,8 +1,8 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.components
 
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.entities.view.EventModel
-import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
+import br.com.smdevelopment.rastreamentocorreios.data.entities.view.EventModel
+import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
 
 object MockData {
 

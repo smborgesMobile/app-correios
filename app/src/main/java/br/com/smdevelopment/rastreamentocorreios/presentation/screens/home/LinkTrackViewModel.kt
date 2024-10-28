@@ -2,9 +2,9 @@ package br.com.smdevelopment.rastreamentocorreios.presentation.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
-import br.com.smdevelopment.rastreamentocorreios.usecase.TrackingUseCase
-import br.com.smdevelopment.rastreamentocorreios.usecase.impl.GetAllTrackingUseCase
+import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.TrackingUseCase
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.GetAllTrackingUseCase
 import com.sborges.core.review.manager.domain.usecase.LaunchCounterUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

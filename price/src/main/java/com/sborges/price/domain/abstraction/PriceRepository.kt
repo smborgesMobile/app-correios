@@ -1,7 +1,7 @@
 package com.sborges.price.domain.abstraction
 
 import com.sborges.price.data.entities.PriceResponseItem
-import com.sborges.price.data.retrofit.ResponseWrapper
+import com.sborges.price.data.wrapper.ResponseWrapper
 
 interface PriceRepository {
 

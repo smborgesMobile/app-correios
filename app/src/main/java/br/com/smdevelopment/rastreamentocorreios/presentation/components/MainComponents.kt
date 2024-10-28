@@ -59,12 +59,12 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.smdevelopment.rastreamentocorreios.R
-import br.com.smdevelopment.rastreamentocorreios.entities.view.TrackingModel
+import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.presentation.DetailActivity
 import br.com.smdevelopment.rastreamentocorreios.presentation.navigation.sidemenu.NavDrawerItem
+import br.com.smdevelopment.rastreamentocorreios.presentation.utils.alphaNumericOnly
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.disabledButton
 import br.com.smdevelopment.rastreamentocorreios.ui.theme.primary700
-import br.com.smdevelopment.rastreamentocorreios.utils.alphaNumericOnly
 
 private const val MAX_FIELD_SIZE = 13
 

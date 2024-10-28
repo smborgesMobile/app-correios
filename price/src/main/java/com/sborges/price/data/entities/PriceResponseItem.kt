@@ -1,28 +1,40 @@
 package com.sborges.price.data.entities
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PriceResponseItem(
-    @SerializedName("additional_services")
-    val additionalServices: AdditionalServices,
-    @SerializedName("company")
-    val company: Company,
-    @SerializedName("currency")
-    val currency: String,
-    @SerializedName("delivery_range")
-    val deliveryRange: DeliveryRange,
-    @SerializedName("delivery_time")
-    val deliveryTime: Int,
-    @SerializedName("discount")
-    val discount: String,
-    @SerializedName("has_error")
-    val hasError: Boolean,
-    @SerializedName("id")
+    @SerialName("id")
     val id: Int,
-    @SerializedName("name")
+
+    @SerialName("name")
     val name: String,
-    @SerializedName("packages")
+
+    @SerialName("price")
+    val price: Double,
+
+    @SerialName("discount")
+    val discount: String,
+
+    @SerialName("currency")
+    val currency: String,
+
+    @SerialName("delivery_time")
+    val deliveryTime: Int,
+
+    @SerialName("delivery_range")
+    val deliveryRange: DeliveryRange,
+
+    @SerialName("packages")
     val packages: List<Package>,
-    @SerializedName("price")
-    val price: Double
+
+    @SerialName("company")
+    val company: Company,
+
+    @SerialName("additional_services")
+    val additionalServices: AdditionalServices,
+
+    @SerialName("has_error")
+    val hasError: Boolean
 )
