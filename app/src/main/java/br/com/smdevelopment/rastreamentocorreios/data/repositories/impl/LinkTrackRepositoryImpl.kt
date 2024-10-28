@@ -27,7 +27,6 @@ class LinkTrackRepositoryImpl(
                 val apiResponse = api.fetchTrackByCode(code = code)
                 linkTrackDao.insertNewDelivery(linkTrackMapper.mapToTrackModel(apiResponse))
                 emit(getListFromRoom())
-
             }
         }
     }

@@ -1,14 +1,15 @@
 package com.sborges.price.data.repositories
 
-import com.sborges.price.data.api.PriceApi
+import android.util.Log
+import com.sborges.price.data.api.PriceApiKtor
 import com.sborges.price.data.entities.PriceResponseItem
-import com.sborges.price.data.retrofit.ResponseWrapper
+import com.sborges.price.data.wrapper.ResponseWrapper
 import com.sborges.price.domain.abstraction.PriceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
-class PriceRepositoryImpl(private val api: PriceApi) : PriceRepository {
+class PriceRepositoryImpl(private val api: PriceApiKtor) : PriceRepository {
 
     override suspend fun getPrices(
         originZipCode: String,
@@ -28,17 +29,12 @@ class PriceRepositoryImpl(private val api: PriceApi) : PriceRepository {
                     width = width,
                     length = length
                 )
+                ResponseWrapper.Success(response)
 
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        ResponseWrapper.Success(it)
-                    } ?: ResponseWrapper.Error("Empty response body", response.code())
-                } else {
-                    ResponseWrapper.Error(response.message(), response.code())
-                }
             } catch (e: HttpException) {
                 ResponseWrapper.Error(e.message ?: "Network error", e.code())
             } catch (e: Exception) {
+                Log.d("sm.borges", "Exception: ${e.message}")
                 ResponseWrapper.Error(e.message ?: "Unknown error")
             }
         }

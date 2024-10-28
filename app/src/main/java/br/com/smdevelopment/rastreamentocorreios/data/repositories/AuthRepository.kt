@@ -1,6 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.data.repositories
 
-import br.com.smdevelopment.rastreamentocorreios.data.entities.retrofit.Resource
+import br.com.smdevelopment.rastreamentocorreios.data.entities.resource.Resource
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.flow.Flow

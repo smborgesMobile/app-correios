@@ -1,7 +1,7 @@
 package br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl
 
 import android.util.Log
-import br.com.smdevelopment.rastreamentocorreios.data.entities.retrofit.Resource
+import br.com.smdevelopment.rastreamentocorreios.data.entities.resource.Resource
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.CreateUserUseCase
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult

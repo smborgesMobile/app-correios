@@ -1,7 +1,7 @@
 package br.com.smdevelopment.rastreamentocorreios.data.repositories.impl
 
 import android.util.Log
-import br.com.smdevelopment.rastreamentocorreios.data.entities.retrofit.Resource
+import br.com.smdevelopment.rastreamentocorreios.data.entities.resource.Resource
 import br.com.smdevelopment.rastreamentocorreios.data.repositories.AuthRepository
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult

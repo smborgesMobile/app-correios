@@ -1,7 +1,7 @@
 package com.sborges.price.domain.useCase
 
 import com.sborges.price.data.entities.PriceResponseItem
-import com.sborges.price.data.retrofit.ResponseWrapper
+import com.sborges.price.data.wrapper.ResponseWrapper
 import com.sborges.price.domain.abstraction.PriceRepository
 import com.sborges.price.domain.entity.PriceDomainEntity
 import java.text.NumberFormat

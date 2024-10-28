@@ -1,6 +1,8 @@
 package br.com.smdevelopment.rastreamentocorreios.domain.di
 
 import androidx.room.Room
+import br.com.smdevelopment.rastreamentocorreios.data.api.LinkTrackApiKtor
+import br.com.smdevelopment.rastreamentocorreios.data.api.LinkTrackApiKtorImpl
 import br.com.smdevelopment.rastreamentocorreios.data.mappers.LinkTrackDomainMapper
 import br.com.smdevelopment.rastreamentocorreios.data.repositories.AuthRepository
 import br.com.smdevelopment.rastreamentocorreios.data.repositories.LinkTrackRepository
@@ -37,6 +39,8 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
+    // ktor
+    factory<LinkTrackApiKtor> { LinkTrackApiKtorImpl(get()) }
 
     // repositories
     factory<LinkTrackRepository> {

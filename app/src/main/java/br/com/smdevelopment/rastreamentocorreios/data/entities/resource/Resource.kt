@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.data.entities.retrofit
+package br.com.smdevelopment.rastreamentocorreios.data.entities.resource
 
 sealed class Resource<T>(
     val data: T? = null,

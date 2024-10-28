@@ -1,9 +1,8 @@
-package com.sborges.price.domain.abstraction
+package com.sborges.price.data.api
 
 import com.sborges.price.data.entities.PriceResponseItem
-import com.sborges.price.data.wrapper.ResponseWrapper
 
-interface PriceRepository {
+interface PriceApiKtor {
 
     suspend fun getPrices(
         originZipCode: String,
@@ -12,5 +11,5 @@ interface PriceRepository {
         height: String,
         width: String,
         length: String
-    ): ResponseWrapper<List<PriceResponseItem>>
+    ): List<PriceResponseItem>
 }

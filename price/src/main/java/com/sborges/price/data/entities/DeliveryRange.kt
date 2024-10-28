@@ -1,10 +1,13 @@
 package com.sborges.price.data.entities
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class DeliveryRange(
-    @SerializedName("max")
+    @SerialName("max")
     val max: Int,
-    @SerializedName("min")
+
+    @SerialName("min")
     val min: Int
 )

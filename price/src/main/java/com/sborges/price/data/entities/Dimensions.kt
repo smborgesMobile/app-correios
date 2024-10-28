@@ -1,12 +1,16 @@
 package com.sborges.price.data.entities
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Dimensions(
-    @SerializedName("height")
+    @SerialName("height")
     val height: String,
-    @SerializedName("length")
+
+    @SerialName("length")
     val length: String,
-    @SerializedName("width")
+
+    @SerialName("width")
     val width: String
 )

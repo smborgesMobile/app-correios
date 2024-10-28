@@ -1,12 +1,17 @@
 package com.sborges.price.data.entities
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Company(
-    @SerializedName("id")
+    @SerialName("id")
     val id: Int,
-    @SerializedName("name")
+
+    @SerialName("name")
     val name: String,
-    @SerializedName("picture")
+
+    @SerialName("picture")
     val picture: String
 )
+

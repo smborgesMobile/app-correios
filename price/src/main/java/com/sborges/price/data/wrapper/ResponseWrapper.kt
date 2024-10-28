@@ -1,4 +1,4 @@
-package com.sborges.price.data.retrofit
+package com.sborges.price.data.wrapper
 
 sealed class ResponseWrapper<out T> {
     data class Success<out T>(val data: T) : ResponseWrapper<T>()

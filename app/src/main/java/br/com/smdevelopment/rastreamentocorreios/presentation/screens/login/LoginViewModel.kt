@@ -2,7 +2,7 @@ package br.com.smdevelopment.rastreamentocorreios.presentation.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.smdevelopment.rastreamentocorreios.data.entities.retrofit.Resource
+import br.com.smdevelopment.rastreamentocorreios.data.entities.resource.Resource
 import br.com.smdevelopment.rastreamentocorreios.data.repositories.AuthRepository
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.ChangePasswordUseCase
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.CreateUserUseCase
