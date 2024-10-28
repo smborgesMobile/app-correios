@@ -20,30 +20,26 @@ class PriceApiKtorImpl(
         height: String,
         width: String,
         length: String
-    ): List<PriceResponseItem> =
-        try {
-            val response = httpClient.submitForm(
-                url = "${BASE_URL}index.php",
-                formParameters = Parameters.build {
-                    append(KEY_CEP_ORIGEM, originZipCode)
-                    append(KEY_CEP_DESTINO, destinationZipCode)
-                    append(KEY_PESO, weight.toString())
-                    append(KEY_ALTURA, height)
-                    append(KEY_LARGURA, width)
-                    append(KEY_COMPRIMENTO, length)
-                }
-            )
+    ): List<PriceResponseItem> {
 
-            val json = response.body<String>()
-            Log.d(TAG, "Response JSON: $json")
+        val response = httpClient.submitForm(
+            url = "${BASE_URL}index.php",
+            formParameters = Parameters.build {
+                append(KEY_CEP_ORIGEM, originZipCode)
+                append(KEY_CEP_DESTINO, destinationZipCode)
+                append(KEY_PESO, weight.toString())
+                append(KEY_ALTURA, height)
+                append(KEY_LARGURA, width)
+                append(KEY_COMPRIMENTO, length)
+            }
+        )
 
-            val deliveryOptionListType = object : TypeToken<List<PriceResponseItem>>() {}.type
-            Gson().fromJson(json, deliveryOptionListType)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error fetching prices: ${e.message}", e)
-            emptyList()
-        }
+        val json = response.body<String>()
+        Log.d(TAG, "Response JSON: $json")
 
+        val deliveryOptionListType = object : TypeToken<List<PriceResponseItem>>() {}.type
+        return Gson().fromJson(json, deliveryOptionListType)
+    }
 
     private companion object {
         private const val BASE_URL = "https://web.correiosprecoseprazos.com/"
