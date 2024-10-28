@@ -1,4 +1,4 @@
-package br.com.smdevelopment.rastreamentocorreios.data.repositories
+package br.com.smdevelopment.rastreamentocorreios.domain.abstraction
 
 import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
 import kotlinx.coroutines.flow.Flow

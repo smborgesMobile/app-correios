@@ -4,12 +4,12 @@ import androidx.room.Room
 import br.com.smdevelopment.rastreamentocorreios.data.api.LinkTrackApiKtor
 import br.com.smdevelopment.rastreamentocorreios.data.api.LinkTrackApiKtorImpl
 import br.com.smdevelopment.rastreamentocorreios.data.mappers.LinkTrackDomainMapper
-import br.com.smdevelopment.rastreamentocorreios.data.repositories.AuthRepository
-import br.com.smdevelopment.rastreamentocorreios.data.repositories.LinkTrackRepository
 import br.com.smdevelopment.rastreamentocorreios.data.repositories.impl.AuthRepositoryImpl
 import br.com.smdevelopment.rastreamentocorreios.data.repositories.impl.LinkTrackRepositoryImpl
 import br.com.smdevelopment.rastreamentocorreios.data.room.DeliveryRoomDatabase
 import br.com.smdevelopment.rastreamentocorreios.data.room.dao.DeliveryDao
+import br.com.smdevelopment.rastreamentocorreios.domain.abstraction.AuthRepository
+import br.com.smdevelopment.rastreamentocorreios.domain.abstraction.LinkTrackRepository
 import br.com.smdevelopment.rastreamentocorreios.domain.routers.NotificationRouterImpl
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.ChangePasswordUseCase
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.CreateUserUseCase

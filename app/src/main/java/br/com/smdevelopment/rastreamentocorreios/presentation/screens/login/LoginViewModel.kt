@@ -3,7 +3,7 @@ package br.com.smdevelopment.rastreamentocorreios.presentation.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.smdevelopment.rastreamentocorreios.data.entities.resource.Resource
-import br.com.smdevelopment.rastreamentocorreios.data.repositories.AuthRepository
+import br.com.smdevelopment.rastreamentocorreios.domain.abstraction.AuthRepository
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.ChangePasswordUseCase
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.CreateUserUseCase
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.LoginUseCase
@@ -88,7 +88,10 @@ class LoginViewModel(
                 _loginUiState.value.userPassword,
                 _loginUiState.value.userEmail
             ).collect { success ->
-                updateLoginState(isLoginSuccess = success, isLoginError = !success)
+                updateLoginState(
+                    isLoginSuccess = success,
+                    isLoginError = success.not()
+                )
             }
         }
     }
@@ -102,7 +105,8 @@ class LoginViewModel(
             currentState.copy(
                 userEmail = email,
                 enableCreateAccountButton = isValidInput(email, currentState.userPassword),
-                enableLoginButton = isValidInput(email, currentState.userPassword)
+                enableLoginButton = isValidInput(email, currentState.userPassword),
+                showLoginError = false
             )
         }
     }
@@ -112,7 +116,8 @@ class LoginViewModel(
             currentState.copy(
                 userPassword = password,
                 enableCreateAccountButton = isValidInput(currentState.userEmail, password),
-                enableLoginButton = isValidInput(currentState.userEmail, password)
+                enableLoginButton = isValidInput(currentState.userEmail, password),
+                showLoginError = false
             )
         }
     }

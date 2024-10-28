@@ -68,8 +68,7 @@ fun NewLoginScreen(
         }
 
         loginState.showLoginError -> {
-            Toast.makeText(
-                context,
+            Toast.makeText(context,
                 stringResource(R.string.fail_to_log_in),
                 Toast.LENGTH_SHORT
             ).show()

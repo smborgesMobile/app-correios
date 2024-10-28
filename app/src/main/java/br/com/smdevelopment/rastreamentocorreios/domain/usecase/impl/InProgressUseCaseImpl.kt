@@ -1,7 +1,7 @@
 package br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl
 
 import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
-import br.com.smdevelopment.rastreamentocorreios.data.repositories.LinkTrackRepository
+import br.com.smdevelopment.rastreamentocorreios.domain.abstraction.LinkTrackRepository
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.InProgressUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

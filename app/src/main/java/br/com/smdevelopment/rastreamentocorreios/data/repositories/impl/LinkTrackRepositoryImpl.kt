@@ -3,8 +3,8 @@ package br.com.smdevelopment.rastreamentocorreios.data.repositories.impl
 import br.com.smdevelopment.rastreamentocorreios.data.api.LinkTrackApiKtor
 import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.data.mappers.LinkTrackDomainMapper
-import br.com.smdevelopment.rastreamentocorreios.data.repositories.LinkTrackRepository
 import br.com.smdevelopment.rastreamentocorreios.data.room.dao.DeliveryDao
+import br.com.smdevelopment.rastreamentocorreios.domain.abstraction.LinkTrackRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
