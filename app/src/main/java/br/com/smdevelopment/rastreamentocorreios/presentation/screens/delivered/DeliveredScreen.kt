@@ -32,7 +32,6 @@ fun DeliveredScreen() {
             .background(colorResource(id = R.color.white))
             .wrapContentSize(Alignment.Center)
     ) {
-        // Get the ViewModel using Koin
         val viewModel: DeliveredViewModel = koinViewModel()
 
         // Observe the UI state as a whole
