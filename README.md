@@ -1,31 +1,30 @@
-# Rastreamento dos correios
+# Package Tracking
 
-O App tem finalidade de fazer o rastreamento de encomendas dos correios sem um ambiente limpo e SEM PUBLICIDADES.
+The app is designed to track packages from the postal service in a clean environment and **without advertisements**.
 
-
-# Stack de técnologia front-end:
+## Front-end Technology Stack
 
 1. Jetpack Compose
 2. Kotlin
 3. MVVM
-4. Clean - SOLID
-5. Rest Retrofit
+4. Clean Architecture - SOLID
+5. Retrofit for API communication
 6. Kotlin Flows
-7. Coroutines 
-8. Hilt for dependencie injection : Migrado pro Koin
+7. Coroutines
+8. Hilt for dependency injection (migrated to Koin)
 
-Link playstore: https://play.google.com/store/apps/details?id=br.com.smdevelopment.rastreamentocorreios&pli=1
+**Play Store Link**: [Package Tracking](https://play.google.com/store/apps/details?id=br.com.smdevelopment.rastreamentocorreios&pli=1)
 
 &nbsp; 
 &nbsp; 
 
-# Stack de técnologia back-end:
+## Back-end Technology Stack
 
-1. JS
-2. Node
+1. JavaScript
+2. Node.js
 3. Express
 
 &nbsp; 
 &nbsp; 
 
-![Screenshot_20221207_204338](https://user-images.githubusercontent.com/43793053/206812900-35417363-b2e5-4d56-a7ae-6e4fac1e1b97.png)
+![App Screenshot](https://user-images.githubusercontent.com/43793053/206812900-35417363-b2e5-4d56-a7ae-6e4fac1e1b97.png)
