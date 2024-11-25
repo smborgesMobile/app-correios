@@ -18,6 +18,7 @@ The **Package Tracking** app is designed to provide users with a seamless experi
 - **Kotlin Flows**: For handling asynchronous data streams.
 - **Coroutines**: For simplified asynchronous programming.
 - **Koin**: For dependency injection, providing a lightweight and easy-to-use solution.
+- **GitHub Actions**: We utilize GitHub Actions for CI/CD, which is responsible for signing, building, and ensuring code quality through static analysis.
 
 **Play Store Link**: [Download Package Tracking](https://play.google.com/store/apps/details?id=br.com.smdevelopment.rastreamentocorreios&pli=1)
 
