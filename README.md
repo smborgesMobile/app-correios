@@ -8,7 +8,7 @@ The app is designed to track packages from the postal service in a clean environ
 2. Kotlin
 3. MVVM
 4. Clean Architecture - SOLID
-5. Retrofit for API communication
+5. Retrofit for API communication (migrated to ktor)
 6. Kotlin Flows
 7. Coroutines
 8. Hilt for dependency injection (migrated to Koin)
