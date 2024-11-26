@@ -48,9 +48,7 @@ class NotificationCheckWorkManager(
         getCodeUseCase.getTrackingInfo(trackingModel.code).collectLatest { trackingInfo ->
             if (trackingInfo.isNotEmpty()) {
                 val filteredList = trackingInfo.firstOrNull { it.code == trackingModel.code }
-                // Compare the cached and latest statuses
-                if (filteredList?.last != trackingModel.last) {
-                    // Show notification if status has changed
+                if (filteredList?.last != trackingModel.last && trackingModel.isDelivered.not()) {
                     deliveryNotificationChannel.showBasicNotification(
                         title = trackingModel.code,
                         description = applicationContext.getString(R.string.delivered_moving)
