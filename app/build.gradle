@@ -45,7 +45,6 @@ android {
             buildConfigField "String", "TOKEN", "\"0ecd0f0da1454597e2bbc9cca3126c56937f8cb2eb424fdc10134c8dc43de3a5\""
             minifyEnabled true
             shrinkResources true
-            debuggable = true
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
