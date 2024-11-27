@@ -59,7 +59,7 @@ fun NewLoginScreen(
             NavigateHome(navController)
         }
 
-        loginState.showCreateUserError || loginState.showGoogleLoginError -> {
+        loginState.showCreateUserError -> {
             Toast.makeText(
                 context,
                 stringResource(R.string.fail_to_sign_in),
@@ -68,7 +68,8 @@ fun NewLoginScreen(
         }
 
         loginState.showLoginError -> {
-            Toast.makeText(context,
+            Toast.makeText(
+                context,
                 stringResource(R.string.fail_to_log_in),
                 Toast.LENGTH_SHORT
             ).show()

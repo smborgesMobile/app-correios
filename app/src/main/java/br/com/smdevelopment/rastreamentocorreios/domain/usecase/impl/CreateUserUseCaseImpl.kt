@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 
@@ -31,6 +32,8 @@ class CreateUserUseCaseImpl(private val auth: FirebaseAuth) : CreateUserUseCase 
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(onCompleteListener).await()
+    }.catch {
+        emit(Resource.Error(message = "Failed to create user: ${it.message}"))
     }.flowOn(Dispatchers.IO)
 
     private companion object {
