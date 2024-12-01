@@ -4,14 +4,16 @@ import br.com.smdevelopment.rastreamentocorreios.domain.usecase.ChangePasswordUs
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
 
 class ChangePasswordUseCaseImpl(private val firebaseAuth: FirebaseAuth) : ChangePasswordUseCase {
 
     override suspend fun changePassword(email: String): Flow<Boolean> = flow {
         try {
-            val response = firebaseAuth.sendPasswordResetEmail(email)
-            emit(response.isSuccessful)
-        } catch (_: Exception) {
+            firebaseAuth.sendPasswordResetEmail(email).await()
+            emit(true)
+        } catch (e: Exception) {
+            println("sm.borges - Exception: $e")
             emit(false)
         }
     }
