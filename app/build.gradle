@@ -147,4 +147,11 @@ dependencies {
 
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
+
+    // Testes
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
 }

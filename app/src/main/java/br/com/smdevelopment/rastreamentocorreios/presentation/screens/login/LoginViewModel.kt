@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.screens.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.smdevelopment.rastreamentocorreios.data.entities.resource.Resource
@@ -73,8 +74,19 @@ class LoginViewModel(
                 _loginUiState.value.userPassword
             ).collect { result ->
                 when (result) {
-                    is Resource.Success -> updateLoginState(isCreateUserSuccess = true)
-                    is Resource.Error -> updateLoginState(isCreateUserError = true)
+                    is Resource.Success -> {
+                        updateLoginState(
+                            isCreateUserSuccess = true,
+                            isCreateUserError = false
+                        )
+
+                        Log.d("sm.borges", "ViewModelSuccess")
+                    }
+
+                    is Resource.Error -> {
+                        updateLoginState(isCreateUserError = true)
+                        Log.d("sm.borges", "ViewModelError")
+                    }
                     else -> Unit
                 }
             }
@@ -106,7 +118,8 @@ class LoginViewModel(
                 userEmail = email,
                 enableCreateAccountButton = isValidInput(email, currentState.userPassword),
                 enableLoginButton = isValidInput(email, currentState.userPassword),
-                showLoginError = false
+                showLoginError = false,
+                showCreateUserError = false
             )
         }
     }
@@ -117,7 +130,8 @@ class LoginViewModel(
                 userPassword = password,
                 enableCreateAccountButton = isValidInput(currentState.userEmail, password),
                 enableLoginButton = isValidInput(currentState.userEmail, password),
-                showLoginError = false
+                showLoginError = false,
+                showCreateUserError = false
             )
         }
     }
@@ -165,7 +179,7 @@ class LoginViewModel(
     }
 
     private fun executeAction(action: suspend () -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             try {
                 action()
             } catch (e: Exception) {
