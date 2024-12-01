@@ -11,7 +11,7 @@ class LoginUseCaseImpl(private val firebaseAuth: FirebaseAuth) : LoginUseCase {
         try {
             val result = firebaseAuth.signInWithEmailAndPassword(email, password)
             emit(result.isSuccessful)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emit(false)
         }
     }
