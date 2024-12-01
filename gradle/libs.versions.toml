@@ -33,7 +33,7 @@ coreKtx = "1.15.0"
 firebaseBom = "33.6.0"
 firebaseCrashLytics = "3.0.2"
 
-androidGradlePlugin = "8.5.2"
+androidGradlePlugin = "8.7.2"
 kotlin = "2.0.20"
 googleServices = "4.4.2"
 ksp = "2.0.21-1.0.26"
