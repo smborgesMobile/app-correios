@@ -13,7 +13,6 @@ class ChangePasswordUseCaseImpl(private val firebaseAuth: FirebaseAuth) : Change
             firebaseAuth.sendPasswordResetEmail(email).await()
             emit(true)
         } catch (e: Exception) {
-            println("sm.borges - Exception: $e")
             emit(false)
         }
     }
