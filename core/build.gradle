@@ -43,6 +43,7 @@ dependencies {
     // Import the BoM for the Firebase platform
     implementation platform(libs.firebase.bom)
     implementation libs.google.firebase.auth.ktx
+    implementation libs.firebase.appcheck.playintegrity
 
     implementation libs.google.services
     implementation libs.firebase.messaging.ktx
@@ -57,5 +58,4 @@ dependencies {
     implementation libs.ktor.serialization.kotlinx.json
     implementation libs.ktor.client.content.negotiation
     implementation libs.kotlinx.serialization.json
-
 }

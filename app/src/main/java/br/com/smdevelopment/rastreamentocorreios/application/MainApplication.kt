@@ -13,6 +13,7 @@ import androidx.work.WorkRequest
 import br.com.smdevelopment.rastreamentocorreios.domain.di.appModule
 import br.com.smdevelopment.rastreamentocorreios.workmanager.NotificationCheckWorkManager
 import br.com.smdevelopment.rastreamentocorreios.workmanager.UpdateCacheWorker
+import com.sborges.core.appcheck.FirebaseAppCheckerInitializer
 import com.sborges.core.data.networkModule
 import com.sborges.core.di.CoreModulesDI
 import com.sborges.core.push.data.FirebaseMessageInitializer
@@ -28,6 +29,7 @@ class MainApplication : Application(), Configuration.Provider, KoinComponent {
     override fun onCreate() {
         super.onCreate()
         setupKoin()
+        setupFirebaseAppChecker()
         configureNotification()
         setupNotificationWork()
         setupUpdateCache()
@@ -69,6 +71,11 @@ class MainApplication : Application(), Configuration.Provider, KoinComponent {
         WorkManager
             .getInstance(this)
             .enqueue(uploadWorkRequest)
+    }
+
+    private fun setupFirebaseAppChecker() {
+        val firebaseAppChecker: FirebaseAppCheckerInitializer = get()
+        firebaseAppChecker.initAppChecker(this)
     }
 
     private fun configureNotification() {

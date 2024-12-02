@@ -2,6 +2,9 @@ package com.sborges.core.di
 
 import android.content.Context
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.firebase.Firebase
+import com.sborges.core.appcheck.FirebaseAppCheckInitializerImpl
+import com.sborges.core.appcheck.FirebaseAppCheckerInitializer
 import com.sborges.core.push.data.FirebaseMessageInitializer
 import com.sborges.core.push.data.FirebaseMessageLocalRepositoryImpl
 import com.sborges.core.push.domain.abstraction.FirebaseMessageLocalRepository
@@ -46,6 +49,13 @@ class CoreModulesDI {
 
         // Use cases
         single { LaunchCounterUseCase(get()) }
+
+        // Firebase app check
+        factory<FirebaseAppCheckerInitializer> {
+            FirebaseAppCheckInitializerImpl(
+                Firebase
+            )
+        }
     }
 
     private companion object {
