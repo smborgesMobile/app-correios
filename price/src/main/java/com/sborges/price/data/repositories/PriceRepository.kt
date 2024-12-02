@@ -1,6 +1,5 @@
 package com.sborges.price.data.repositories
 
-import android.util.Log
 import com.sborges.price.data.api.PriceApiKtor
 import com.sborges.price.data.entities.PriceResponseItem
 import com.sborges.price.data.wrapper.ResponseWrapper
@@ -34,7 +33,6 @@ class PriceRepositoryImpl(private val api: PriceApiKtor) : PriceRepository {
             } catch (e: HttpException) {
                 ResponseWrapper.Error(e.message ?: "Network error", e.code())
             } catch (e: Exception) {
-                Log.d("sm.borges", "Exception: ${e.message}")
                 ResponseWrapper.Error(e.message ?: "Unknown error")
             }
         }
