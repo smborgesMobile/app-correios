@@ -1,11 +1,15 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation
 
 import androidx.lifecycle.ViewModel
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.GetPriceFeatureToggleUseCase
+import br.com.smdevelopment.rastreamentocorreios.presentation.tabbar.BottomNavItem
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class MainViewModel : ViewModel() {
+class MainViewModel(
+    private val getPriceFeatureToggleUseCase: GetPriceFeatureToggleUseCase
+) : ViewModel() {
 
     private val _showDeleteDialog: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val showDeleteDialog: StateFlow<Boolean> get() = _showDeleteDialog
@@ -23,6 +27,21 @@ class MainViewModel : ViewModel() {
     fun onDeleteDismissClick() {
         _showDeleteDialog.value = false
     }
+
+    fun getBottomNavigationItems(): List<BottomNavItem> {
+        val itemList = mutableListOf(
+            BottomNavItem.Delivered,
+            BottomNavItem.Home,
+            BottomNavItem.Pending
+        )
+
+        if (getPriceFeatureToggleUseCase.isPriceToggleEnabled()) {
+            itemList.add(BottomNavItem.Price)
+        }
+
+        return itemList
+    }
+
 
     fun onDeleteDialogClick() {
         _showDeleteDialog.value = false

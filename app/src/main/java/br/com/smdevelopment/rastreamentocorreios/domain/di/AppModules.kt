@@ -14,6 +14,7 @@ import br.com.smdevelopment.rastreamentocorreios.domain.routers.NotificationRout
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.ChangePasswordUseCase
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.CreateUserUseCase
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.DeliveredUseCase
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.GetPriceFeatureToggleUseCase
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.InProgressUseCase
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.LoginUseCase
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.TrackingUseCase
@@ -22,6 +23,7 @@ import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.ChangePassw
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.CreateUserUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.DeliveredUserCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.GetAllTrackingUseCase
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.GetPriceFeatureToggleUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.InProgressUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.LoginUseCaseImpl
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.TrackingUseCaseImpl
@@ -95,9 +97,8 @@ val appModule = module {
         )
     }
     viewModel {
-        MainViewModel()
+        MainViewModel(getPriceFeatureToggleUseCase = get())
     }
-
 
     // use cases
     factory<TrackingUseCase> { TrackingUseCaseImpl(linkTrackRepository = get()) }
@@ -108,6 +109,7 @@ val appModule = module {
     factory<CreateUserUseCase> { CreateUserUseCaseImpl(auth = FirebaseAuth.getInstance()) }
     factory<LoginUseCase> { LoginUseCaseImpl(firebaseAuth = FirebaseAuth.getInstance()) }
     factory<ChangePasswordUseCase> { ChangePasswordUseCaseImpl(firebaseAuth = FirebaseAuth.getInstance()) }
+    factory<GetPriceFeatureToggleUseCase> { GetPriceFeatureToggleUseCaseImpl(featureToggle = get()) }
 
     //Helps
     factory<DeliveryNotificationChannel> { DeliveryNotificationChannel(androidContext()) }

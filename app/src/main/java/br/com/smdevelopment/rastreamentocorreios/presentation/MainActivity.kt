@@ -193,7 +193,10 @@ fun MainScreenView(
             )
         },
         bottomBar = {
-            HomeBottomNavigation(navController = navController)
+            HomeBottomNavigation(
+                navController = navController,
+                items = mainViewModel.getBottomNavigationItems()
+            )
         }) {
         Column(
             modifier = Modifier.background(primary700)

@@ -16,14 +16,10 @@ import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.presentation.tabbar.BottomNavItem
 
 @Composable
-fun HomeBottomNavigation(navController: NavController) {
-    val items = listOf(
-        BottomNavItem.Delivered,
-        BottomNavItem.Home,
-        BottomNavItem.Pending,
-        BottomNavItem.Price
-    )
-
+fun HomeBottomNavigation(
+    navController: NavController,
+    items: List<BottomNavItem>
+) {
     BottomNavigation(
         backgroundColor = colorResource(id = R.color.white),
         contentColor = Color.Black
