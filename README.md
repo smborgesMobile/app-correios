@@ -19,6 +19,11 @@ The **Package Tracking** app is designed to provide users with a seamless experi
 - **Coroutines**: For simplified asynchronous programming.
 - **Koin**: For dependency injection, providing a lightweight and easy-to-use solution.
 - **GitHub Actions**: We utilize GitHub Actions for CI/CD, which is responsible for signing, building, and ensuring code quality through static analysis.
+- **Firebase**: 
+  - **Remote Configuration**: Manage and update your app's settings and appearance in real-time without requiring user updates. Ideal for A/B testing and feature toggling.
+  - **Authentication**: Simplify user login with support for various authentication methods, including email/password, phone numbers, and social media accounts (e.g., Google, Facebook).
+  - **Performance Monitoring**: Track and analyze key performance metrics such as app startup time, network request latency, and screen rendering times to identify and address performance bottlenecks.
+  - **Crashlytics**: Automatically capture and report crashes in real-time, providing detailed insights into the causes of issues to enhance app stability and user experience.
 
 **Play Store Link**: [Download Package Tracking](https://play.google.com/store/apps/details?id=br.com.smdevelopment.rastreamentocorreios&pli=1)
 
