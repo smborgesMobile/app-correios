@@ -60,3 +60,32 @@
 }
 
 -keep class your.package.name.R$* { *; }
+
+# Keep Kotlin Analysis API
+-keep class org.jetbrains.kotlin.analysis.api.** { *; }
+-keep class org.jetbrains.kotlin.** { *; }
+-keepnames class org.jetbrains.kotlin.** { *; }
+
+# Keep all Kotlin reflection metadata
+-keepattributes *Annotation*
+-keepattributes InnerClasses
+-keepattributes EnclosingMethod
+
+# Keep all serializable classes
+-keep class com.sborges.price.data.entities.** { *; }
+
+# Retain all serializable classes and their generated serializers
+-keepnames class **$$serializer
+-keepnames class **$Companion
+
+# Retain serialization annotations
+-keepclassmembers class ** {
+    @kotlinx.serialization.* *;
+}
+
+# Retain runtime annotations and metadata used by Kotlinx Serialization
+-keepattributes RuntimeVisibleAnnotations
+-keepattributes Annotation
+
+# Prevent obfuscation of enums (if applicable)
+-keepclassmembers enum * { *; }
