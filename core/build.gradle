@@ -42,11 +42,12 @@ dependencies {
 
     // Import the BoM for the Firebase platform
     implementation platform(libs.firebase.bom)
-    implementation libs.google.firebase.auth.ktx
     implementation libs.firebase.appcheck.playintegrity
-
-    implementation libs.google.services
+    implementation(libs.firebase.config)
     implementation libs.firebase.messaging.ktx
+    implementation(libs.google.firebase.analytics)
+    implementation libs.google.services
+    implementation libs.google.firebase.auth.ktx
 
     // In App Review
     implementation libs.play.review.ktx

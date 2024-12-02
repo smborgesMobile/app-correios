@@ -3,11 +3,15 @@ package com.sborges.core.di
 import android.content.Context
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import com.sborges.core.appcheck.FirebaseAppCheckInitializerImpl
 import com.sborges.core.appcheck.FirebaseAppCheckerInitializer
 import com.sborges.core.push.data.FirebaseMessageInitializer
 import com.sborges.core.push.data.FirebaseMessageLocalRepositoryImpl
 import com.sborges.core.push.domain.abstraction.FirebaseMessageLocalRepository
+import com.sborges.core.remoteconfig.FeatureToggle
+import com.sborges.core.remoteconfig.RemoteConfigFeatureToggle
+import com.sborges.core.remoteconfig.RemoteConfigRepository
 import com.sborges.core.review.manager.ReviewManagerLauncher
 import com.sborges.core.review.manager.data.repository.InAppReviewRepositoryImpl
 import com.sborges.core.review.manager.domain.abstraction.InAppReviewRepository
@@ -56,6 +60,9 @@ class CoreModulesDI {
                 Firebase
             )
         }
+
+        factory { RemoteConfigRepository(Firebase.remoteConfig) }
+        factory<FeatureToggle> { RemoteConfigFeatureToggle(get()) }
     }
 
     private companion object {

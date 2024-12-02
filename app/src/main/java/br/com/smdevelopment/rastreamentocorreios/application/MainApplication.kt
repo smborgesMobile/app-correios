@@ -17,6 +17,7 @@ import com.sborges.core.appcheck.FirebaseAppCheckerInitializer
 import com.sborges.core.data.networkModule
 import com.sborges.core.di.CoreModulesDI
 import com.sborges.core.push.data.FirebaseMessageInitializer
+import com.sborges.core.remoteconfig.RemoteConfigRepository
 import com.sborges.price.di.priceModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent
@@ -34,6 +35,12 @@ class MainApplication : Application(), Configuration.Provider, KoinComponent {
         setupNotificationWork()
         setupUpdateCache()
         setupFirebaseMessage()
+        setupRemoteConfig()
+    }
+
+    private fun setupRemoteConfig() {
+        val remoteConfigRepository: RemoteConfigRepository = get()
+        remoteConfigRepository.initRemoteConfig()
     }
 
     private fun setupFirebaseMessage() {
