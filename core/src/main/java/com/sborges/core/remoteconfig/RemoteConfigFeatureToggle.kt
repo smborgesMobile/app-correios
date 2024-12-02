@@ -1,5 +1,7 @@
 package com.sborges.core.remoteconfig
 
+import com.sborges.core.remoteconfig.abstractions.FeatureToggle
+
 class RemoteConfigFeatureToggle(
     private val remoteConfigRepository: RemoteConfigRepository
 ) : FeatureToggle {

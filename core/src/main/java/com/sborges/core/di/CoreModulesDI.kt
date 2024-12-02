@@ -9,9 +9,9 @@ import com.sborges.core.appcheck.FirebaseAppCheckerInitializer
 import com.sborges.core.push.data.FirebaseMessageInitializer
 import com.sborges.core.push.data.FirebaseMessageLocalRepositoryImpl
 import com.sborges.core.push.domain.abstraction.FirebaseMessageLocalRepository
-import com.sborges.core.remoteconfig.FeatureToggle
 import com.sborges.core.remoteconfig.RemoteConfigFeatureToggle
 import com.sborges.core.remoteconfig.RemoteConfigRepository
+import com.sborges.core.remoteconfig.abstractions.FeatureToggle
 import com.sborges.core.review.manager.ReviewManagerLauncher
 import com.sborges.core.review.manager.data.repository.InAppReviewRepositoryImpl
 import com.sborges.core.review.manager.domain.abstraction.InAppReviewRepository
