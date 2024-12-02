@@ -19,6 +19,7 @@ The **Package Tracking** app is designed to provide users with a seamless experi
 - **Coroutines**: For simplified asynchronous programming.
 - **Koin**: For dependency injection, providing a lightweight and easy-to-use solution.
 - **GitHub Actions**: We utilize GitHub Actions for CI/CD, which is responsible for signing, building, and ensuring code quality through static analysis.
+- **Multi-Module Architecture**: The app is structured into multiple modules to enhance code organization and separation of concerns. This approach facilitates better maintainability, scalability, and reusability of code across different parts of the application.
 - **Firebase**: 
   - **Remote Configuration**: Manage and update your app's settings and appearance in real-time without requiring user updates. Ideal for A/B testing and feature toggling.
   - **Authentication**: Simplify user login with support for various authentication methods, including email/password, phone numbers, and social media accounts (e.g., Google, Facebook).
