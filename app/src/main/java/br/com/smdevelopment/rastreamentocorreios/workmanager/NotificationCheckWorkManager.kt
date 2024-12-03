@@ -6,6 +6,7 @@ import androidx.work.WorkerParameters
 import br.com.smdevelopment.rastreamentocorreios.R
 import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.TrackingUseCase
+import br.com.smdevelopment.rastreamentocorreios.domain.usecase.UpdateCacheUseCase
 import br.com.smdevelopment.rastreamentocorreios.domain.usecase.impl.GetAllTrackingUseCase
 import br.com.smdevelopment.rastreamentocorreios.notification.DeliveryNotificationChannel
 import kotlinx.coroutines.delay
@@ -21,6 +22,7 @@ class NotificationCheckWorkManager(
     private val getAllTrackingUseCase: GetAllTrackingUseCase by inject()
     private val getCodeUseCase: TrackingUseCase by inject()
     private val deliveryNotificationChannel: DeliveryNotificationChannel by inject()
+    private val updateCacheUseCase: UpdateCacheUseCase by inject()
 
     override suspend fun doWork(): Result {
         return try {
@@ -38,13 +40,15 @@ class NotificationCheckWorkManager(
 
     private suspend fun processTrackingCodes(allList: List<TrackingModel>) {
         allList.forEach { cachedData ->
-            checkForStatusChange(cachedData)
+            val notificationSent = checkForStatusChange(cachedData)
+            if (notificationSent) {
+                updateCacheUseCase.updateCache()
+            }
         }
     }
 
     private suspend fun checkForStatusChange(trackingModel: TrackingModel): Boolean {
         var notificationSent = false
-
         getCodeUseCase.getTrackingInfo(trackingModel.code).collectLatest { trackingInfo ->
             if (trackingInfo.isNotEmpty()) {
                 val filteredList = trackingInfo.firstOrNull { it.code == trackingModel.code }
