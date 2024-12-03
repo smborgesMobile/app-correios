@@ -53,7 +53,6 @@ class LinkTrackViewModel(
             getAllTrackingUseCase.getTrackingList()
                 .catch {
                     _uiState.value = _uiState.value.copy(
-                        trackingInfo = emptyList(),
                         isRefreshing = false
                     )
                 }
