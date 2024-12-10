@@ -26,7 +26,7 @@ class NotificationCheckWorkManager(
 
     override suspend fun doWork(): Result {
         return try {
-            getAllTrackingUseCase.getCacheList().collectLatest { allList ->
+            getAllTrackingUseCase.getTrackingList().collectLatest { allList ->
                 if (allList.isNotEmpty()) {
                     processTrackingCodes(allList)
                 }

@@ -102,7 +102,7 @@ class MainApplication : Application(), Configuration.Provider, KoinComponent {
 
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "app_notification_chanel"
-        const val UPDATE_WORKER = 4L
+        const val UPDATE_WORKER = 8L
         const val WORKER_NAME = "notification_check_worker"
     }
 }
