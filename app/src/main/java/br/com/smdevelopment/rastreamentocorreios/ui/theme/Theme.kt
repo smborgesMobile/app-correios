@@ -19,9 +19,13 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun RastreamentoCorreiosTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun RastreamentoCorreiosTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    //TODO: Implement dark mode.
     val colors = if (darkTheme) {
-        DarkColorPalette
+        LightColorPalette
     } else {
         LightColorPalette
     }
