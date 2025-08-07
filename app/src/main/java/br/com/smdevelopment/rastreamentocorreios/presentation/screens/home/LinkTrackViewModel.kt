@@ -74,7 +74,7 @@ class LinkTrackViewModel(
             )
             trackingUseCase.getTrackingInfo(code)
                 .catch {
-                    Log.d("sm.borges", "Error: $it")
+                    Log.d("sm.borges", "Error: ${it.message}")
                     _uiState.value = _uiState.value.copy(
                         errorState = true,
                         loadingState = false

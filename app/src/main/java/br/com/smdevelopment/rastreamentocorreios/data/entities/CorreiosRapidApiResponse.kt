@@ -1,4 +1,3 @@
-// New file for Correios RapidAPI response model
 package br.com.smdevelopment.rastreamentocorreios.data.entities
 
 import kotlinx.serialization.SerialName
@@ -7,8 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CorreiosRapidApiFullResponse(
     @SerialName("json")
-    val response: CorreiosRapidApiResponse,
-
+    val response: String,
     @SerialName("carrier")
     val carrier: String
 )
