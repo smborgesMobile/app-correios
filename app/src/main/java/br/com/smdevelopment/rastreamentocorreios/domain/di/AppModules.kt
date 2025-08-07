@@ -1,13 +1,13 @@
 package br.com.smdevelopment.rastreamentocorreios.domain.di
 
 import androidx.room.Room
-import br.com.smdevelopment.rastreamentocorreios.data.api.LinkTrackApiKtor
-import br.com.smdevelopment.rastreamentocorreios.data.api.LinkTrackApiKtorImpl
+import br.com.smdevelopment.rastreamentocorreios.data.api.CorreiosRapidApiKtor
+import br.com.smdevelopment.rastreamentocorreios.data.api.CorreiosRapidApiKtorImpl
+import br.com.smdevelopment.rastreamentocorreios.data.mappers.CorreiosRapidApiMapper
 import br.com.smdevelopment.rastreamentocorreios.data.mappers.LinkTrackDomainMapper
 import br.com.smdevelopment.rastreamentocorreios.data.repositories.impl.AuthRepositoryImpl
 import br.com.smdevelopment.rastreamentocorreios.data.repositories.impl.LinkTrackRepositoryImpl
 import br.com.smdevelopment.rastreamentocorreios.data.room.DeliveryRoomDatabase
-import br.com.smdevelopment.rastreamentocorreios.data.room.dao.DeliveryDao
 import br.com.smdevelopment.rastreamentocorreios.domain.abstraction.AuthRepository
 import br.com.smdevelopment.rastreamentocorreios.domain.abstraction.LinkTrackRepository
 import br.com.smdevelopment.rastreamentocorreios.domain.routers.NotificationRouterImpl
@@ -41,36 +41,34 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-    // ktor
-    factory<LinkTrackApiKtor> { LinkTrackApiKtorImpl(get()) }
+    // Api
+    single<CorreiosRapidApiKtor> { CorreiosRapidApiKtorImpl(get()) }
 
-    // repositories
-    factory<LinkTrackRepository> {
+    // Mappers
+    single { LinkTrackDomainMapper(FirebaseAuth.getInstance()) }
+    single { CorreiosRapidApiMapper(FirebaseAuth.getInstance()) }
+
+    // Room
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            DeliveryRoomDatabase::class.java, "delivery_database"
+        ).fallbackToDestructiveMigration().build()
+    }
+    single { get<DeliveryRoomDatabase>().deliveryDao() }
+
+    // Repositories
+    factory<LinkTrackRepository> { 
         LinkTrackRepositoryImpl(
             api = get(),
             linkTrackDao = get(),
             firebaseAuth = FirebaseAuth.getInstance(),
-            linkTrackMapper = get()
-        )
+            mapper = get()
+        ) 
     }
-    factory<AuthRepository> {
-        AuthRepositoryImpl(firebaseAuth = FirebaseAuth.getInstance())
-    }
+    factory<AuthRepository> { AuthRepositoryImpl(firebaseAuth = FirebaseAuth.getInstance()) }
 
-    // dao
-    single {
-        Room.databaseBuilder(
-            context = androidContext(),
-            klass = DeliveryRoomDatabase::class.java,
-            name = "my_database"
-        )
-            .fallbackToDestructiveMigration()
-            .build()
-    }
-
-    single<DeliveryDao> { get<DeliveryRoomDatabase>().deliveryDao() }
-
-    // view models
+    // View models
     viewModel {
         LinkTrackViewModel(
             trackingUseCase = get(),
@@ -116,8 +114,4 @@ val appModule = module {
 
     // Routers
     factory<NotificationHandler> { NotificationRouterImpl() }
-
-    // Mappers
-    factory { LinkTrackDomainMapper(firebaseAuth = FirebaseAuth.getInstance()) }
-
 }

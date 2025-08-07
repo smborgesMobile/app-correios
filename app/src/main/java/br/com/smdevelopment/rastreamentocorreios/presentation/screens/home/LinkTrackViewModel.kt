@@ -1,5 +1,6 @@
 package br.com.smdevelopment.rastreamentocorreios.presentation.screens.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
@@ -73,6 +74,7 @@ class LinkTrackViewModel(
             )
             trackingUseCase.getTrackingInfo(code)
                 .catch {
+                    Log.d("sm.borges", "Error: $it")
                     _uiState.value = _uiState.value.copy(
                         errorState = true,
                         loadingState = false

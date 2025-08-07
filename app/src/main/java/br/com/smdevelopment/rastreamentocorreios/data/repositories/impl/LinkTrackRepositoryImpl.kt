@@ -1,8 +1,8 @@
 package br.com.smdevelopment.rastreamentocorreios.data.repositories.impl
 
-import br.com.smdevelopment.rastreamentocorreios.data.api.LinkTrackApiKtor
+import br.com.smdevelopment.rastreamentocorreios.data.api.CorreiosRapidApiKtor
 import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
-import br.com.smdevelopment.rastreamentocorreios.data.mappers.LinkTrackDomainMapper
+import br.com.smdevelopment.rastreamentocorreios.data.mappers.CorreiosRapidApiMapper
 import br.com.smdevelopment.rastreamentocorreios.data.room.dao.DeliveryDao
 import br.com.smdevelopment.rastreamentocorreios.domain.abstraction.LinkTrackRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
 class LinkTrackRepositoryImpl(
-    private val api: LinkTrackApiKtor,
+    private val api: CorreiosRapidApiKtor,
     private val linkTrackDao: DeliveryDao,
     private val firebaseAuth: FirebaseAuth,
-    private val linkTrackMapper: LinkTrackDomainMapper
+    private val mapper: CorreiosRapidApiMapper
 ) : LinkTrackRepository {
 
     private var isJobRunning = false
@@ -25,7 +25,7 @@ class LinkTrackRepositoryImpl(
         return withContext(Dispatchers.IO) {
             flow {
                 val apiResponse = api.fetchTrackByCode(code = code)
-                linkTrackDao.insertNewDelivery(linkTrackMapper.mapToTrackModel(apiResponse))
+                linkTrackDao.insertNewDelivery(mapper.mapToTrackModel(apiResponse))
                 emit(getListFromRoom())
             }
         }
@@ -55,7 +55,7 @@ class LinkTrackRepositoryImpl(
                 val list = getListFromRoom()
                 list.forEach { delivery ->
                     val response = api.fetchTrackByCode(code = delivery.code)
-                    linkTrackDao.insertNewDelivery(linkTrackMapper.mapToTrackModel(response))
+                    linkTrackDao.insertNewDelivery(mapper.mapToTrackModel(response))
                     delay(POOLING_TIME)
                 }
             } catch (ex: Exception) {

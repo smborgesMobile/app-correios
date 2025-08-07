@@ -1,10 +1,12 @@
 package br.com.smdevelopment.rastreamentocorreios.data.repositories
 
-import br.com.smdevelopment.rastreamentocorreios.data.api.LinkTrackApiKtor
-import br.com.smdevelopment.rastreamentocorreios.data.entities.Event
-import br.com.smdevelopment.rastreamentocorreios.data.entities.TrackingResponse
+import br.com.smdevelopment.rastreamentocorreios.data.api.CorreiosRapidApiKtor
+import br.com.smdevelopment.rastreamentocorreios.data.entities.CorreiosRapidApiResponse
+import br.com.smdevelopment.rastreamentocorreios.data.entities.DataHoraCriado
+import br.com.smdevelopment.rastreamentocorreios.data.entities.EventoRastreio
+import br.com.smdevelopment.rastreamentocorreios.data.entities.Unidade
 import br.com.smdevelopment.rastreamentocorreios.data.entities.view.TrackingModel
-import br.com.smdevelopment.rastreamentocorreios.data.mappers.LinkTrackDomainMapper
+import br.com.smdevelopment.rastreamentocorreios.data.mappers.CorreiosRapidApiMapper
 import br.com.smdevelopment.rastreamentocorreios.data.repositories.impl.LinkTrackRepositoryImpl
 import br.com.smdevelopment.rastreamentocorreios.data.room.dao.DeliveryDao
 import com.google.firebase.auth.FirebaseAuth
@@ -22,10 +24,10 @@ import org.junit.Test
 class LinkTrackRepositoryTest {
 
     private lateinit var repository: LinkTrackRepositoryImpl
-    private val api: LinkTrackApiKtor = mockk()
+    private val api: CorreiosRapidApiKtor = mockk()
     private val deliveryDao: DeliveryDao = mockk()
     private val firebaseAuth: FirebaseAuth = mockk()
-    private val mapper: LinkTrackDomainMapper = mockk()
+    private val mapper: CorreiosRapidApiMapper = mockk()
 
     @Before
     fun setup() {
@@ -37,22 +39,51 @@ class LinkTrackRepositoryTest {
     fun `Given tracking code, When fetchTrackByCode is called, Then return flow with tracking data`() = runBlocking {
         // Given
         val code = "ABC123"
-        val apiResponse = TrackingResponse(
-            code = code,
-            host = "https://api.linketrack.com",
-            events = listOf(
-                Event(
-                    date = "2024-03-20",
-                    time = "14:30",
-                    location = "São Paulo, SP",
-                    status = "In Transit",
-                    subStatus = listOf("Package in transit")
+        val apiResponse = CorreiosRapidApiResponse(
+            codObjeto = code,
+            tipoPostal = null,
+            dtPrevista = "20/03/2025",
+            modalidade = "F",
+            eventos = listOf(
+                EventoRastreio(
+                    codigo = "BDE",
+                    tipo = "01",
+                    dtHrCriado = DataHoraCriado(
+                        date = "2025-03-03 23:30:03.000000",
+                        timezoneType = 3,
+                        timezone = "America/Sao_Paulo"
+                    ),
+                    descricao = "Objeto entregue ao destinatário",
+                    unidade = Unidade(
+                        nome = "",
+                        codSro = "50630977",
+                        codMcu = "",
+                        tipo = "Unidade de Tratamento",
+                        endereco = null
+                    ),
+                    unidadeDestino = null,
+                    comentario = "",
+                    icone = "novos/caixa-visto-stroke.svg",
+                    descricaoFrontEnd = "ENTREGUE",
+                    finalizador = "S",
+                    rota = "CONTEXTO",
+                    descricaoWeb = "ENTREGUE",
+                    detalhe = "Nossa entrega atendeu às suas expectativas?",
+                    destinatario = null,
+                    cached = true
                 )
             ),
-            time = System.currentTimeMillis().toDouble(),
-            quantity = 1,
-            service = "SEDEX",
-            last = "In Transit"
+            situacao = "E",
+            autoDeclaracao = false,
+            encargoImportacao = false,
+            percorridaCarteiro = false,
+            bloqueioObjeto = false,
+            arEletronico = false,
+            arImagem = null,
+            locker = false,
+            atrasado = false,
+            urlFaleComOsCorreios = "",
+            temEventoEntrega = false
         )
         val mappedResponse = mockk<TrackingModel>()
         val daoResponse = listOf(mappedResponse)
@@ -98,4 +129,4 @@ class LinkTrackRepositoryTest {
         // Then
         coVerify { deliveryDao.deleteDelivery(trackingModel) }
     }
-} 
+}
